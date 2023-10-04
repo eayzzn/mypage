@@ -9,6 +9,5 @@ function App() {
      <h1>hallo test 11111</h1>
     </div>
   );
-}
 
 export default App;

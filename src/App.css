@@ -1,5 +1,16 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@800&display=swap');
+
+.Head {
+  text-align:left;
+  font-family: poppins;
+  font-size: 85%;
+}
+
 .App {
-  text-align: center;
+  text-align:center;
+  font-family: poppins;
+  font-size: 75%;
 }
 
 .App-logo {
@@ -34,5 +45,6 @@
   }
   to {
     transform: rotate(360deg);
-  }
+  }  
 }
+

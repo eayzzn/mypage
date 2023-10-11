@@ -13,6 +13,12 @@
   font-size: 75%;
 }
 
+.Banner {
+  text-align:left;
+  font-family: poppins;
+  font-size: 200%;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;

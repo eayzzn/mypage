@@ -259,3 +259,43 @@ nav a:hover i {
 nav a.active i {
     color: #FF385C;
 }
+
+.gradient-text {
+    background: linear-gradient(
+        to right,
+        #FF385C 50%,
+        #ffffff 50%
+    );
+    background-position: 100% center;
+    background-size: 200% auto;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+.gradient-text:hover {
+    animation: shine 1s linear paused;
+    animation-play-state: running;
+}
+
+.gradient-text:not(:hover) {
+    animation: shine-reverse 1s linear forwards;
+}
+
+@keyframes shine {
+    from {
+        background-position: 100% center;
+    }
+    to {
+        background-position: 0 center;
+    }
+}
+
+@keyframes shine-reverse {
+    from {
+        background-position: 0 center;
+    }
+    to {
+        background-position: 100% center;
+    }
+}

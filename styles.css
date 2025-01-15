@@ -274,12 +274,13 @@ nav a.active i {
 }
 
 .gradient-text:hover {
-    animation: shine 1s linear paused;
+    animation: shine 1s linear;
     animation-play-state: running;
 }
 
 .gradient-text:not(:hover) {
-    animation: shine-reverse 1s linear forwards;
+    animation: shine-reverse 1s linear;
+    animation-play-state: running;
 }
 
 @keyframes shine {
@@ -293,9 +294,118 @@ nav a.active i {
 
 @keyframes shine-reverse {
     from {
-        background-position: 0 center;
+        background-position: current;
     }
     to {
         background-position: 100% center;
     }
+}
+
+p {
+    transition: all ease-out .5s;
+    color: transparent;
+    text-shadow: 0 0 0px #FF385C;
+    font-size: 5rem;
+    padding: 0 1rem;
+    overflow: hidden;
+    display: block;
+    position: relative;
+    cursor: pointer;
+}
+
+p:before {
+    content: "";
+    width: 50%;
+    position: absolute;
+    border-bottom: solid 8px #fff;
+    left: -50%;
+    top: 50px;
+    transition: transform 0.5s cubic-bezier(1, -0.04, 0, 1.16);
+}
+
+p span {
+    display: block;
+    position: absolute;
+    height: 50%;
+    width: 100%;
+    overflow: hidden;
+}
+
+p span:first-child:before, 
+p span:last-child:before {
+    content: attr(data-text);
+    color: #fff;
+    display: block;
+    transition: ease-out all 0.3s -0.1s;
+}
+
+p span:first-child {
+    top: 0;
+}
+
+p span:last-child {
+    bottom: 0;
+}
+
+p span:first-child:before {
+    transform: translateY(41px);
+}
+
+p span:last-child:before {
+    transform: translateY(-95px);
+}
+
+p:hover {
+    transition: all ease-out 0s;
+    text-shadow: none;
+}
+
+p:hover:before {
+    transform: translateX(42rem);
+}
+
+p:hover span:first-child:before,
+p:hover span:last-child:before {
+    transition: ease-out all 0.3s;
+    transition-delay: .3s;
+}
+
+p:hover span:first-child:before {
+    transform: translateY(0);
+}
+
+p:hover span:last-child:before {
+    transform: translateY(-58px);
+}
+
+.cursor {
+    position: relative;
+    width: 11em;
+    margin: 0 auto;
+    border-right: 2px solid rgba(255,255,255,.75);
+    font-size: 5rem;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    transform: translateY(-50%);    
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    font-weight: 900;
+    letter-spacing: -2px;
+}
+
+.typewriter-animation {
+    animation: 
+        typewriter 1.5s steps(28) 1s 1 normal both, 
+        blinkingCursor 800ms steps(28) infinite normal;
+}
+
+@keyframes typewriter {
+    from { width: 0; }
+    to { width: 7em; }
+}
+
+@keyframes blinkingCursor {
+    from { border-right-color: rgba(255,255,255,.75); }
+    to { border-right-color: transparent; }
 }

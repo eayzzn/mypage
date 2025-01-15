@@ -3,50 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projects | eayzzn</title>
+    <title>Projekte | eayzzn</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
     <nav>
+        <button class="hamburger" aria-label="Menu">
+            <i class="fas fa-bars"></i>
+        </button>
         <ul>
             <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
             <li><a href="about.html"><i class="fas fa-user"></i> Über mich</a></li>
-            <li><a href="projects.html"><i class="fas fa-code"></i> Projekte</a></li>
+            <li><a href="projects.html" class="active"><i class="fas fa-code"></i> Projekte</a></li>
             <li><a href="contact.html"><i class="fas fa-envelope"></i> Kontakt</a></li>
         </ul>
     </nav>
 
-    <main class="projects-page">
-        <div class="content-wrapper">
-            <h1>Projekte</h1>
-            <div class="projects-grid">
-                <div class="project-card">
-                    <div class="project-content">
-                        <h2>Projekt 1</h2>
-                        <p>Beschreibung des Projekts</p>
-                        <div class="project-tags">
-                            <span>HTML</span>
-                            <span>CSS</span>
-                            <span>JavaScript</span>
-                        </div>
-                        <a href="#" class="project-link">Mehr erfahren →</a>
+    <div class="content-wrapper">
+        <h1>Meine Projekte</h1>
+        <div class="projects-grid">
+            <div class="project-card">
+                <div class="project-content">
+                    <h2>Portfolio Website</h2>
+                    <p>Eine moderne, responsive Portfolio-Website mit HTML, CSS und JavaScript.</p>
+                    <div class="project-tags">
+                        <span>HTML5</span>
+                        <span>CSS3</span>
+                        <span>JavaScript</span>
                     </div>
-                </div>
-
-                <div class="project-card">
-                    <div class="project-content">
-                        <h2>Projekt 2</h2>
-                        <p>Beschreibung des Projekts</p>
-                        <div class="project-tags">
-                            <span>React</span>
-                            <span>Node.js</span>
-                        </div>
-                        <a href="#" class="project-link">Mehr erfahren →</a>
-                    </div>
+                    <a href="#" class="project-link">Projekt ansehen <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
+            <!-- Weitere Projekte hier -->
         </div>
-    </main>
+    </div>
+
+    <script>
+        document.querySelector('.hamburger').addEventListener('click', function() {
+            document.querySelector('nav ul').classList.toggle('active');
+            const icon = this.querySelector('i');
+            if (icon.classList.contains('fa-bars')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+
+        // Close menu when clicking a link
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.querySelector('nav ul').classList.remove('active');
+                const icon = document.querySelector('.hamburger i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            });
+        });
+    </script>
 </body>
 </html> 

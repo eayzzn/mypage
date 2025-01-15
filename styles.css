@@ -10,22 +10,40 @@ body {
     color: white;
     font-family: Arial, sans-serif;
     min-height: 100vh;
+    overflow-x: hidden;
+    width: 100%;
+    position: relative;
 }
 
 /* Navigation */
 nav {
-    padding: 2rem;
+    padding: 1rem;
     position: fixed;
     width: 100%;
     top: 0;
     z-index: 1000;
+    background-color: rgba(26, 26, 26, 0.95);
+}
+
+.hamburger {
+    display: none;
+    cursor: pointer;
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    z-index: 1001;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
 }
 
 nav ul {
     list-style: none;
     display: flex;
     justify-content: center;
-    gap: 3rem;
+    gap: 2rem;
+    flex-wrap: wrap;
 }
 
 nav a {
@@ -36,6 +54,7 @@ nav a {
     display: flex;
     align-items: center;
     gap: 8px;
+    padding: 0.5rem;
 }
 
 nav a:hover {
@@ -402,10 +421,129 @@ p:hover span:last-child:before {
 
 @keyframes typewriter {
     from { width: 0; }
-    to { width: 7em; }
+    to { width: 6.5em; }
 }
 
 @keyframes blinkingCursor {
     from { border-right-color: rgba(255,255,255,.75); }
     to { border-right-color: transparent; }
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .hamburger {
+        display: block;
+    }
+
+    nav {
+        padding: 1rem;
+    }
+
+    nav ul {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background-color: rgba(26, 26, 26, 0.98);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    nav ul.active {
+        display: flex;
+    }
+
+    nav a {
+        font-size: 1.2rem;
+        padding: 1rem;
+    }
+
+    .hero-content {
+        padding: 0 1rem;
+        width: 100%;
+    }
+
+    .cursor {
+        font-size: 2.5rem;
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        transform: translateY(0);
+        margin: 0 auto 1rem;
+    }
+
+    .typewriter-animation {
+        animation: 
+            typewriterMobile 1.5s steps(28) 1s 1 normal both,
+            blinkingCursor 800ms steps(28) infinite normal;
+        width: 11em;
+    }
+
+    @keyframes typewriterMobile {
+        from { width: 0; }
+        to { width: 6em; }
+    }
+
+    .content-wrapper {
+        padding: 80px 1rem 1rem;
+        width: 100%;
+    }
+
+    .projects-grid {
+        grid-template-columns: 1fr;
+        padding: 0 1rem;
+    }
+
+    p {
+        font-size: 2.5rem;
+        padding: 0;
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    nav a {
+        font-size: 1.1rem;
+    }
+
+    .cursor {
+        font-size: 2rem;
+    }
+
+    .hero p {
+        font-size: 1rem;
+    }
+
+    .cta-button {
+        padding: 0.8rem 1.5rem;
+        font-size: 0.9rem;
+        width: auto;
+        max-width: 90%;
+    }
+
+    .skill-tags {
+        justify-content: center;
+        padding: 0 1rem;
+    }
+
+    .skill-tags span {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.8rem;
+    }
+
+    .project-card {
+        margin: 0 1rem;
+    }
+
+    p {
+        font-size: 2rem;
+    }
+
+    .typewriter-animation {
+        width: 11em;
+    }
 }

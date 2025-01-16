@@ -1,0 +1,61 @@
+/* Hero Section */
+.hero {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    padding: 0 20px;
+}
+
+.hero-content {
+    animation: fadeIn 1s ease-out;
+    width: 100%;
+    max-width: 100%;
+}
+
+.hero h1 {
+    font-size: 5rem;
+    margin-bottom: 1rem;
+    letter-spacing: -2px;
+}
+
+.hero p {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    color: #888;
+}
+
+/* Buttons */
+.cta-button {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background-color: #FF385C;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 56, 92, 0.3);
+}
+
+/* Typography */
+.subtitle {
+    font-size: clamp(1rem, 4vw, 1.5rem);
+    margin: 1rem auto;
+    color: #888;
+    width: 100%;
+    max-width: 90vw;
+}
+
+/* Responsive Components */
+@media screen and (max-width: 768px) {
+    .hero {
+        padding: 0 10px;
+    }
+} 

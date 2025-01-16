@@ -2,70 +2,12 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>eayzzn | Portfolio</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <meta http-equiv="refresh" content="0;url=src/pages/index.html">
+    <title>Redirecting...</title>
 </head>
 <body>
-    <nav>
-        <button class="hamburger" aria-label="Menu">
-            <i class="fas fa-bars"></i>
-        </button>
-        <ul>
-            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
-            <li><a href="about.html"><i class="fas fa-user"></i> Über mich</a></li>
-            <li><a href="projects.html"><i class="fas fa-code"></i> Projekte</a></li>
-            <li><a href="contact.html"><i class="fas fa-envelope"></i> Kontakt</a></li>
-        </ul>
-    </nav>
-
-    <main class="hero">
-        <div class="hero-content">
-            <div class="cursor typewriter-animation">Hi, I'm eayzzn.</div>
-            <p class="subtitle">Web Developer & Designer</p>
-            <a href="contact.html" class="cta-button">Kontaktiere mich</a>
-        </div>
-    </main>
-
     <script>
-        const hamburger = document.querySelector('.hamburger');
-        const nav = document.querySelector('nav ul');
-        const body = document.body;
-
-        function toggleMenu(show) {
-            hamburger.classList.toggle('active', show);
-            nav.classList.toggle('active', show);
-            body.classList.toggle('menu-open', show);
-            
-            const icon = hamburger.querySelector('i');
-            if (show) {
-                icon.classList.remove('fa-bars');
-                icon.classList.add('fa-times');
-            } else {
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
-            }
-        }
-
-        hamburger.addEventListener('click', function() {
-            const willShow = !nav.classList.contains('active');
-            toggleMenu(willShow);
-        });
-
-        // Close menu when clicking a link
-        document.querySelectorAll('nav a').forEach(link => {
-            link.addEventListener('click', () => {
-                toggleMenu(false);
-            });
-        });
-
-        // Close menu when pressing escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && nav.classList.contains('active')) {
-                toggleMenu(false);
-            }
-        });
+        window.location.href = "src/pages/index.html";
     </script>
 </body>
 </html>

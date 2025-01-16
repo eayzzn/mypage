@@ -1,0 +1,105 @@
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Typewriter Animation */
+.cursor {
+    position: relative;
+    width: min(11em, 90vw);
+    margin: 0 auto;
+    border-right: 2px solid rgba(255,255,255,.75);
+    font-size: clamp(2rem, 8vw, 5rem);
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    transform: translateY(-50%);    
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    font-weight: 900;
+    letter-spacing: -2px;
+}
+
+.typewriter-animation {
+    animation: 
+        typewriter 1.5s steps(28) 1s 1 normal both, 
+        blinkingCursor 800ms steps(28) infinite normal;
+}
+
+@keyframes typewriter {
+    from { width: 0; }
+    to { width: 6.5em; }
+}
+
+@keyframes blinkingCursor {
+    from { border-right-color: rgba(255,255,255,.75); }
+    to { border-right-color: transparent; }
+}
+
+/* Gradient Text Animation */
+.gradient-text {
+    background: linear-gradient(
+        to right,
+        #FF385C 50%,
+        #ffffff 50%
+    );
+    background-position: 100% center;
+    background-size: 200% auto;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+.gradient-text:hover {
+    animation: shine 1s linear;
+    animation-play-state: running;
+}
+
+.gradient-text:not(:hover) {
+    animation: shine-reverse 1s linear;
+    animation-play-state: running;
+}
+
+@keyframes shine {
+    from { background-position: 100% center; }
+    to { background-position: 0 center; }
+}
+
+@keyframes shine-reverse {
+    from { background-position: current; }
+    to { background-position: 100% center; }
+}
+
+/* Mobile Animations */
+@media screen and (max-width: 768px) {
+    .cursor {
+        transform: translateY(0);
+        margin-bottom: 1rem;
+        width: min(11em, 95vw);
+    }
+
+    .typewriter-animation {
+        animation: 
+            typewriterMobile 1.5s steps(28) 1s 1 normal both,
+            blinkingCursor 800ms steps(28) infinite normal;
+    }
+
+    @keyframes typewriterMobile {
+        from { width: 0; }
+        to { width: 6em; }
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .cursor {
+        font-size: clamp(1.8rem, 6vw, 2.5rem);
+        width: min(11em, 95vw);
+    }
+} 

@@ -46,6 +46,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function endProgrammaticScroll() {
     isProgrammaticScroll = false;
+    // Reconcile with the real, final scroll position now that live scroll
+    // handling is unblocked again (safety net for the destination-based
+    // compact state applied during the jump).
+    syncNavbarCompact();
   }
 
   function beginProgrammaticScroll() {
@@ -125,6 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
       target?.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth' });
       setActiveLink(targetId);
       syncStopIndex(target);
+      setNavbarCompactForTarget(targetId);
       closeMenu();
       // Drop focus so :focus-within no longer pins the navbar open — it will
       // collapse again on the next scroll (mouse users). Keyboard users keep
@@ -144,6 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
       target.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth' });
       setActiveLink(href.slice(1));
       syncStopIndex(target);
+      setNavbarCompactForTarget(href.slice(1));
     });
   });
 
@@ -156,19 +162,37 @@ document.addEventListener('DOMContentLoaded', () => {
     if (current) moveIndicatorTo(current, { instant });
   }
 
+  // Measure each label's natural width once so the collapse/expand animates
+  // max-width to the EXACT content width (no overshoot → smooth, not clunky).
+  const navLabels = document.querySelectorAll('.nav-label');
+  function measureNavLabels() {
+    navLabels.forEach(label => {
+      const text = label.querySelector('.nav-label-text');
+      if (!text) return;
+      // scrollWidth is the text's natural width even while the label is
+      // collapsed (max-width:0), so this is correct in any navbar state.
+      label.style.setProperty('--label-w', `${text.scrollWidth + 1}px`);
+    });
+  }
+  measureNavLabels();
+  document.fonts?.ready.then(measureNavLabels);
+
   /* ------------------------------------------------------------
-     Keep the pill locked to the active link while the navbar
-     resizes (compact <-> expanded, via scroll / hover / focus).
-     During that ~0.45s the active link's width AND position are
-     both animating, so instead of hiding the pill (which flashed
-     and drifted with fragile transition-event coordination) we
-     disable its own slide transition and re-read the live layout
-     geometry every frame for the duration of the resize, then hand
-     control back to CSS. This tracks perfectly with no event races.
+     Keep the pill locked to the active link WHILE the navbar
+     resizes (compact <-> expanded). The resize animates each link's
+     size, so the active link's width/position is a moving target for
+     ~0.45s. Rather than a fixed-duration timer (which raced with the
+     real transition and could leave the pill snapped to a stale value
+     outside the bar), tracking is bound directly to the ACTUAL CSS
+     transitions: begin on `transitionrun`, follow the live geometry
+     every frame with the pill's slide transition disabled, and end
+     once the transition finishes. The geometry is always read from the
+     active link's own offsetLeft/offsetWidth, so the pill can never
+     land outside the navbar.
      ------------------------------------------------------------ */
-  const RESIZE_DURATION = 560;
-  let trackRaf = null;
-  let trackDeadline = 0;
+  let isResizing = false;
+  let resizeRaf = null;
+  let endResizeQueued = null;
 
   function trackActiveGeometry() {
     const link = document.querySelector('.nav-link.active');
@@ -177,51 +201,107 @@ document.addEventListener('DOMContentLoaded', () => {
     navIndicator.style.transform = `translateX(${link.offsetLeft}px)`;
   }
 
-  function startIndicatorTracking(duration = RESIZE_DURATION) {
-    if (!navIndicator) return;
-    trackDeadline = performance.now() + duration;
-    if (trackRaf !== null) return;
-    // Follow the live geometry exactly — no easing while the box moves.
-    navIndicator.style.transition = 'none';
-    const step = (now) => {
-      trackActiveGeometry();
-      if (now < trackDeadline) {
-        trackRaf = requestAnimationFrame(step);
-        return;
-      }
-      trackRaf = null;
-      trackActiveGeometry();
-      // Force a reflow so re-enabling the transition doesn't animate
-      // from a stale value on the next active-link change.
-      navIndicator.getBoundingClientRect();
-      requestAnimationFrame(() => { navIndicator.style.transition = ''; });
-    };
-    trackRaf = requestAnimationFrame(step);
+  function resizeStep() {
+    trackActiveGeometry();
+    if (isResizing) resizeRaf = requestAnimationFrame(resizeStep);
   }
 
-  // Hover / keyboard-focus expand the compact navbar; track through it.
-  ['mouseenter', 'mouseleave', 'focusin', 'focusout'].forEach(evt => {
-    navbar?.addEventListener(evt, () => startIndicatorTracking());
+  function beginResizeTracking() {
+    if (endResizeQueued) { cancelAnimationFrame(endResizeQueued); endResizeQueued = null; }
+    if (isResizing || !navIndicator) return;
+    isResizing = true;
+    navIndicator.style.transition = 'none';
+    resizeRaf = requestAnimationFrame(resizeStep);
+  }
+
+  function endResizeTracking() {
+    isResizing = false;
+    if (resizeRaf) { cancelAnimationFrame(resizeRaf); resizeRaf = null; }
+    trackActiveGeometry();
+    if (navIndicator) {
+      // Reflow so re-enabling the slide transition won't animate from a
+      // stale value on the next active-link change.
+      navIndicator.getBoundingClientRect();
+      requestAnimationFrame(() => { navIndicator.style.transition = ''; });
+    }
+  }
+
+  // Only size-affecting transitions matter: padding (navbar + links) and the
+  // label's grid column. Events bubble up from the links to the navbar.
+  function isNavSizeTransition(e) {
+    return e.propertyName.startsWith('padding') || e.propertyName === 'grid-template-columns';
+  }
+
+  navbar?.addEventListener('transitionrun', (e) => {
+    if (isNavSizeTransition(e)) beginResizeTracking();
   });
+
+  ['transitionend', 'transitioncancel'].forEach(evt => {
+    navbar?.addEventListener(evt, (e) => {
+      if (!isNavSizeTransition(e)) return;
+      // Many longhand events fire together at the end — coalesce to a single
+      // end on the next frame. A fresh transitionrun cancels this and keeps
+      // tracking (covers hover-in/out interruptions without any flicker).
+      if (endResizeQueued) cancelAnimationFrame(endResizeQueued);
+      endResizeQueued = requestAnimationFrame(() => {
+        endResizeQueued = null;
+        endResizeTracking();
+      });
+    });
+  });
+
+  // Reduced motion disables transitions, so no transition events fire and the
+  // tracker above stays inert — reposition the pill directly instead.
+  if (prefersReducedMotion) {
+    const rmRefresh = () => requestAnimationFrame(() => refreshNavIndicator({ instant: true }));
+    ['mouseenter', 'mouseleave', 'focusin', 'focusout'].forEach(evt =>
+      navbar?.addEventListener(evt, rmRefresh));
+  }
 
   /* Compact navbar once you leave the hero — icons only until hover */
   const scrollIndicator = document.querySelector('.scroll-indicator');
-  function syncNavbarCompact() {
+
+  function applyNavbarCompact(shouldCompact, narrow) {
     if (!navbar) return;
-    const narrow = window.matchMedia('(max-width: 768px)').matches;
-    const shouldCompact = !narrow && (window.scrollY > 48 || document.querySelector('#home')?.getBoundingClientRect().bottom < window.innerHeight * 0.55);
     const was = navbar.classList.contains('is-compact');
     navbar.classList.toggle('is-compact', shouldCompact);
     // Hide the "scroll down" hint the moment we leave the hero so it never
     // overlaps content further down the page.
     scrollIndicator?.classList.toggle('is-hidden', shouldCompact || narrow);
-    // The compact toggle animates every link's size — track the pill through it.
-    if (was !== shouldCompact) startIndicatorTracking();
+    // Reduced motion: no transition to track, so realign the pill directly.
+    if (was !== shouldCompact && prefersReducedMotion) {
+      requestAnimationFrame(() => refreshNavIndicator({ instant: true }));
+    }
   }
 
-  window.addEventListener('scroll', syncNavbarCompact, { passive: true });
+  function syncNavbarCompact() {
+    if (!navbar) return;
+    const narrow = window.matchMedia('(max-width: 768px)').matches;
+    const shouldCompact = !narrow && (window.scrollY > 48 || document.querySelector('#home')?.getBoundingClientRect().bottom < window.innerHeight * 0.55);
+    applyNavbarCompact(shouldCompact, narrow);
+  }
+
+  // Used the instant we KNOW the destination of a programmatic jump (nav
+  // click, hero CTA, back-to-top), instead of the current scroll position.
+  // Without this, the compact state briefly reflects the position mid-flight
+  // (e.g. still "scrolled down" a moment after clicking Home) — losing
+  // :hover right after the click then shrinks the navbar for a split
+  // second before it expands again once the scroll lands on Home.
+  function setNavbarCompactForTarget(targetId) {
+    const narrow = window.matchMedia('(max-width: 768px)').matches;
+    applyNavbarCompact(!narrow && targetId !== 'home', narrow);
+  }
+
+  window.addEventListener('scroll', () => {
+    // While a click/back-to-top jump is animating, the destination is
+    // already applied via setNavbarCompactForTarget — live positions during
+    // the flight are stale, not more accurate, so ignore them here.
+    if (isProgrammaticScroll) return;
+    syncNavbarCompact();
+  }, { passive: true });
   window.addEventListener('resize', () => {
     syncNavbarCompact();
+    measureNavLabels();
     refreshNavIndicator({ instant: true });
   });
 
@@ -293,6 +373,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.addEventListener('languagechange', () => {
     document.querySelectorAll('[data-word-reveal]').forEach(initWordReveal);
+    measureNavLabels();
     refreshNavIndicator();
   });
 
@@ -339,8 +420,16 @@ document.addEventListener('DOMContentLoaded', () => {
     currentStopIndex = index;
     backToTopBtn?.classList.toggle('visible', currentStopIndex > 0);
     stops[index].scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth' });
-    setActiveLink(stops[index].getAttribute('id'));
-    syncNavbarCompact();
+    const targetId = stops[index].getAttribute('id');
+    setActiveLink(targetId);
+    // Long jumps gate live scroll handling (see beginProgrammaticScroll), so
+    // set the destination's compact state directly instead of the stale
+    // current position; short hops keep reading the live position as before.
+    if (isLongJump) {
+      setNavbarCompactForTarget(targetId);
+    } else {
+      syncNavbarCompact();
+    }
   }
 
   if (!isTouchDevice && !prefersReducedMotion) {

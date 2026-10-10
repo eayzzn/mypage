@@ -175,6 +175,10 @@
   }
 
   window.Glitch = {
+    // Raw pixel data for custom scenes (e.g. the 404 page)
+    colors: COLORS,
+    paths: { body: bodyPaths, sleep: sleepPaths, silhouette },
+    layer,
     init() {
       render();
       initBehaviour();

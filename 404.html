@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="color-scheme" content="dark light">
+<meta name="robots" content="noindex">
+<script>
+  (function () {
+    var stored = null, langStored = null;
+    try { stored = localStorage.getItem('theme'); langStored = localStorage.getItem('lang'); } catch (e) {}
+    var theme = stored || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+    document.documentElement.setAttribute('data-theme', theme);
+    var browserLang = (navigator.language || 'de').split('-')[0].toLowerCase();
+    var lang = langStored || (browserLang === 'en' ? 'en' : 'de');
+    document.documentElement.setAttribute('lang', lang);
+  })();
+</script>
+<meta name="theme-color" content="#141413" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FAF9F5" media="(prefers-color-scheme: light)">
+<title>404 — eayzzn</title>
+<!-- Root-absolute paths: hosts serve this file for any missing URL, at any depth -->
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/src/assets/fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/src/styles/styles.css?v=21">
+<style>
+  .nf {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    padding-block: 96px 48px;
+    text-align: center;
+  }
+
+  .nf-brand {
+    position: absolute;
+    top: 24px;
+    left: var(--gutter);
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .nf-scene { width: min(520px, 100%); }
+  .nf-scene svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+  .nf-fallback {
+    font-family: var(--serif);
+    font-size: clamp(96px, 20vw, 180px);
+    line-height: 1;
+  }
+
+  .nf-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(32px, 5vw, 48px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .nf-term {
+    width: min(520px, 100%);
+    padding: 16px 18px;
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.8;
+    text-align: left;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    color: var(--text-2);
+  }
+
+  .nf-prompt { color: var(--accent-text); }
+  .nf-error { color: var(--text); }
+  .nf-term .intro-cursor { color: var(--accent); }
+
+  /* ---- Scene: "4 [Glitch] 4" ---- */
+  .nf-digit { fill: var(--text); }
+  .nf-digit-split { fill: var(--accent); opacity: 0; }
+  .nf-split-a { fill: #FAF9F5; opacity: 0; }
+  .nf-split-b { fill: #A9583D; opacity: 0; }
+  html[data-theme="light"] .nf-split-a { fill: #6FA8D9; }
+  .nf-q { fill: var(--accent); opacity: 0; }
+
+  .nf-glitch,
+  .nf-eyes,
+  .nf-q,
+  .nf-digit,
+  .nf-digit-split,
+  .nf-split-a,
+  .nf-split-b {
+    transform-box: fill-box;
+    animation-duration: 6s;
+    animation-iteration-count: infinite;
+    animation-timing-function: steps(1, end);
+  }
+
+  .nf-glitch { transform-origin: 50% 100%; animation-name: nf-body; }
+  .nf-eyes { animation-name: nf-look; }
+  .nf-q { animation-name: nf-q; }
+  .nf-digit { animation-name: nf-digit; }
+  .nf-digit-split { animation-name: nf-digit-split; }
+  .nf-split-a { animation-name: nf-split-a; }
+  .nf-split-b { animation-name: nf-split-b; }
+
+  /* wobble → look around → hop at the "?" → glitch burst → wobble */
+  @keyframes nf-body {
+    0%   { transform: scale(1, 1); }
+    5%   { transform: scale(1.07, 0.93); }
+    10%  { transform: scale(1, 1); }
+    15%  { transform: scale(0.95, 1.06); }
+    20%  { transform: scale(1, 1); }
+    25%  { transform: scale(1.07, 0.93); }
+    30%  { transform: scale(1, 1); }
+    36%  { transform: translateY(-1px); }
+    40%  { transform: translateY(0); }
+    55%  { transform: translateX(1px); }
+    57%  { transform: translateX(-1px); }
+    59%  { transform: translateX(1px); }
+    61%  { transform: translateX(0); }
+    70%  { transform: scale(1.07, 0.93); }
+    75%  { transform: scale(1, 1); }
+    85%  { transform: scale(0.95, 1.06); }
+    90%  { transform: scale(1, 1); }
+    100% { transform: scale(1, 1); }
+  }
+
+  @keyframes nf-look {
+    0%   { transform: translate(0, 0); }
+    8%   { transform: translate(-1px, 0); }
+    18%  { transform: translate(1px, 0); }
+    28%  { transform: translate(0, 0); }
+    36%  { transform: translate(0, -1px); }
+    54%  { transform: translate(0, 0); }
+    100% { transform: translate(0, 0); }
+  }
+
+  @keyframes nf-q {
+    0%   { opacity: 0; transform: translateY(1px); }
+    36%  { opacity: 1; transform: translateY(0); }
+    38%  { opacity: 1; transform: translateY(-1px); }
+    40%  { opacity: 1; transform: translateY(0); }
+    54%  { opacity: 0; }
+    100% { opacity: 0; }
+  }
+
+  @keyframes nf-digit {
+    0%   { transform: translateX(0); }
+    55%  { transform: translateX(-1px); }
+    58%  { transform: translateX(1px); }
+    61%  { transform: translateX(0); }
+    100% { transform: translateX(0); }
+  }
+
+  @keyframes nf-digit-split {
+    0%   { opacity: 0; }
+    55%  { opacity: 0.8; transform: translateX(1px); }
+    58%  { opacity: 0.8; transform: translateX(-1px); }
+    61%  { opacity: 0; transform: translateX(0); }
+    100% { opacity: 0; }
+  }
+
+  @keyframes nf-split-a {
+    0%   { opacity: 0; }
+    55%  { opacity: 0.85; transform: translateX(-2px); }
+    57%  { opacity: 0.85; transform: translateX(1px); }
+    59%  { opacity: 0.85; transform: translateX(-1px); }
+    61%  { opacity: 0; transform: translateX(0); }
+    100% { opacity: 0; }
+  }
+
+  @keyframes nf-split-b {
+    0%   { opacity: 0; }
+    55%  { opacity: 0.85; transform: translateX(2px); }
+    57%  { opacity: 0.85; transform: translateX(-1px); }
+    59%  { opacity: 0.85; transform: translateX(1px); }
+    61%  { opacity: 0; transform: translateX(0); }
+    100% { opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nf-scene * { animation: none !important; }
+    .nf-q { opacity: 1; }
+  }
+</style>
+</head>
+<body>
+
+<main class="container nf">
+  <a href="/" class="nf-brand">eayzzn</a>
+
+  <div class="nf-scene" data-nf-scene role="img" aria-label="404">
+    <p class="nf-fallback" aria-hidden="true">404</p>
+  </div>
+
+  <h1 class="nf-title" data-nf="title">Seite nicht gefunden</h1>
+
+  <p class="nf-term"><span class="nf-prompt">$</span> open <span data-nf-path>/</span>
+<span class="nf-error" data-nf="error">error 404: diese seite gibt es nicht</span><span class="intro-cursor" aria-hidden="true">_</span></p>
+
+  <a href="/" class="btn-primary" data-nf="back">← zur startseite</a>
+</main>
+
+<script src="/src/scripts/mascot.js?v=21"></script>
+<script>
+  (function () {
+    var text = {
+      de: {
+        title: 'Seite nicht gefunden',
+        error: 'error 404: diese seite gibt es nicht',
+        back: '← zur startseite',
+        scene: '404 – Glitch sucht die Seite',
+      },
+      en: {
+        title: 'Page not found',
+        error: 'error 404: this page doesn’t exist',
+        back: '← back home',
+        scene: '404 – Glitch is looking for the page',
+      },
+    };
+    var lang = document.documentElement.lang === 'en' ? 'en' : 'de';
+    var t = text[lang];
+
+    document.querySelectorAll('[data-nf]').forEach(function (el) {
+      el.textContent = t[el.dataset.nf];
+    });
+
+    var path = decodeURIComponent(location.pathname);
+    if (path.length > 60) path = path.slice(0, 57) + '…';
+    document.querySelector('[data-nf-path]').textContent = path;
+
+    var scene = document.querySelector('[data-nf-scene]');
+    scene.setAttribute('aria-label', t.scene);
+
+    var G = window.Glitch;
+    if (!G || !G.paths) return;
+
+    // 5×7 pixel "4", drawn at 2× so it matches Glitch's height
+    var FOUR = ['...X.', '..XX.', '.X.X.', 'X..X.', 'XXXXX', '...X.', '...X.'];
+    function digit(ox, oy) {
+      var d = '';
+      FOUR.forEach(function (row, y) {
+        for (var x = 0; x < row.length; x++) {
+          if (row[x] === 'X') d += 'M' + (ox + x * 2) + ' ' + (oy + y * 2) + 'h2v2h-2z';
+        }
+      });
+      return d;
+    }
+    function px(x, y, w, h) {
+      return '<rect x="' + x + '" y="' + y + '" width="' + (w || 1) + '" height="' + (h || 1) + '"/>';
+    }
+
+    var digits = digit(0, 1) + digit(32, 1);
+    var K = G.colors.K;
+
+    scene.innerHTML =
+      '<svg viewBox="0 -6 42 22" shape-rendering="crispEdges" aria-hidden="true" focusable="false">' +
+        '<path class="nf-digit-split" d="' + digits + '"/>' +
+        '<path class="nf-digit" d="' + digits + '"/>' +
+        '<g transform="translate(13 0)">' +
+          '<path class="nf-split-a" d="' + G.paths.silhouette + '"/>' +
+          '<path class="nf-split-b" d="' + G.paths.silhouette + '"/>' +
+          '<g class="nf-glitch">' +
+            G.layer(G.paths.body) +
+            '<g class="nf-eyes" fill="' + K + '">' + px(4, 7, 2, 2) + px(10, 7, 2, 2) + '</g>' +
+            '<g fill="' + K + '">' + px(6, 10) + px(7, 9, 2) + px(9, 10) + '</g>' +
+          '</g>' +
+        '</g>' +
+        '<g class="nf-q">' + px(20, -5, 3) + px(22, -4) + px(21, -3, 2) + px(21, -1) + '</g>' +
+      '</svg>';
+  })();
+</script>
+</body>
+</html>

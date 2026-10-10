@@ -16,6 +16,7 @@ const translations = {
       themeToggle: 'Farbmodus wechseln',
       glitch: 'Glitch, das Maskottchen von eayzzn — klick mich',
       filter: 'Projekte filtern',
+      glitchContact: 'Glitch hüpft mit einem Brief',
     },
     nav: {
       projects: 'projekte',
@@ -70,6 +71,7 @@ const translations = {
       themeToggle: 'Toggle color mode',
       glitch: 'Glitch, eayzzn’s mascot — click me',
       filter: 'Filter projects',
+      glitchContact: 'Glitch hopping with a letter',
     },
     nav: {
       projects: 'projects',

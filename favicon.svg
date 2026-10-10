@@ -1,10 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <defs>
-    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#8a5cff"/>
-      <stop offset="100%" stop-color="#38d9ff"/>
-    </linearGradient>
-  </defs>
-  <rect width="64" height="64" rx="15" fill="#05060a"/>
-  <text x="32" y="44" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif" font-size="42" font-weight="700" letter-spacing="-2" fill="url(#g)">e</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" shape-rendering="crispEdges">
+  <path fill="#A9583D" d="M0 12h1v1h-1zM15 12h1v1h-1zM0 13h2v1h-2zM3 13h2v1h-2zM10 13h2v1h-2zM14 13h2v1h-2zM1 14h1v1h-1zM4 14h1v1h-1zM11 14h1v1h-1z"/>
+  <path fill="#D97757" d="M6 2h4v1h-4zM4 3h8v1h-8zM3 4h2v1h-2zM7 4h6v1h-6zM2 5h2v1h-2zM5 5h9v1h-9zM2 6h12v1h-12zM1 7h3v1h-3zM6 7h4v1h-4zM12 7h3v1h-3zM1 8h3v1h-3zM6 8h4v1h-4zM12 8h3v1h-3zM1 9h6v1h-6zM9 9h6v1h-6zM0 10h16v1h-16zM0 11h16v1h-16zM1 12h14v1h-14zM2 13h1v1h-1zM5 13h5v1h-5zM12 13h2v1h-2z"/>
+  <path fill="#F0B49A" d="M5 4h2v1h-2zM4 5h1v1h-1z"/>
+  <path fill="#141413" d="M4 7h2v1h-2zM10 7h2v1h-2zM4 8h2v1h-2zM10 8h2v1h-2zM7 9h2v1h-2z"/>
 </svg>

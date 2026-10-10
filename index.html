@@ -15,282 +15,180 @@
     document.documentElement.setAttribute('lang', lang);
   })();
 </script>
-<meta name="theme-color" content="#05060a" media="(prefers-color-scheme: dark)">
-<meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: light)">
-<meta name="description" content="eayzzn — Web Development, iOS Apps &amp; UI/UX Design. Digitale Erlebnisse mit Fokus auf Klarheit, Bewegung und Präzision.">
+<meta name="theme-color" content="#141413" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FAF9F5" media="(prefers-color-scheme: light)">
+<meta name="description" content="eayzzn — Web &amp; iOS Developer, UI/UX Designer. Projekte und Code.">
 <meta property="og:title" content="eayzzn — Portfolio">
-<meta property="og:description" content="Digitale Erlebnisse mit Fokus auf Klarheit, Bewegung und Präzision.">
+<meta property="og:description" content="Web &amp; iOS Developer, UI/UX Designer. Projekte und Code.">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
-<title>eayzzn | Portfolio</title>
+<title>eayzzn — Portfolio</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="src/styles/styles.css?v=11">
+<link rel="preload" href="src/assets/fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="src/assets/fonts/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="src/styles/styles.css?v=21">
 </head>
 <body>
 
-<!-- Icon sprite — kept out of layout without display:none, since some
-     browsers won't resolve url(#id) paint-server references from within
-     a display:none subtree. -->
-<svg style="position:absolute; width:0; height:0; overflow:hidden" aria-hidden="true" focusable="false">
-  <symbol id="icon-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M4 10.6 12 4l8 6.6"/>
-    <path d="M6.4 9.3V19a1 1 0 0 0 1 1h9.2a1 1 0 0 0 1-1V9.3"/>
-    <path d="M10 20v-4.4a2 2 0 0 1 4 0V20"/>
-  </symbol>
-  <symbol id="icon-quote" viewBox="0 0 24 24" fill="currentColor" stroke="none">
-    <path d="M9.4 6.5C6.6 7.7 4.9 10.2 4.9 13.2c0 2.4 1.6 4.1 3.7 4.1 1.9 0 3.2-1.4 3.2-3.1 0-1.7-1.2-2.9-2.8-2.9-.3 0-.6 0-.8.1.3-1.3 1.4-2.4 3-3.1L9.4 6.5Z"/>
-    <path d="M18.6 6.5c-2.8 1.2-4.5 3.7-4.5 6.7 0 2.4 1.6 4.1 3.7 4.1 1.9 0 3.2-1.4 3.2-3.1 0-1.7-1.2-2.9-2.8-2.9-.3 0-.6 0-.8.1.3-1.3 1.4-2.4 3-3.1L18.6 6.5Z"/>
-  </symbol>
-  <symbol id="icon-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="m12 3.5 8 4.2-8 4.2-8-4.2 8-4.2Z"/>
-    <path d="m4 12.2 8 4.2 8-4.2"/>
-    <path d="m4 16.5 8 4.2 8-4.2"/>
-  </symbol>
-  <symbol id="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="12" cy="12" r="4.2"/>
-    <path d="M12 2.5v3M12 18.5v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2.5 12h3M18.5 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>
-  </symbol>
-  <symbol id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z"/>
-  </symbol>
-  <symbol id="icon-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="3" y="5" width="18" height="14" rx="3"/>
-    <path d="M4 7l7.4 5.5a1.4 1.4 0 0 0 1.7 0L20.5 7"/>
-  </symbol>
-  <symbol id="icon-github" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M12 2.2a9.8 9.8 0 0 0-3.1 19.1c.5.1.7-.2.7-.5v-1.8c-2.7.6-3.3-1.2-3.3-1.2-.4-1-1-1.3-1-1.3-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.3 1.1 2.9.8.1-.7.4-1.1.6-1.4-2.2-.3-4.5-1.1-4.5-4.9 0-1.1.4-2 1-2.7-.1-.3-.5-1.3.1-2.6 0 0 .8-.3 2.7 1a9.4 9.4 0 0 1 4.9 0c1.9-1.3 2.7-1 2.7-1 .6 1.3.2 2.3.1 2.6.6.7 1 1.6 1 2.7 0 3.8-2.3 4.6-4.5 4.9.4.3.7 1 .7 2v2.9c0 .3.2.6.7.5A9.8 9.8 0 0 0 12 2.2Z"/>
-  </symbol>
-  <symbol id="icon-linkedin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="3" y="3" width="18" height="18" rx="4"/>
-    <path d="M7.5 10v6.5M7.5 7.2v.1M12 16.5V13c0-1.4.9-2.5 2.2-2.5S16.5 11.6 16.5 13v3.5M12 10v6.5"/>
-  </symbol>
-  <symbol id="icon-cpu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="6" y="6" width="12" height="12" rx="2.5"/>
-    <path d="M9.5 9.5h5v5h-5v-5ZM12 2v3M12 19v3M2 12h3M19 12h3M5 5l1.8 1.8M17.2 17.2 19 19M19 5l-1.8 1.8M5 19l1.8-1.8"/>
-  </symbol>
-  <symbol id="icon-palette" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M12 3a9 8.5 0 1 0 0 17c1.4 0 2-.7 2-1.6 0-.5-.2-.9-.5-1.3-.3-.3-.5-.7-.5-1.1 0-.9.7-1.6 1.6-1.6H16c2.2 0 4-1.7 4-4.4C20 6 16.4 3 12 3Z"/>
-    <circle cx="7.5" cy="11" r="1"/><circle cx="9.5" cy="7.3" r="1"/><circle cx="14.5" cy="7.3" r="1"/><circle cx="16.5" cy="11" r="1"/>
-  </symbol>
-  <symbol id="icon-zap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"/>
-  </symbol>
-  <symbol id="icon-sparkle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M12 3l1.6 5.4L19 10l-5.4 1.6L12 17l-1.6-5.4L5 10l5.4-1.6L12 3Z"/>
-    <path d="M19 16l.7 2.3L22 19l-2.3.7-.7 2.3-.7-2.3L16 19l2.3-.7.7-2.3Z"/>
-  </symbol>
-  <symbol id="icon-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="12" cy="12" r="9"/>
-    <path d="M3 12h18M12 3c2.5 2.5 3.8 5.7 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.7-3.8-9s1.3-6.5 3.8-9Z"/>
-  </symbol>
-  <symbol id="icon-mobile" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="6.5" y="2.5" width="11" height="19" rx="2.8"/>
-    <path d="M10.5 18.5h3"/>
-  </symbol>
-  <symbol id="icon-dots" viewBox="0 0 24 24" fill="currentColor" stroke="none">
-    <circle cx="6" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18" cy="12" r="1.6"/>
-  </symbol>
-  <symbol id="icon-chevron-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M5 15l7-7 7 7"/>
-  </symbol>
-</svg>
+<header class="site-header" data-header>
+  <div class="container site-header-inner">
+    <a href="#top" class="brand" data-i18n-aria="aria.toTop">
+      <span class="glitch glitch--mini" data-glitch="mini" data-glitch-auto data-state="idle"></span>
+      <span>eayzzn</span>
+    </a>
 
-<!-- Ambient background -->
-<div class="aurora" aria-hidden="true"></div>
+    <nav class="site-nav" data-i18n-aria="aria.nav">
+      <a href="#projects" class="site-nav-link" data-nav-link data-i18n="nav.projects">projekte</a>
+      <a href="#skills" class="site-nav-link" data-nav-link data-i18n="nav.skills">skills</a>
+      <a href="#contact" class="site-nav-link" data-nav-link data-i18n="nav.contact">kontakt</a>
+    </nav>
 
-<nav class="navbar glass" data-navbar>
-  <ul class="nav-links" data-nav-links>
-    <li class="nav-indicator" data-nav-indicator aria-hidden="true"></li>
-    <li>
-      <a href="#home" class="nav-link active" data-i18n-aria="aria.navHome">
-        <svg class="icon nav-icon" aria-hidden="true"><use href="#icon-home"></use></svg>
-        <span class="nav-label"><span class="nav-label-text" data-i18n="nav.home">Start</span></span>
-      </a>
-    </li>
-    <li>
-      <a href="#philosophy" class="nav-link" data-i18n-aria="aria.navPhilosophy">
-        <svg class="icon nav-icon" aria-hidden="true"><use href="#icon-quote"></use></svg>
-        <span class="nav-label"><span class="nav-label-text" data-i18n="nav.philosophy">Philosophie</span></span>
-      </a>
-    </li>
-    <li>
-      <a href="#skills" class="nav-link" data-i18n-aria="aria.navSkills">
-        <svg class="icon nav-icon" aria-hidden="true"><use href="#icon-zap"></use></svg>
-        <span class="nav-label"><span class="nav-label-text" data-i18n="nav.skills">Skills</span></span>
-      </a>
-    </li>
-    <li>
-      <a href="#projects" class="nav-link" data-i18n-aria="aria.navProjects">
-        <svg class="icon nav-icon" aria-hidden="true"><use href="#icon-layers"></use></svg>
-        <span class="nav-label"><span class="nav-label-text" data-i18n="nav.projects">Projekte</span></span>
-      </a>
-    </li>
-    <li>
-      <a href="#contact" class="nav-link" data-i18n-aria="aria.navContact">
-        <svg class="icon nav-icon" aria-hidden="true"><use href="#icon-mail"></use></svg>
-        <span class="nav-label"><span class="nav-label-text" data-i18n="nav.contact">Kontakt</span></span>
-      </a>
-    </li>
-  </ul>
-  <div class="nav-actions">
-    <button class="hamburger" data-hamburger data-i18n-aria="aria.menuOpen">
-      <span></span><span></span>
-    </button>
+    <div class="site-controls">
+      <div class="lang-switch" role="group" data-i18n-aria="aria.langToggle">
+        <button type="button" class="lang-btn" data-lang="de" aria-pressed="true">de</button>
+        <span class="lang-sep" aria-hidden="true">/</span>
+        <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">en</button>
+      </div>
+      <button type="button" class="theme-btn" data-theme-toggle data-i18n-aria="aria.themeToggle">[◐]</button>
+    </div>
   </div>
-</nav>
+</header>
 
-<aside class="site-controls glass" data-site-controls>
-  <button class="theme-toggle" data-theme-toggle type="button" data-i18n-aria="aria.themeToggle">
-    <svg class="icon icon-sun"><use href="#icon-sun"></use></svg>
-    <svg class="icon icon-moon"><use href="#icon-moon"></use></svg>
-  </button>
-  <span class="site-controls-divider" aria-hidden="true"></span>
-  <div class="lang-control" data-lang-control data-i18n-aria="aria.langToggle">
-    <span class="lang-control-indicator" data-lang-indicator aria-hidden="true"></span>
-    <button type="button" class="lang-control-btn" data-lang="de" aria-pressed="true">DE</button>
-    <button type="button" class="lang-control-btn" data-lang="en" aria-pressed="false">EN</button>
-  </div>
-</aside>
+<main id="top" class="container">
 
-<main>
-
-  <!-- Hero -->
-  <section id="home" class="snap-section hero">
-    <div class="hero-content">
-      <p class="eyebrow reveal" data-i18n="hero.eyebrow">Web &amp; iOS Developer · UI/UX Designer</p>
-      <h1 class="hero-brand reveal">eayzzn</h1>
-      <p class="hero-headline reveal" data-i18n-html="hero.headline">Digitale Erlebnisse,<br>die sich richtig anfühlen.</p>
-      <p class="hero-subtitle reveal" data-i18n="hero.subtitle">Ich entwickle und gestalte Websites, Apps und Interfaces — mit Fokus auf Klarheit, Bewegung und Präzision im Detail.</p>
-      <div class="hero-actions reveal">
-        <a href="#projects" class="btn btn-primary" data-i18n="hero.ctaProjects">Projekte entdecken</a>
-        <a href="#contact" class="btn btn-secondary glass" data-i18n="hero.ctaContact">Kontakt aufnehmen</a>
+  <!-- Intro -->
+  <section class="intro">
+    <div class="intro-text">
+      <h1 class="intro-name">eayzzn<span class="intro-cursor" aria-hidden="true">_</span></h1>
+      <p class="intro-role" data-i18n="intro.role">Web &amp; iOS Developer · UI/UX Designer</p>
+      <div class="intro-links">
+        <a href="https://github.com/eayzzn" target="_blank" rel="noopener">github ↗</a>
+        <a href="https://linkedin.com/in/eayzzn" target="_blank" rel="noopener">linkedin ↗</a>
+        <a href="mailto:contact@eayzzn.com">mail ↗</a>
       </div>
     </div>
-    <a href="#philosophy" class="scroll-indicator" data-i18n-aria="aria.scrollDown">
-      <span></span>
-    </a>
+    <button type="button" class="glitch-hero" data-glitch-hero data-i18n-aria="aria.glitch">
+      <span class="glitch glitch--hero" data-glitch="full" data-glitch-auto data-state="idle"></span>
+    </button>
   </section>
 
-  <!-- Philosophy -->
-  <section id="philosophy" class="snap-section philosophy">
-    <div class="container">
-      <p class="eyebrow reveal" data-i18n="philosophy.eyebrow">Philosophie</p>
-      <p class="statement" data-word-reveal data-i18n="philosophy.statement">
-        Ich glaube, dass die beste Technologie sich nicht wie Technologie anfühlt. Einfach. Klar. Selbstverständlich — bis ins letzte Detail durchdacht.
-      </p>
+  <!-- Projects -->
+  <section id="projects" class="section" data-section>
+    <div class="section-head">
+      <h2 class="section-label"><span class="hash" aria-hidden="true">##</span> <span data-i18n="projects.heading">projekte</span></h2>
+      <div class="filter" role="group" data-i18n-aria="aria.filter">
+        <button type="button" class="filter-btn" data-filter="all" aria-pressed="true" data-i18n="projects.filterAll">alle</button>
+        <button type="button" class="filter-btn" data-filter="web" aria-pressed="false">web</button>
+        <button type="button" class="filter-btn" data-filter="ios" aria-pressed="false">ios</button>
+      </div>
+    </div>
+
+    <div class="project-grid">
+      <article class="project-card" data-category="web">
+        <div class="project-preview" aria-hidden="true">
+          <div class="mock mock--web">
+            <span class="mock-bar"></span>
+            <span class="mock-title"></span>
+            <span class="mock-line"></span>
+            <span class="mock-cards"><i></i><i></i><i></i></span>
+          </div>
+        </div>
+        <div class="project-body">
+          <div class="project-title-row">
+            <h3 class="project-title" data-i18n="projects.portfolio.title">Portfolio-Website</h3>
+            <span class="project-year">2026</span>
+          </div>
+          <p class="project-desc" data-i18n="projects.portfolio.desc">Diese Seite. Dark/Light, DE/EN.</p>
+          <div class="project-meta">
+            <span class="project-tags">html · css · js</span>
+            <span class="project-links">
+              <a href="https://github.com/eayzzn" target="_blank" rel="noopener">code ↗</a>
+            </span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card" data-category="ios">
+        <div class="project-preview" aria-hidden="true">
+          <div class="mock mock--phone">
+            <span class="mock-notch"></span>
+            <span class="mock-title"></span>
+            <span class="mock-line"></span>
+            <span class="mock-line mock-line--short"></span>
+            <span class="mock-block"></span>
+          </div>
+        </div>
+        <div class="project-body">
+          <div class="project-title-row">
+            <h3 class="project-title" data-i18n="projects.ios.title">iOS App</h3>
+            <span class="project-year">2026</span>
+          </div>
+          <p class="project-desc" data-i18n="projects.ios.desc">Native App, MVVM.</p>
+          <div class="project-meta">
+            <span class="project-tags">swift · swiftui</span>
+            <span class="project-links">
+              <a href="https://github.com/eayzzn" target="_blank" rel="noopener">code ↗</a>
+            </span>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card project-card--wip" data-category="all">
+        <div class="project-preview project-preview--wip" aria-hidden="true">
+          <span class="glitch glitch--card" data-glitch="full" data-state="glitch"></span>
+        </div>
+        <div class="project-body">
+          <div class="project-title-row">
+            <h3 class="project-title" data-i18n="projects.wip.title">Nächstes Projekt</h3>
+            <span class="project-year project-year--live"><span class="live-dot" aria-hidden="true"></span><span data-i18n="projects.wip.status">in arbeit</span></span>
+          </div>
+          <p class="project-desc" data-i18n="projects.wip.desc">Glitch arbeitet gerade daran.</p>
+          <div class="project-meta">
+            <span class="project-tags">???</span>
+            <span class="project-links">
+              <a href="https://github.com/eayzzn" target="_blank" rel="noopener" data-i18n="projects.wip.link">fortschritt ↗</a>
+            </span>
+          </div>
+        </div>
+      </article>
     </div>
   </section>
 
   <!-- Skills -->
-  <section id="skills" class="snap-section skills">
-    <div class="container">
-      <div class="section-header reveal">
-        <p class="eyebrow" data-i18n="skills.eyebrow">Skills</p>
-        <h2 class="section-title" data-i18n-html="skills.title">Ein Werkzeugkasten,<br><span class="text-gradient">durchdacht zusammengestellt.</span></h2>
-      </div>
-      <div class="skills-grid">
-        <div class="skill-card glass reveal">
-          <span class="skill-icon"><svg class="icon"><use href="#icon-globe"></use></svg></span>
-          <h3 data-i18n="skills.frontend.title">Frontend</h3>
-          <p data-i18n="skills.frontend.desc">React, JavaScript und moderne CSS-Architektur für schnelle, saubere Interfaces.</p>
-        </div>
-        <div class="skill-card glass reveal">
-          <span class="skill-icon"><svg class="icon"><use href="#icon-mobile"></use></svg></span>
-          <h3 data-i18n="skills.native.title">Native Apps</h3>
-          <p data-i18n="skills.native.desc">Swift &amp; SwiftUI nach den Apple Human Interface Guidelines.</p>
-        </div>
-        <div class="skill-card glass reveal">
-          <span class="skill-icon"><svg class="icon"><use href="#icon-cpu"></use></svg></span>
-          <h3 data-i18n="skills.backend.title">Backend</h3>
-          <p data-i18n="skills.backend.desc">Node.js für schnelle, skalierbare und wartbare Schnittstellen.</p>
-        </div>
-        <div class="skill-card glass reveal">
-          <span class="skill-icon"><svg class="icon"><use href="#icon-palette"></use></svg></span>
-          <h3 data-i18n="skills.design.title">Design</h3>
-          <p data-i18n="skills.design.desc">UI/UX-Konzepte von der ersten Skizze bis zum fertigen Prototyp.</p>
-        </div>
-      </div>
-    </div>
+  <section id="skills" class="section" data-section>
+    <h2 class="section-label"><span class="hash" aria-hidden="true">##</span> <span data-i18n="skills.heading">skills</span></h2>
+    <ul class="skill-list">
+      <li>React</li>
+      <li>JavaScript</li>
+      <li>CSS</li>
+      <li>Swift</li>
+      <li>SwiftUI</li>
+      <li>Node.js</li>
+      <li>UI/UX</li>
+    </ul>
   </section>
 
-  <!-- Work / Projects -->
-  <section id="projects" class="snap-section work">
-    <div class="container">
-      <div class="section-header reveal">
-        <p class="eyebrow" data-i18n="projects.eyebrow">Projekte</p>
-        <h2 class="section-title" data-i18n-html="projects.title">Ausgewählte<br><span class="text-gradient">Arbeiten.</span></h2>
-      </div>
-      <div class="work-grid">
-        <article class="work-card glass reveal">
-          <span class="work-icon"><svg class="icon"><use href="#icon-globe"></use></svg></span>
-          <h3 data-i18n="projects.portfolio.title">Portfolio-Website</h3>
-          <p data-i18n="projects.portfolio.desc">Diese Seite: eine Single-Page-Experience mit Snap-Scroll, animiertem Hintergrund und eigenem Dark-/Light-Mode-System.</p>
-          <div class="tags">
-            <span>HTML5</span><span>CSS3</span><span>JavaScript</span>
-          </div>
-        </article>
-        <article class="work-card glass reveal">
-          <span class="work-icon"><svg class="icon"><use href="#icon-mobile"></use></svg></span>
-          <h3 data-i18n="projects.ios.title">iOS App</h3>
-          <p data-i18n="projects.ios.desc">Eine native SwiftUI-Anwendung, gebaut nach dem MVVM-Pattern und den Human Interface Guidelines.</p>
-          <div class="tags">
-            <span>Swift</span><span>SwiftUI</span><span>MVVM</span>
-          </div>
-        </article>
-        <article class="work-card glass reveal">
-          <span class="work-icon"><svg class="icon"><use href="#icon-dots"></use></svg></span>
-          <h3 data-i18n="projects.wip.title">In Arbeit</h3>
-          <p data-i18n="projects.wip.desc">Weitere Projekte entstehen gerade. Schreib mir, wenn du gemeinsam etwas bauen willst.</p>
-          <div class="tags">
-            <span data-i18n="projects.comingSoon">Coming Soon</span>
-          </div>
-        </article>
-      </div>
+  <!-- Contact -->
+  <section id="contact" class="section" data-section>
+    <h2 class="section-label"><span class="hash" aria-hidden="true">##</span> <span data-i18n="contact.heading">kontakt</span></h2>
+    <div class="contact-row">
+      <a href="mailto:contact@eayzzn.com" class="btn-primary">contact@eayzzn.com</a>
+      <a href="https://github.com/eayzzn" class="contact-link" target="_blank" rel="noopener">github</a>
+      <a href="https://linkedin.com/in/eayzzn" class="contact-link" target="_blank" rel="noopener">linkedin</a>
     </div>
   </section>
-
-  <!-- Contact — the final stop; the footer lives inside this section
-       so both are visible together, without an extra scroll/snap step. -->
-  <section id="contact" class="snap-section contact">
-    <div class="contact-layout">
-      <div class="container contact-inner">
-        <p class="eyebrow reveal" data-i18n="contact.eyebrow">Kontakt</p>
-        <h2 class="contact-title reveal" data-i18n-html="contact.title">Lass uns etwas<br><span class="text-gradient">gemeinsam bauen.</span></h2>
-        <p class="contact-subtitle reveal" data-i18n="contact.subtitle">Ob Projekt, Frage oder einfach nur Hallo — ich freue mich, von dir zu hören.</p>
-        <a href="mailto:contact@eayzzn.com" class="btn btn-primary btn-large reveal">
-          <svg class="icon"><use href="#icon-mail"></use></svg>
-          contact@eayzzn.com
-        </a>
-        <div class="social-row reveal">
-          <a href="https://github.com/eayzzn" class="social-circle glass" target="_blank" rel="noopener" data-i18n-aria="aria.github">
-            <svg class="icon"><use href="#icon-github"></use></svg>
-          </a>
-          <a href="https://linkedin.com/in/eayzzn" class="social-circle glass" target="_blank" rel="noopener" data-i18n-aria="aria.linkedin">
-            <svg class="icon"><use href="#icon-linkedin"></use></svg>
-          </a>
-        </div>
-      </div>
-
-      <footer class="footer">
-        <p class="footer-wordmark" aria-hidden="true">EAYZZN</p>
-        <div class="container footer-content">
-          <span class="footer-legal">
-            <span class="footer-legal-item" data-i18n-title="footer.comingSoon" data-i18n="footer.imprint">Impressum</span>
-            <span class="footer-legal-item" data-i18n-title="footer.comingSoon" data-i18n="footer.privacy">Datenschutz</span>
-          </span>
-          <span class="footer-copy" data-i18n="footer.copyright">© 2026 eayzzn. Alle Rechte vorbehalten.</span>
-        </div>
-      </footer>
-    </div>
-  </section>
-
 </main>
 
-<button class="back-to-top glass" data-back-to-top data-i18n-aria="aria.scrollUp">
-  <svg class="icon"><use href="#icon-chevron-up"></use></svg>
-</button>
+<footer class="container site-footer">
+  <span data-i18n="footer.copyright">© 2026 eayzzn</span>
+  <span class="footer-legal">
+    <span data-i18n="footer.imprint" data-i18n-title="footer.comingSoon">impressum</span>
+    <span data-i18n="footer.privacy" data-i18n-title="footer.comingSoon">datenschutz</span>
+  </span>
+</footer>
 
-<script src="src/scripts/i18n.js?v=11"></script>
-<script src="src/scripts/main.js?v=12"></script>
+<script src="src/scripts/i18n.js?v=20"></script>
+<script src="src/scripts/mascot.js?v=20"></script>
+<script src="src/scripts/main.js?v=20"></script>
 </body>
 </html>

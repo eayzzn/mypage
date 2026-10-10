@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="color-scheme" content="dark light">
+<script>
+  (function () {
+    var stored = null;
+    try { stored = localStorage.getItem('theme'); } catch (e) {}
+    var theme = stored || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+    document.documentElement.setAttribute('data-theme', theme);
+  })();
+</script>
+<meta name="theme-color" content="#141413" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FAF9F5" media="(prefers-color-scheme: light)">
+<meta name="robots" content="noindex">
+<title>Datenschutz — eayzzn</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preload" href="src/assets/fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="src/styles/styles.css?v=23">
+</head>
+<body>
+
+<header class="site-header" data-header>
+  <div class="container site-header-inner">
+    <a href="index.html" class="brand" aria-label="eayzzn — zur Startseite">
+      <span class="glitch glitch--mini" data-glitch="mini" data-state="idle"></span>
+      <span>eayzzn</span>
+    </a>
+    <a href="index.html" class="site-nav-link">← zurück</a>
+  </div>
+</header>
+
+<main class="container legal">
+  <p class="legal-notice"><strong>Diese Website befindet sich im Aufbau.</strong> Diese Datenschutzerklärung ist ein Entwurf mit Platzhaltern und wird vor dem endgültigen Start vervollständigt und geprüft.</p>
+
+  <h1 class="legal-title">Datenschutzerklärung</h1>
+
+  <h2>1. Verantwortlicher</h2>
+  <p>
+    <span class="placeholder">Max Mustermann</span><br>
+    <span class="placeholder">Musterstraße 1, 12345 Musterstadt</span><br>
+    E-Mail: <a href="mailto:contact@eayzzn.com">contact@eayzzn.com</a>
+  </p>
+
+  <h2>2. Überblick</h2>
+  <p>Diese Website setzt keine Cookies, nutzt keine Analyse- oder Tracking-Dienste und lädt keine Inhalte von Drittanbietern. Schriften werden lokal von diesem Server geladen.</p>
+
+  <h2>3. Hosting und Server-Logfiles</h2>
+  <p>Die Website wird bei Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, USA gehostet. Beim Aufruf der Seite verarbeitet der Hoster automatisch technisch notwendige Daten (Server-Logfiles), insbesondere:</p>
+  <ul>
+    <li>IP-Adresse</li>
+    <li>Datum und Uhrzeit des Zugriffs</li>
+    <li>aufgerufene Seite bzw. Datei</li>
+    <li>Referrer-URL</li>
+    <li>Browser und Betriebssystem (User-Agent)</li>
+  </ul>
+  <p>Die Verarbeitung erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO. Das berechtigte Interesse liegt im sicheren und stabilen Betrieb der Website. Vercel ist unter dem EU-US Data Privacy Framework zertifiziert, das ein angemessenes Datenschutzniveau für die Übermittlung in die USA gewährleistet.</p>
+
+  <h2>4. Kontakt per E-Mail</h2>
+  <p>Wenn du mir eine E-Mail schreibst, verarbeite ich deine Angaben (z.&nbsp;B. Name, E-Mail-Adresse, Inhalt der Nachricht) ausschließlich zur Bearbeitung deiner Anfrage. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO, sofern die Anfrage auf einen Vertrag abzielt, sonst Art. 6 Abs. 1 lit. f DSGVO. Die Daten werden gelöscht, sobald sie nicht mehr benötigt werden und keine gesetzlichen Aufbewahrungspflichten bestehen.</p>
+
+  <h2>5. Lokale Speicherung im Browser</h2>
+  <p>Die Website speichert deine Auswahl für Sprache (de/en) und Farbmodus (hell/dunkel) im lokalen Speicher deines Browsers (localStorage). Diese Daten verlassen dein Gerät nicht und werden nicht an mich übertragen. Die Speicherung ist für die von dir gewünschte Funktion erforderlich (§ 25 Abs. 2 Nr. 2 TDDDG). Du kannst sie jederzeit über die Einstellungen deines Browsers löschen.</p>
+
+  <h2>6. Deine Rechte</h2>
+  <p>Du hast das Recht auf Auskunft (Art. 15 DSGVO), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung der Verarbeitung (Art. 18), Datenübertragbarkeit (Art. 20) und Widerspruch gegen die Verarbeitung (Art. 21). Außerdem kannst du dich bei einer Datenschutz-Aufsichtsbehörde beschweren (Art. 77 DSGVO).</p>
+
+  <p class="legal-date">Stand: <span class="placeholder">Oktober 2026 (Entwurf)</span></p>
+</main>
+
+<footer class="container site-footer">
+  <span>© 2026 eayzzn · website im aufbau</span>
+  <span class="footer-legal">
+    <a href="impressum.html">impressum</a>
+    <a href="datenschutz.html" aria-current="page">datenschutz</a>
+  </span>
+</footer>
+
+<script src="src/scripts/mascot.js?v=23"></script>
+<script>window.Glitch && window.Glitch.init();</script>
+</body>
+</html>

@@ -51,10 +51,9 @@ const translations = {
       heading: 'kontakt',
     },
     footer: {
-      copyright: '© 2026 eayzzn',
+      copyright: '© 2026 eayzzn · website im aufbau',
       imprint: 'impressum',
       privacy: 'datenschutz',
-      comingSoon: 'Folgt in Kürze',
     },
   },
 
@@ -106,10 +105,9 @@ const translations = {
       heading: 'contact',
     },
     footer: {
-      copyright: '© 2026 eayzzn',
+      copyright: '© 2026 eayzzn · website under construction',
       imprint: 'imprint',
       privacy: 'privacy',
-      comingSoon: 'Coming soon',
     },
   },
 };

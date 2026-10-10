@@ -506,7 +506,69 @@ html.is-lang-switching [data-i18n-html] {
 }
 
 .footer-legal { display: flex; gap: 20px; }
-.footer-legal span { cursor: default; }
+.footer-legal a { color: var(--text-3); }
+.footer-legal a:hover { color: var(--accent-hover); }
+.footer-legal a[aria-current="page"] { color: var(--text); }
+
+/* ================================================================
+   Legal pages (impressum, datenschutz)
+   ================================================================ */
+
+.legal {
+  max-width: 760px;
+  padding-top: 48px;
+  padding-bottom: 96px;
+}
+
+.legal-notice {
+  margin-bottom: 40px;
+  padding: 14px 18px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--accent);
+  background: var(--surface);
+  font-size: 13px;
+  color: var(--text-2);
+}
+
+.legal-notice strong { color: var(--text); font-weight: 500; }
+
+.legal-title {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(40px, 6vw, 60px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: 32px;
+}
+
+.legal h2 {
+  margin: 36px 0 10px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-3);
+}
+
+.legal h2::before { content: "## "; color: var(--accent-text); }
+
+.legal p,
+.legal li {
+  font-size: 14px;
+  color: var(--text-2);
+}
+
+.legal p + p { margin-top: 12px; }
+.legal ul { margin: 10px 0 12px; padding-left: 20px; list-style: "– "; }
+.legal a { color: var(--text); }
+.legal a:hover { color: var(--accent-hover); }
+.legal-date { margin-top: 40px; font-size: 12px; }
+
+/* Test data still to be replaced */
+.placeholder {
+  color: var(--text);
+  background: var(--surface-2);
+  border-bottom: 1px dashed var(--accent);
+  padding: 0 4px;
+}
 
 /* ================================================================
    Glitch — pixel mascot

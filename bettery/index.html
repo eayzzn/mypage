@@ -11,10 +11,10 @@
 <meta property="og:description" content="Ladestand, Energiemodus, Zustand, Zyklen, Temperatur und Ladelimit. Direkt in der Menüleiste deines Macs.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <style>
-/* Layout: apple.com product page. Black stage, one idea per screen, sections snap.
-   Everything Bettery draws (glyph, panel, tiles) comes from kit.js, rebuilt from the Swift sources. */
+/* Layout: apple.com product page. Black stage, one idea per screen, gentle section snapping.
+   Everything Bettery draws (glyph, panel) comes from kit.js, rebuilt from the Swift sources. */
 :root{
-  --bg:#000; --bg2:#0d0d0f; --tile:#141416; --tileB:rgba(255,255,255,.07);
+  --bg:#000; --tile:#141416; --tileB:rgba(255,255,255,.07);
   --fg:#f5f5f7; --fg2:#86868b; --fg3:#6e6e73;
   --link:#2997ff; --green:#33c759; --yellow:#ffc700; --red:#ff453a; --rose:#fa6bb8; --violet:#8c7af2; --teal:#33b39e; --accent:#8f59f5;
   --nav:52px;
@@ -37,11 +37,8 @@
   color-scheme:dark;
 }
 *{box-sizing:border-box}
-html{scroll-padding-top:var(--nav);scroll-behavior:smooth}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-/* Apple-style section snapping: firm on desktops with room, gentle on phones and short screens */
-html{scroll-snap-type:y proximity}
-@media (hover:hover) and (pointer:fine) and (min-width:900px) and (min-height:720px){html{scroll-snap-type:y mandatory}}
+/* gentle snapping: settles on a section only when you stop close to its start */
+html{scroll-padding-top:var(--nav);scroll-snap-type:y proximity}
 body{margin:0;background:var(--bg);color:var(--fg);font:400 17px/1.47 var(--text);letter-spacing:-.022em;-webkit-font-smoothing:antialiased;font-optical-sizing:auto;overflow-x:hidden}
 a{color:var(--link);text-decoration:none}a:hover{text-decoration:underline}
 h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance}
@@ -70,7 +67,7 @@ p{margin:0}
 
 /* hero */
 .hero{text-align:center;align-items:center}
-.hero-glyph{width:min(300px,64vw);margin-bottom:34px}
+.hero-glyph{width:min(300px,64vw);margin:0 auto 34px}
 .eyebrow{font:600 21px/1.2 var(--display);color:var(--fg2);letter-spacing:.004em}
 .hero h1{font-size:clamp(46px,7.6vw,92px);line-height:1.02;letter-spacing:-.035em;font-weight:700;margin-top:10px}
 .hero .lead{max-width:620px;margin:22px auto 0;font:400 clamp(19px,2.1vw,23px)/1.4 var(--display);letter-spacing:.004em;color:var(--fg2)}
@@ -79,9 +76,14 @@ p{margin:0}
 .btn .bk-i{width:16px;height:16px}
 .more{font-size:17px}
 
-/* the Mac: full-bleed wallpaper, menu bar, panel dropping from the tray icon */
+/* the Mac, introduced by "Ein Klick. Alles da." */
 .mac-sec{padding:16px}
-.desk{position:relative;flex:1;width:100%;max-width:1400px;margin:0 auto;min-height:max(calc(100svh - var(--nav) - 32px),690px);border-radius:24px;overflow:hidden;background:var(--wall);box-shadow:0 0 0 1px rgba(255,255,255,.08)}
+/* the headline sits on the desktop, left of the panel, like text on a wallpaper */
+.mac-head{position:absolute;z-index:2;left:clamp(28px,5vw,72px);top:50%;transform:translateY(-50%);max-width:min(560px,calc(100% - 460px));color:#fff;text-shadow:0 2px 24px rgba(0,0,0,.25)}
+.mac-head h2{font-size:clamp(44px,6vw,84px);line-height:1;letter-spacing:-.04em;font-weight:700}
+.mac-head h2 span{background:linear-gradient(90deg,#8dffb0,#86f0ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.mac-head p{margin-top:18px;max-width:440px;font:500 clamp(17px,1.6vw,21px)/1.4 var(--display);color:rgba(255,255,255,.82)}
+.desk{position:relative;width:100%;max-width:1400px;margin:0 auto;height:clamp(690px,calc(100svh - var(--nav) - 32px),900px);border-radius:24px;overflow:hidden;background:var(--wall);box-shadow:0 0 0 1px rgba(255,255,255,.08)}
 .menubar{position:relative;z-index:3;height:26px;display:flex;align-items:center;padding:0 10px;color:#fff;
   font:500 13px/1 var(--text);letter-spacing:-.003em;text-shadow:0 0 5px rgba(0,0,0,.25)}
 .mb-l,.mb-r{display:flex;align-items:center;height:100%}
@@ -102,10 +104,12 @@ p{margin:0}
   background:rgba(0,0,0,.28);-webkit-backdrop-filter:blur(20px) saturate(1.6);backdrop-filter:blur(20px) saturate(1.6);box-shadow:inset 0 0 0 .5px rgba(255,255,255,.25)}
 @media (max-width:820px){
   .mb-hide{display:none!important}
-  .desk{min-height:780px;border-radius:20px}
-  .hint{left:12px;right:12px;bottom:12px;max-width:none}
+  .desk{height:820px;border-radius:20px}
+  .mac-head{top:auto;bottom:22px;transform:none;left:20px;right:20px;max-width:none;text-align:center}
+  .mac-head h2{font-size:40px}.mac-head p{margin:10px auto 0;font-size:16px}
+  .hint{display:none}
 }
-@media (max-width:400px){.mac-sec{padding:10px}.mb-l > *,.mb-r > *{padding:0 6px}}
+@media (max-width:400px){.mac-sec{padding-inline:10px}.mb-l > *,.mb-r > *{padding:0 6px}}
 
 /* section headings */
 .sec-h{text-align:center}
@@ -114,71 +118,55 @@ p{margin:0}
 .sec-h p{max-width:640px;margin:18px auto 0;font:400 clamp(17px,1.9vw,20px)/1.45 var(--display);color:var(--fg2);letter-spacing:.006em}
 .sec-h p strong{color:var(--fg);font-weight:600}
 .left{text-align:left}.left p{margin-left:0}
-
-.statement{text-align:center;align-items:center}
-.statement h2{font-size:clamp(52px,10vw,128px);line-height:.98;letter-spacing:-.045em;font-weight:700}
-.statement h2 span{background:linear-gradient(90deg,#33c759,#2fd0c4 45%,#2f7bff);-webkit-background-clip:text;background-clip:text;color:transparent}
-.statement p{margin-top:26px;font:500 clamp(19px,2.2vw,24px)/1.35 var(--display);color:var(--fg2);max-width:560px}
-
-/* settings-style cards (BetteryGroupedSection) on the page */
-.g-sec{display:flex;flex-direction:column;gap:8px;min-width:0}
-.g-h{margin:0;padding-left:4px;font:600 11px/13px var(--text);letter-spacing:.6px;text-transform:uppercase;color:rgba(255,255,255,.55)}
-.g-card{border-radius:12px;background:rgba(255,255,255,.05);box-shadow:inset 0 0 0 .5px rgba(255,255,255,.08);overflow:hidden}
-.g-pad{padding:12px}
-.g-lbl{font:600 11px/1 var(--text);color:rgba(255,255,255,.55);letter-spacing:0;margin-bottom:8px}
-.g-div{height:.5px;background:rgba(255,255,255,.07);margin:0 12px}
-.g-foot{padding:4px 12px 10px;font:400 11px/1.45 var(--text);color:rgba(255,255,255,.55);letter-spacing:0}
-.g-row{display:flex;align-items:center;gap:12px;min-height:48px;padding:0 12px;font:500 13px/16px var(--text);letter-spacing:0;color:rgba(255,255,255,.85)}
-.g-row .t{flex:1;min-width:0}
-.g-row .v{color:rgba(255,255,255,.55);font-variant-numeric:tabular-nums}
-.g-rdiv{height:.5px;background:rgba(255,255,255,.07);margin-left:52px}
-.window{border-radius:16px;background:#1c1c1e;box-shadow:0 0 0 .5px rgba(255,255,255,.12),0 20px 60px rgba(0,0,0,.45);padding:16px;display:flex;flex-direction:column;gap:16px}
-
-/* macOS switch, slider and preset buttons */
-.sw{position:relative;width:32px;height:19px;flex:none}
-.sw input{position:absolute;inset:0;margin:0;opacity:0;cursor:pointer;z-index:1}
-.sw span{position:absolute;inset:0;border-radius:10px;background:rgba(255,255,255,.18);transition:background .2s}
-.sw span:after{content:"";position:absolute;left:2px;top:2px;width:15px;height:15px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.3);transition:transform .32s cubic-bezier(.3,1.3,.5,1)}
-.sw input:checked + span{background:#0a84ff}
-.sw input:checked + span:after{transform:translateX(13px)}
-.sw input:focus-visible + span{outline:2px solid #0a84ff;outline-offset:2px}
-.slider{-webkit-appearance:none;appearance:none;width:100%;height:4px;border-radius:2px;margin:0;outline:none;
-  background:linear-gradient(90deg,#0a84ff var(--p,64%),rgba(255,255,255,.18) var(--p,64%))}
-.slider::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.4),0 0 0 .5px rgba(0,0,0,.2);cursor:pointer}
-.slider::-moz-range-thumb{width:20px;height:20px;border:0;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.4);cursor:pointer}
-.slider:focus-visible{outline:2px solid #0a84ff;outline-offset:8px}
-.presets{display:flex;gap:8px}
-.presets button{all:unset;flex:1;text-align:center;padding:8px 0;border-radius:8px;background:rgba(255,255,255,.06);font:500 12px/1 var(--text);color:rgba(255,255,255,.85);cursor:pointer;transition:background .18s}
-.presets button:hover{background:rgba(255,255,255,.1)}
-.presets button[aria-pressed="true"]{background:#1ab3d1;color:#fff;font-weight:600}
-.presets button:focus-visible{outline:2px solid #1ab3d1;outline-offset:2px}
-
-/* menu bar playground */
-.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,4vw,56px);align-items:center;margin-top:48px}
-.two > *{min-width:0}
-.stagebox{border-radius:28px;background:#0d0d0f;box-shadow:inset 0 0 0 1px var(--tileB);overflow:hidden;display:flex;flex-direction:column}
-.strip{height:30px;display:flex;align-items:center;justify-content:flex-end;gap:6px;padding:0 12px;background:var(--wall);color:#fff;font:500 13px/1 var(--text);text-shadow:0 0 5px rgba(0,0,0,.25)}
-.strip > *{display:flex;align-items:center;height:22px;padding:0 8px;border-radius:6px}
-.strip .bk-i{width:16px;height:16px}
-.strip .tg{width:32px;padding:0;margin:0 4px}
-.bigglyph-wrap{flex:1;display:grid;place-items:center;padding:36px 24px 28px;min-height:230px}
-.bigglyph{width:min(300px,64vw)}
 .sec-h.left h2{font-size:clamp(38px,5vw,56px)}
-.sec-h.left p{font-size:clamp(17px,1.7vw,19px)}
-.settings-col > .stagebox{margin-top:8px}
-.legend{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;padding:0 16px 24px;font-size:13px;color:var(--fg2);letter-spacing:-.01em}
-.legend span{display:inline-flex;align-items:center;gap:7px}
-.legend i{width:9px;height:9px;border-radius:3px;background:var(--c)}
-.settings-col{display:flex;flex-direction:column;gap:16px}
-@media (max-width:900px){.two{grid-template-columns:1fr}.snap{padding-block:56px}}
+
+/* features: three picture cards, then the small things */
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:40px}
+.card{border-radius:24px;background:var(--tile);box-shadow:inset 0 0 0 1px var(--tileB);overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.shot{position:relative;height:210px;overflow:hidden;display:grid;place-items:center}
+.card-b{padding:20px 22px 24px}
+.card-b .k{font:600 13px/1.2 var(--text);color:var(--c)}
+.card-b h3{font:700 22px/1.2 var(--display);letter-spacing:-.02em;margin-top:6px}
+.card-b p{margin-top:8px;font-size:15px;line-height:1.45;color:var(--fg2)}
+/* shot 1: menu bar with a loupe on the tray icon */
+.shot-menubar{background:var(--wall)}
+.shot-menubar .strip{position:absolute;left:0;right:0;top:0;height:28px;display:flex;align-items:center;justify-content:flex-end;gap:4px;padding:0 10px;color:#fff;font:500 13px/1 var(--text);text-shadow:0 0 5px rgba(0,0,0,.25)}
+.shot-menubar .strip > *{display:flex;align-items:center;height:22px;padding:0 7px;border-radius:6px}
+.shot-menubar .strip .bk-i{width:15px;height:15px}
+.shot-menubar .strip .tg{width:30px;padding:0;margin:0 5px;background:rgba(255,255,255,.22);border-radius:6px;width:40px;justify-content:center}
+.shot-menubar .strip .tg i{display:block;width:30px}
+.loupe{position:relative;margin-top:22px;width:150px;height:150px;border-radius:50%;display:grid;place-items:center;
+  background:rgba(10,10,20,.35);-webkit-backdrop-filter:blur(14px) saturate(1.5);backdrop-filter:blur(14px) saturate(1.5);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.35),inset 0 2px 0 rgba(255,255,255,.25),0 18px 40px rgba(0,0,0,.35)}
+.loupe .lg{width:108px}
+/* shot 2: three states */
+.shot-states{background:radial-gradient(80% 90% at 50% 0%,#1d1d22,#0c0c0e);display:grid;place-content:center;grid-template-columns:70px auto;column-gap:18px;row-gap:20px;align-items:center;justify-items:start}
+.state{display:contents;font:600 14px/1 var(--text);color:rgba(255,255,255,.85);letter-spacing:-.01em}
+.state .sg{width:70px;display:block}
+/* shot 3: icon styles */
+.shot-styles{background:radial-gradient(80% 90% at 50% 0%,#1d1d22,#0c0c0e);display:flex;justify-content:center;align-items:center;gap:34px}
+.sty{display:flex;flex-direction:column;align-items:center;gap:14px;font:600 13px/1.2 var(--text);color:rgba(255,255,255,.7);text-align:center}
+.sty .sg{width:96px}
+.small{margin-top:64px}
+.small h3.sub{font:700 clamp(24px,2.6vw,30px)/1.2 var(--display);letter-spacing:-.02em;text-align:center}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:28px 32px;margin-top:32px}
+.grid3 > div{min-width:0;display:grid;grid-template-columns:30px 1fr;column-gap:14px;align-items:start}
+.grid3 .gi{width:28px;height:28px;color:var(--c);grid-row:span 2}
+.grid3 h4{margin:2px 0 0;font:600 17px/1.25 var(--display);letter-spacing:-.01em}
+.grid3 p{margin-top:4px;font-size:14px;line-height:1.45;color:var(--fg2)}
+@media (max-width:900px){.cards{grid-template-columns:1fr;max-width:520px;margin-inline:auto}.grid3{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.grid3{grid-template-columns:1fr}}
 
 /* energy */
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,4vw,56px);align-items:center}
+.two > *{min-width:0}
 .e-text h2{font-size:clamp(38px,5.4vw,60px);line-height:1.05;letter-spacing:-.03em;font-weight:700;margin-top:8px}
 .e-text p{margin-top:18px;font-size:19px;line-height:1.45;color:var(--fg2)}
 .e-text p strong{color:var(--fg);font-weight:600}
 .note{margin-top:22px;display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:1.45;color:var(--fg2);padding:16px;border-radius:16px;background:var(--tile);box-shadow:inset 0 0 0 1px var(--tileB)}
 .note .bk-i{width:20px;height:20px;flex:none;color:var(--green);margin-top:1px}
 .panelbox{display:flex;justify-content:center;padding:28px 16px;border-radius:28px;background:var(--wall)}
+@media (max-width:900px){.two{grid-template-columns:1fr}.snap{padding-block:56px}}
 
 /* details bento */
 .bento{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;margin-top:36px}
@@ -193,27 +181,47 @@ p{margin:0}
 .tile p{font-size:15px;line-height:1.4;color:var(--fg2)}
 .meter{height:6px;border-radius:3px;background:rgba(255,255,255,.1);overflow:hidden}
 .meter i{display:block;height:100%;width:var(--w);background:var(--c);border-radius:3px}
+/* charge limit: the 80–100 % slider from the Battery tab */
+.lim{position:relative;height:20px;margin:2px 10px 0}
+.lim:before{content:"";position:absolute;left:0;right:0;top:8px;height:4px;border-radius:2px;background:rgba(255,255,255,.12)}
+.lim .f{position:absolute;left:0;top:8px;height:4px;border-radius:2px;width:var(--p);background:var(--teal)}
+.lim .k{position:absolute;top:0;left:var(--p);width:20px;height:20px;margin-left:-10px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.45)}
 .scale{display:flex;justify-content:space-between;font:600 12px/1 var(--text);color:var(--fg3);font-variant-numeric:tabular-nums}
+.scale .on{color:var(--fg)}
 .compact .sec-h h2{font-size:clamp(36px,5vw,56px)}
 .compact .sec-h p{margin-top:12px}
 .foot{margin-top:14px;text-align:center;font-size:13px;color:var(--fg3)}
 @media (max-width:900px){.bento{grid-template-columns:1fr 1fr}.tile,.tile.w3{grid-column:span 1}.tile.wide{grid-column:span 2}}
 @media (max-width:540px){.bento{grid-template-columns:1fr}.tile,.tile.w3,.tile.wide{grid-column:span 1}}
 
-/* appearance */
-.stylebox{display:flex;justify-content:center;align-items:center;padding:36px 20px;border-radius:28px;background:var(--wall);transition:background .4s}
-.stylebox.light{background:var(--wall-light)}
+/* appearance: plays through every style on its own */
+.stylebox{position:relative;display:flex;justify-content:center;align-items:center;padding:36px 20px;border-radius:28px;overflow:hidden;isolation:isolate}
+.stylebox:before,.stylebox:after{content:"";position:absolute;inset:0;z-index:-1;transition:opacity .9s cubic-bezier(.3,.1,.2,1)}
+.stylebox:before{background:var(--wall)}
+.stylebox:after{background:var(--wall-light);opacity:0}
+.stylebox.light:after{opacity:1}
+.modes{display:flex;gap:18px;margin-top:22px;font:600 15px/1 var(--text);color:var(--fg3)}
+.modes span{display:inline-flex;align-items:center;gap:7px;transition:color .5s}
+.modes .bk-i{width:15px;height:15px}
+.modes span.on{color:var(--fg)}
+.cyc{list-style:none;margin:22px 0 0;padding:0;display:flex;flex-direction:column}
+.cyc li{padding:16px 0;border-top:.5px solid rgba(255,255,255,.12)}
+.cyc li:last-child{border-bottom:.5px solid rgba(255,255,255,.12)}
+.cyc .n{font:700 22px/1.2 var(--display);letter-spacing:-.02em;color:var(--fg3);transition:color .5s}
+.cyc .d{display:grid;grid-template-rows:0fr;transition:grid-template-rows .6s cubic-bezier(.3,.1,.2,1),opacity .5s;opacity:0}
+.cyc .d > p{overflow:hidden;font-size:16px;line-height:1.45;color:var(--fg2)}
+.cyc .d > p > span{display:block;padding-top:6px}
+.cyc .bar{display:block;height:2px;border-radius:1px;background:rgba(255,255,255,.12);margin-top:12px;overflow:hidden;opacity:0;transition:opacity .4s}
+.cyc .bar b{display:block;height:100%;width:0;background:var(--fg)}
+.cyc li.on .n{color:var(--fg)}
+.cyc li.on .d{grid-template-rows:1fr;opacity:1}
+.cyc li.on .bar{opacity:1}
+.cyc li.on .bar b{animation:fill var(--dwell,3.6s) linear forwards}
+.cyc.paused li.on .bar b{animation-play-state:paused}
+@keyframes fill{to{width:100%}}
+@media (prefers-reduced-motion:reduce){.cyc li.on .bar b{animation:none;width:100%}}
+@media (max-width:900px){#styles .two > .settings-col{display:contents}#styles .sec-h{order:1}#styles .stylebox{order:2}#styles .cyc-wrap{order:3}}
 @media (max-width:420px){.stylebox{padding:24px 12px}}
-@media (max-width:900px){#styles .settings-col{display:contents}#styles .sec-h{order:1}#styles .stylebox{order:2}#styles .g-sec{order:3}}
-
-/* small things */
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:40px 32px;margin-top:56px}
-.grid3 > div{min-width:0}
-.grid3 .gi{width:30px;height:30px;color:var(--c)}
-.grid3 h3{font:600 19px/1.25 var(--display);letter-spacing:-.01em;margin-top:14px}
-.grid3 p{margin-top:6px;font-size:15px;line-height:1.45;color:var(--fg2)}
-@media (max-width:820px){.grid3{grid-template-columns:1fr 1fr}}
-@media (max-width:520px){.grid3{grid-template-columns:1fr}}
 
 /* end card: the glow fades out inside its own box, so no edge cuts it */
 .end{text-align:center;align-items:center;justify-content:space-between;padding-bottom:0;overflow:hidden}
@@ -237,7 +245,7 @@ footer a{color:var(--fg2)}
   <div class="wrap">
     <a class="brand" href="#top" aria-label="Bettery"><i data-glyph="nav"></i><span id="brandText">Bettery</span></a>
     <nav class="links" aria-label="Sections">
-      <a href="#menubar" data-i18n="nav_menubar">Menüleiste</a>
+      <a href="#features" data-i18n="nav_features">Funktionen</a>
       <a href="#energy" data-i18n="nav_energy">Energiemodus</a>
       <a href="#details" data-i18n="nav_details">Details</a>
       <a href="#styles" data-i18n="nav_styles">Darstellung</a>
@@ -250,7 +258,7 @@ footer a{color:var(--fg2)}
 <main>
   <section class="snap hero" id="top">
     <div class="wrap">
-      <div class="hero-glyph" data-glyph="hero" style="margin-inline:auto"></div>
+      <div class="hero-glyph" data-glyph="hero"></div>
       <p class="eyebrow" data-i18n="eyebrow">Bettery für macOS</p>
       <h1 data-i18n="h1">Dein Akku.<br><span class="dim">In deiner Menüleiste.</span></h1>
       <p class="lead" data-i18n="lead">Bettery lebt in deiner Menüleiste und behält deinen Akku im Blick. Schnell, unaufdringlich und ohne Dock-Icon.</p>
@@ -261,7 +269,7 @@ footer a{color:var(--fg2)}
     </div>
   </section>
 
-  <section class="snap mac-sec" id="mac" aria-label="Bettery">
+  <section class="snap mac-sec" id="mac">
     <div class="desk" id="desk">
       <div class="menubar">
         <div class="mb-l">
@@ -278,63 +286,66 @@ footer a{color:var(--fg2)}
         </div>
       </div>
       <div class="drop" id="drop"></div>
+      <div class="mac-head">
+        <h2 data-i18n="statement">Ein Klick. <span>Alles da.</span></h2>
+        <p data-i18n="statement_p">Ein Klick auf das Akku-Symbol öffnet das Panel. Esc oder ein Klick daneben schließt es wieder.</p>
+      </div>
       <p class="hint" data-i18n="hint">Probier es aus: Wechsle den Energiemodus oder klick auf das Akku-Symbol in der Menüleiste.</p>
     </div>
   </section>
 
-  <section class="snap statement">
+  <section class="snap" id="features">
     <div class="wrap">
-      <h2 data-i18n="statement">Ein Klick.<br><span>Alles da.</span></h2>
-      <p data-i18n="statement_p">Ein Klick auf das Symbol öffnet das Panel. Esc, ein Klick daneben oder ein zweiter Klick schließt es wieder.</p>
-    </div>
-  </section>
+      <div class="sec-h">
+        <p class="eyebrow" data-i18n="f_eyebrow">Funktionen</p>
+        <h2 data-i18n="f_h">Auf einen Blick.</h2>
+      </div>
+      <div class="cards">
+        <article class="card" style="--c:var(--green)">
+          <div class="shot shot-menubar" aria-hidden="true">
+            <div class="strip"><span class="tg"><i data-glyph="f-tray"></i></span><span><svg class="bk-i" viewBox="0 0 24 24"><use href="#bk-wifi"/></svg></span><span><svg class="bk-i" viewBox="0 0 24 24"><use href="#bk-cc"/></svg></span><span class="clock2"></span></div>
+            <div class="loupe"><div class="lg" data-glyph="f-loupe"></div></div>
+          </div>
+          <div class="card-b">
+            <p class="k" data-i18n="c1_k">Menüleiste</p>
+            <h3 data-i18n="c1_h">Dein Ladestand als Zahl.</h3>
+            <p data-i18n="c1_p">Eine kleine Akku-Pille oben rechts zeigt dir den Stand, ohne dass du etwas öffnen musst. Kein Fenster, kein Dock-Icon.</p>
+          </div>
+        </article>
+        <article class="card" style="--c:var(--yellow)">
+          <div class="shot shot-states" aria-hidden="true">
+            <div class="state"><span class="sg" data-glyph="f-charging"></span><span data-i18n="st_charging">Wird geladen</span></div>
+            <div class="state"><span class="sg" data-glyph="f-low"></span><span data-i18n="st_low">Stromsparmodus</span></div>
+            <div class="state"><span class="sg" data-glyph="f-critical"></span><span data-i18n="st_critical">Kritisch</span></div>
+          </div>
+          <div class="card-b">
+            <p class="k" data-i18n="c2_k">Farben</p>
+            <h3 data-i18n="c2_h">Farben, die etwas sagen.</h3>
+            <p data-i18n="c2_p">Grün beim Laden, gelb im Stromsparmodus, rot ab 20 %. Wird es kritisch, blinkt die Füllung.</p>
+          </div>
+        </article>
+        <article class="card" style="--c:var(--accent)">
+          <div class="shot shot-styles" aria-hidden="true">
+            <div class="sty"><span class="sg" data-glyph="f-level"></span><span data-i18n="sty_level">Füllstand</span></div>
+            <div class="sty"><span class="sg" data-glyph="f-filled"></span><span data-i18n="sty_filled">Einfarbig</span></div>
+          </div>
+          <div class="card-b">
+            <p class="k" data-i18n="c3_k">Symbol</p>
+            <h3 data-i18n="c3_h">Dein Symbol, dein Stil.</h3>
+            <p data-i18n="c3_p">Füllstand oder einfarbig. Beim Laden pendelt die Füllung mit Bounce oder läuft mit Refill hoch.</p>
+          </div>
+        </article>
+      </div>
 
-  <section class="snap" id="menubar">
-    <div class="wrap">
-      <div class="two" style="margin-top:0">
-        <div class="settings-col">
-        <div class="sec-h left">
-          <p class="eyebrow" data-i18n="mb_eyebrow">Menüleiste</p>
-          <h2 data-i18n="mb_h">Auf einen Blick.</h2>
-          <p data-i18n="mb_p">Dein Ladestand als Zahl in einer kleinen Akku-Pille. <strong>Grün beim Laden, gelb im Stromsparmodus, rot ab 20 %.</strong></p>
-        </div>
-        <div class="stagebox">
-          <div class="strip" aria-hidden="true"><span class="tg" data-glyph="strip"></span><span><svg class="bk-i" viewBox="0 0 24 24"><use href="#bk-wifi"/></svg></span><span><svg class="bk-i" viewBox="0 0 24 24"><use href="#bk-cc"/></svg></span><span class="clock2"></span></div>
-          <div class="bigglyph-wrap"><div class="bigglyph" data-glyph="big"></div></div>
-          <div class="legend">
-            <span style="--c:var(--green)"><i></i><span data-i18n="l_charging">Wird geladen</span></span>
-            <span style="--c:#ffcc00"><i></i><span data-i18n="l_low">Stromsparmodus</span></span>
-            <span style="--c:var(--red)"><i></i><span data-i18n="l_critical">20 % und weniger</span></span>
-          </div>
-        </div>
-        </div>
-        <div class="settings-col">
-          <div class="g-sec">
-            <h3 class="g-h" data-i18n="s_menubar_icon">Menüleisten-Symbol</h3>
-            <div class="g-card">
-              <div class="g-pad"><div class="g-lbl" data-i18n="s_tray">Tray-Icon</div><div id="tilesTray"></div></div>
-              <div class="g-div"></div>
-              <div class="g-pad"><div class="g-lbl" data-i18n="s_anim">Ladeanimation</div><div id="tilesAnim"></div></div>
-            </div>
-          </div>
-          <div class="g-sec">
-            <h3 class="g-h" data-i18n="s_sim">Batterie-Simulator</h3>
-            <div class="g-card">
-              <div class="g-row" style="flex-wrap:wrap;padding-block:10px">
-                <span class="bk-badge f" style="--c:#338cff"><svg class="bk-i" viewBox="0 0 24 24"><use href="#bk-batt50"/></svg></span>
-                <span class="t" data-i18n="s_level">Akkustand</span><span class="v" id="simOut">64%</span>
-                <input class="slider" id="simLevel" type="range" min="0" max="100" value="64" data-i18n-aria="s_level" aria-label="Akkustand" style="margin:4px 4px 6px 40px;width:calc(100% - 44px)">
-              </div>
-              <div class="g-rdiv"></div>
-              <label class="g-row"><span class="bk-badge f" style="--c:var(--green)"><svg class="bk-i" viewBox="0 0 24 24"><use href="#bk-bolt"/></svg></span><span class="t" data-i18n="s_charging">Wird geladen</span><span class="sw"><input type="checkbox" id="simCharging" checked><span></span></span></label>
-              <div class="g-rdiv"></div>
-              <label class="g-row"><span class="bk-badge f" style="--c:var(--yellow)"><svg class="bk-i" viewBox="0 0 24 24"><use href="#bk-leaf"/></svg></span><span class="t" data-i18n="s_low">Energiesparmodus</span><span class="sw"><input type="checkbox" id="simLow"><span></span></span></label>
-              <div class="g-rdiv"></div>
-              <div class="g-pad"><div class="g-lbl" data-i18n="s_presets">Schnellauswahl</div>
-                <div class="presets" id="presets"><button type="button" data-p="5" data-i18n="p_critical">Kritisch</button><button type="button" data-p="15" data-i18n="p_low">Niedrig</button><button type="button" data-p="40" data-i18n="p_medium">Mittel</button><button type="button" data-p="75" data-i18n="p_good">Gut</button><button type="button" data-p="100" data-i18n="p_full">Voll</button></div>
-              </div>
-            </div>
-          </div>
+      <div class="small">
+        <h3 class="sub" data-i18n="sm_h">Und die kleinen Dinge.</h3>
+        <div class="grid3">
+          <div style="--c:#ff9400"><svg class="bk-i gi" viewBox="0 0 24 24"><use href="#bk-sunrise"/></svg><h4 data-i18n="g1_h">Startet mit deinem Mac</h4><p data-i18n="g1_p">Beim Anmelden öffnen, einmal einschalten und vergessen.</p></div>
+          <div style="--c:#2997ff"><svg class="bk-i gi" viewBox="0 0 24 24"><use href="#bk-globe"/></svg><h4 data-i18n="g2_h">Deutsch und Englisch</h4><p data-i18n="g2_p">Folgt deiner Systemsprache oder deiner Wahl.</p></div>
+          <div style="--c:var(--green)"><svg class="bk-i gi" viewBox="0 0 24 24"><use href="#bk-batt100"/></svg><h4 data-i18n="g3_h">Kein Dock-Icon</h4><p data-i18n="g3_p">Bettery bleibt in der Menüleiste und nimmt im Dock keinen Platz weg.</p></div>
+          <div style="--c:var(--accent)"><svg class="bk-i gi" viewBox="0 0 24 24"><use href="#bk-sparkles"/></svg><h4 data-i18n="g4_h">Einrichtung in fünf Schritten</h4><p data-i18n="g4_p">Ein kurzes Onboarding beim ersten Start, danach läuft alles.</p></div>
+          <div style="--c:var(--rose)"><svg class="bk-i gi" viewBox="0 0 24 24"><use href="#bk-power"/></svg><h4 data-i18n="g5_h">Schnell wieder zu</h4><p data-i18n="g5_p">Esc, ein Klick daneben oder noch ein Klick aufs Symbol schließt das Panel.</p></div>
+          <div style="--c:#1ab3d1"><svg class="bk-i gi" viewBox="0 0 24 24"><use href="#bk-game"/></svg><h4 data-i18n="g6_h">Akku-Simulator</h4><p data-i18n="g6_p">Kritisch, niedrig oder voll: Jeden Zustand gefahrlos ausprobieren.</p></div>
         </div>
       </div>
     </div>
@@ -342,7 +353,7 @@ footer a{color:var(--fg2)}
 
   <section class="snap" id="energy">
     <div class="wrap">
-      <div class="two" style="margin-top:0">
+      <div class="two">
         <div class="e-text">
           <p class="eyebrow" style="font-size:19px" data-i18n="en_eyebrow">Energiemodus</p>
           <h2 data-i18n="en_h">Stromsparen.<br>Ohne Umwege.</h2>
@@ -362,11 +373,11 @@ footer a{color:var(--fg2)}
         <p data-i18n="de_p">Zustand, Zyklen, Temperatur und Ladelimit stehen direkt im Panel. Ohne Terminal, ohne Systembericht.</p>
       </div>
       <div class="bento">
-        <div class="tile w3" style="--c:var(--rose)"><div class="th"><div class="ic"><svg class="bk-i" viewBox="0 0 24 24"><use href="#bk-heart"/></svg></div><h3 data-i18n="t_health">Zustand</h3></div><div class="val">94<small>%</small></div><div class="meter"><i style="--w:94%"></i></div><p data-i18n="t_health_p">Wie viel Kapazität dein Akku im Vergleich zu neu noch hat.</p></div>
-        <div class="tile w3" style="--c:var(--violet)"><div class="th"><div class="ic"><svg class="bk-i" viewBox="0 0 24 24"><use href="#bk-cycle"/></svg></div><h3 data-i18n="t_cycles">Zyklen</h3></div><div class="val">212</div><p data-i18n="t_cycles_p">Vollständige Ladezyklen, seit dem ersten Tag gezählt.</p></div>
-        <div class="tile" style="--c:var(--red)"><div class="th"><div class="ic"><svg class="bk-i" viewBox="0 0 24 24"><use href="#bk-thermo"/></svg></div><h3 data-i18n="t_temp">Temperatur</h3></div><div class="val">31.4<small>°C</small></div><p data-i18n="t_temp_p">Direkt aus dem Akku gelesen, auf eine Nachkommastelle.</p></div>
-        <div class="tile" style="--c:#0a84ff"><div class="th"><div class="ic"><svg class="bk-i" viewBox="0 0 24 24"><use href="#bk-clock"/></svg></div><h3 data-i18n="t_rem">Verbleibend</h3></div><div class="val">4<small>h</small> 12<small>min</small></div><p data-i18n="t_rem_p">Restlaufzeit im Akkubetrieb, beim Laden die Minuten bis voll.</p></div>
-        <div class="tile wide" style="--c:var(--teal)"><div class="th"><div class="ic"><svg class="bk-i" viewBox="0 0 24 24"><use href="#bk-shield"/></svg></div><h3 data-i18n="t_limit">Ladelimit</h3></div><div class="val">80<small>%</small></div><div class="meter"><i style="--w:80%"></i></div><div class="scale"><span>80</span><span>85</span><span>90</span><span>95</span><span>100</span></div><p data-i18n="t_limit_p">Lege fest, bis wohin dein Mac lädt, in 5-%-Schritten. Ab macOS 26.4.</p></div>
+        <div class="tile w3" style="--c:var(--rose)"><div class="th"><div class="ic"><svg class="bk-i" viewBox="0 0 24 24"><use href="#bk-heart"/></svg></div><h3 data-i18n="t_health">Zustand</h3></div><div class="val" id="vHealth"></div><div class="meter"><i id="mHealth"></i></div><p data-i18n="t_health_p">Wie viel Kapazität dein Akku im Vergleich zu neu noch hat.</p></div>
+        <div class="tile w3" style="--c:var(--violet)"><div class="th"><div class="ic"><svg class="bk-i" viewBox="0 0 24 24"><use href="#bk-cycle"/></svg></div><h3 data-i18n="t_cycles">Zyklen</h3></div><div class="val" id="vCycles"></div><p data-i18n="t_cycles_p">Vollständige Ladezyklen, seit dem ersten Tag gezählt.</p></div>
+        <div class="tile" style="--c:var(--red)"><div class="th"><div class="ic"><svg class="bk-i" viewBox="0 0 24 24"><use href="#bk-thermo"/></svg></div><h3 data-i18n="t_temp">Temperatur</h3></div><div class="val" id="vTemp"></div><p data-i18n="t_temp_p">Direkt aus dem Akku gelesen, auf eine Nachkommastelle.</p></div>
+        <div class="tile" style="--c:#0a84ff"><div class="th"><div class="ic"><svg class="bk-i" viewBox="0 0 24 24"><use href="#bk-clock"/></svg></div><h3 data-i18n="t_rem">Verbleibend</h3></div><div class="val" id="vRemaining"></div><p id="pRemaining"></p></div>
+        <div class="tile wide" style="--c:var(--teal)"><div class="th"><div class="ic"><svg class="bk-i" viewBox="0 0 24 24"><use href="#bk-shield"/></svg></div><h3 data-i18n="t_limit">Ladelimit</h3></div><div class="val" id="vLimit"></div><div class="lim" id="lim"><i class="f"></i><i class="k"></i></div><div class="scale" id="scale"><span>80</span><span>85</span><span>90</span><span>95</span><span>100</span></div><p data-i18n="t_limit_p">Lege fest, bis wohin dein Mac lädt, in 5-%-Schritten. Ab macOS 26.4.</p></div>
       </div>
       <p class="foot" data-i18n="foot">Beispielwerte. Bettery zeigt die Werte deines Macs.</p>
     </div>
@@ -374,37 +385,25 @@ footer a{color:var(--fg2)}
 
   <section class="snap" id="styles">
     <div class="wrap">
-      <div class="two" style="margin-top:0">
+      <div class="two">
         <div class="stylebox" id="stylebox"><div id="stylePanel"></div></div>
         <div class="settings-col">
           <div class="sec-h left">
             <p class="eyebrow" data-i18n="sy_eyebrow">Darstellung</p>
             <h2 data-i18n="sy_h">Dein Stil.<br>Hell oder Dunkel.</h2>
           </div>
-          <div class="g-sec">
-            <h3 class="g-h" data-i18n="s_appearance">Darstellung</h3>
-            <div class="g-card">
-              <div class="g-pad"><div class="g-lbl" data-i18n="s_theme">Erscheinungsbild</div><div id="tilesTheme"></div></div>
-              <div class="g-div"></div>
-              <div class="g-pad"><div class="g-lbl" data-i18n="s_panel">Panel-Stil</div><div id="tilesPanel"></div></div>
-              <p class="g-foot" data-i18n="s_panel_desc">Frosted Glass mattiert den Hintergrund mit einem milchig-weißen Schleier. Liquid Glass erzeugt Apples nativen Glas-Look mit Tiefe, Glanz und feiner Lichtkante. Klassisch verwendet eine ruhige System-Hintergrundfarbe.</p>
+          <div class="cyc-wrap">
+            <div class="modes" aria-hidden="true">
+              <span data-t="light"><svg class="bk-i" viewBox="0 0 24 24"><use href="#bk-sun"/></svg><span data-i18n="th_light">Hell</span></span>
+              <span data-t="dark"><svg class="bk-i" viewBox="0 0 24 24"><use href="#bk-moon"/></svg><span data-i18n="th_dark">Dunkel</span></span>
             </div>
+            <ol class="cyc" id="cyc">
+              <li data-m="frosted"><div class="n">Frosted Glass</div><div class="d"><p><span data-i18n="sd_frosted">Mattiert den Hintergrund mit einem milchig-weißen Schleier.</span></p></div><i class="bar"><b></b></i></li>
+              <li data-m="liquid"><div class="n">Liquid Glass</div><div class="d"><p><span data-i18n="sd_liquid">Apples nativer Glas-Look mit Tiefe, Glanz und feiner Lichtkante.</span></p></div><i class="bar"><b></b></i></li>
+              <li data-m="classic"><div class="n" data-i18n="pn_classic">Klassisch</div><div class="d"><p><span data-i18n="sd_classic">Eine ruhige System-Hintergrundfarbe, ganz ohne Transparenz.</span></p></div><i class="bar"><b></b></i></li>
+            </ol>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="snap">
-    <div class="wrap">
-      <div class="sec-h"><h2 data-i18n="sm_h">Und die kleinen Dinge.</h2></div>
-      <div class="grid3">
-        <div style="--c:#ff9400"><svg class="bk-i gi" viewBox="0 0 24 24"><use href="#bk-sunrise"/></svg><h3 data-i18n="g1_h">Startet mit deinem Mac</h3><p data-i18n="g1_p">Beim Anmelden öffnen, einmal einschalten und vergessen.</p></div>
-        <div style="--c:#2997ff"><svg class="bk-i gi" viewBox="0 0 24 24"><use href="#bk-globe"/></svg><h3 data-i18n="g2_h">Deutsch und Englisch</h3><p data-i18n="g2_p">Folgt deiner Systemsprache oder deiner Wahl.</p></div>
-        <div style="--c:var(--green)"><svg class="bk-i gi" viewBox="0 0 24 24"><use href="#bk-batt100"/></svg><h3 data-i18n="g3_h">Kein Dock-Icon</h3><p data-i18n="g3_p">Bettery bleibt in der Menüleiste und nimmt im Dock keinen Platz weg.</p></div>
-        <div style="--c:var(--accent)"><svg class="bk-i gi" viewBox="0 0 24 24"><use href="#bk-sparkles"/></svg><h3 data-i18n="g4_h">Einrichtung in fünf Schritten</h3><p data-i18n="g4_p">Ein kurzes Onboarding beim ersten Start, danach läuft alles.</p></div>
-        <div style="--c:var(--rose)"><svg class="bk-i gi" viewBox="0 0 24 24"><use href="#bk-power"/></svg><h3 data-i18n="g5_h">Schnell wieder zu</h3><p data-i18n="g5_p">Esc, ein Klick daneben oder noch ein Klick aufs Symbol schließt das Panel.</p></div>
-        <div style="--c:#1ab3d1"><svg class="bk-i gi" viewBox="0 0 24 24"><use href="#bk-game"/></svg><h3 data-i18n="g6_h">Akku-Simulator</h3><p data-i18n="g6_p">Kritisch, niedrig oder voll: Jeden Zustand gefahrlos ausprobieren.</p></div>
       </div>
     </div>
   </section>
@@ -426,41 +425,24 @@ footer a{color:var(--fg2)}
   </section>
 </main>
 
-<script src="kit.js?v=2"></script>
+<script src="kit.js?v=3"></script>
 <script>
 const DICT = {
   de: {
     _title: 'Bettery – Dein Akku. In deiner Menüleiste.',
-    nav_menubar: 'Menüleiste', nav_energy: 'Energiemodus', nav_details: 'Details', nav_styles: 'Darstellung', soon: 'Bald verfügbar',
+    nav_features: 'Funktionen', nav_energy: 'Energiemodus', nav_details: 'Details', nav_styles: 'Darstellung', soon: 'Bald verfügbar',
     eyebrow: 'Bettery für macOS', h1: 'Dein Akku.<br><span class="dim">In deiner Menüleiste.</span>',
     lead: 'Bettery lebt in deiner Menüleiste und behält deinen Akku im Blick. Schnell, unaufdringlich und ohne Dock-Icon.',
     soon_mac: 'Bald verfügbar für macOS', more: 'Ausprobieren ›',
+    statement: 'Ein Klick. <span>Alles da.</span>',
+    statement_p: 'Ein Klick auf das Akku-Symbol öffnet das Panel. Esc oder ein Klick daneben schließt es wieder.',
     mb_file: 'Ablage', mb_edit: 'Bearbeiten', mb_view: 'Darstellung', mb_go: 'Gehe zu', mb_window: 'Fenster', tray_aria: 'Bettery-Panel öffnen oder schließen',
     hint: 'Probier es aus: Wechsle den Energiemodus oder klick auf das Akku-Symbol in der Menüleiste.',
-    statement: 'Ein Klick.<br><span>Alles da.</span>',
-    statement_p: 'Ein Klick auf das Symbol öffnet das Panel. Esc, ein Klick daneben oder ein zweiter Klick schließt es wieder.',
-    mb_eyebrow: 'Menüleiste', mb_h: 'Auf einen Blick.',
-    mb_p: 'Dein Ladestand als Zahl in einer kleinen Akku-Pille. <strong>Grün beim Laden, gelb im Stromsparmodus, rot ab 20 %.</strong>',
-    l_charging: 'Wird geladen', l_low: 'Stromsparmodus', l_critical: '20 % und weniger',
-    s_menubar_icon: 'Menüleisten-Symbol', s_tray: 'Tray-Icon', s_anim: 'Ladeanimation',
-    t_level: 'Füllstand', t_filled: 'Einfarbig', a_off: 'Aus', a_bounce: 'Bounce', a_refill: 'Refill',
-    s_anim_desc: 'Animierter Füllbalken im Tray-Icon während des Ladens. Bounce pendelt weich zwischen aktuellem Stand und 100 %, Refill füllt linear auf 100 % und springt dann zurück.',
-    s_sim: 'Batterie-Simulator', s_level: 'Akkustand', s_charging: 'Wird geladen', s_low: 'Energiesparmodus', s_presets: 'Schnellauswahl',
-    p_critical: 'Kritisch', p_low: 'Niedrig', p_medium: 'Mittel', p_good: 'Gut', p_full: 'Voll',
-    en_eyebrow: 'Energiemodus', en_h: 'Stromsparen.<br>Ohne Umwege.',
-    en_p: 'Wechsle zwischen <strong>Automatisch</strong> und <strong>Leistung reduzieren</strong> direkt im Panel, ohne die Systemeinstellungen zu öffnen. Im Stromsparmodus wird das Symbol gelb und ein feiner Schimmer läuft über die Füllung.',
-    en_note: 'Eine einmalige Einrichtung mit Administratorrechten. Danach fragt Bettery nie wieder nach deinem Passwort.',
-    de_eyebrow: 'Details', de_h: 'Jedes Detail. Immer im Blick.', de_p: 'Zustand, Zyklen, Temperatur und Ladelimit stehen direkt im Panel. Ohne Terminal, ohne Systembericht.',
-    t_health: 'Zustand', t_health_p: 'Wie viel Kapazität dein Akku im Vergleich zu neu noch hat.',
-    t_cycles: 'Zyklen', t_cycles_p: 'Vollständige Ladezyklen, seit dem ersten Tag gezählt.',
-    t_temp: 'Temperatur', t_temp_p: 'Direkt aus dem Akku gelesen, auf eine Nachkommastelle.',
-    t_rem: 'Verbleibend', t_rem_p: 'Restlaufzeit im Akkubetrieb, beim Laden die Minuten bis voll.',
-    t_limit: 'Ladelimit', t_limit_p: 'Lege fest, bis wohin dein Mac lädt, in 5-%-Schritten. Ab macOS 26.4.',
-    foot: 'Beispielwerte. Bettery zeigt die Werte deines Macs.',
-    sy_eyebrow: 'Darstellung', sy_h: 'Dein Stil.<br>Hell oder Dunkel.',
-    s_appearance: 'Darstellung', s_theme: 'Erscheinungsbild', s_panel: 'Panel-Stil',
-    th_system: 'System', th_light: 'Hell', th_dark: 'Dunkel', pn_frosted: 'Frosted Glass', pn_liquid: 'Liquid Glass', pn_classic: 'Klassisch',
-    s_panel_desc: 'Frosted Glass mattiert den Hintergrund mit einem milchig-weißen Schleier. Liquid Glass erzeugt Apples nativen Glas-Look mit Tiefe, Glanz und feiner Lichtkante. Klassisch verwendet eine ruhige System-Hintergrundfarbe.',
+    f_eyebrow: 'Funktionen', f_h: 'Auf einen Blick.',
+    c1_k: 'Menüleiste', c1_h: 'Dein Ladestand als Zahl.', c1_p: 'Eine kleine Akku-Pille oben rechts zeigt dir den Stand, ohne dass du etwas öffnen musst. Kein Fenster, kein Dock-Icon.',
+    c2_k: 'Farben', c2_h: 'Farben, die etwas sagen.', c2_p: 'Grün beim Laden, gelb im Stromsparmodus, rot ab 20 %. Wird es kritisch, blinkt die Füllung.',
+    c3_k: 'Symbol', c3_h: 'Dein Symbol, dein Stil.', c3_p: 'Füllstand oder einfarbig. Beim Laden pendelt die Füllung mit Bounce oder läuft mit Refill hoch.',
+    st_charging: 'Wird geladen', st_low: 'Stromsparmodus', st_critical: 'Kritisch', sty_level: 'Füllstand', sty_filled: 'Einfarbig',
     sm_h: 'Und die kleinen Dinge.',
     g1_h: 'Startet mit deinem Mac', g1_p: 'Beim Anmelden öffnen, einmal einschalten und vergessen.',
     g2_h: 'Deutsch und Englisch', g2_p: 'Folgt deiner Systemsprache oder deiner Wahl.',
@@ -468,42 +450,40 @@ const DICT = {
     g4_h: 'Einrichtung in fünf Schritten', g4_p: 'Ein kurzes Onboarding beim ersten Start, danach läuft alles.',
     g5_h: 'Schnell wieder zu', g5_p: 'Esc, ein Klick daneben oder noch ein Klick aufs Symbol schließt das Panel.',
     g6_h: 'Akku-Simulator', g6_p: 'Kritisch, niedrig oder voll: Jeden Zustand gefahrlos ausprobieren.',
+    en_eyebrow: 'Energiemodus', en_h: 'Stromsparen.<br>Ohne Umwege.',
+    en_p: 'Wechsle zwischen <strong>Automatisch</strong> und <strong>Leistung reduzieren</strong> direkt im Panel, ohne die Systemeinstellungen zu öffnen. Im Stromsparmodus wird das Symbol gelb und ein feiner Schimmer läuft über die Füllung.',
+    en_note: 'Eine einmalige Einrichtung mit Administratorrechten. Danach fragt Bettery nie wieder nach deinem Passwort.',
+    de_eyebrow: 'Details', de_h: 'Jedes Detail. Immer im Blick.', de_p: 'Zustand, Zyklen, Temperatur und Ladelimit stehen direkt im Panel. Ohne Terminal, ohne Systembericht.',
+    t_health: 'Zustand', t_health_p: 'Wie viel Kapazität dein Akku im Vergleich zu neu noch hat.',
+    t_cycles: 'Zyklen', t_cycles_p: 'Vollständige Ladezyklen, seit dem ersten Tag gezählt.',
+    t_temp: 'Temperatur', t_temp_p: 'Direkt aus dem Akku gelesen, auf eine Nachkommastelle.',
+    t_rem: 'Verbleibend', t_rem_full: 'Minuten bis voll, solange dein Mac lädt. Im Akkubetrieb die Restlaufzeit.', t_rem_empty: 'Restlaufzeit im Akkubetrieb. Beim Laden die Minuten bis voll.',
+    t_limit: 'Ladelimit', t_limit_p: 'Lege fest, bis wohin dein Mac lädt, in 5-%-Schritten. Ab macOS 26.4.',
+    foot: 'Beispielwerte, bei jedem Besuch neu. Bettery zeigt die Werte deines Macs.',
+    sy_eyebrow: 'Darstellung', sy_h: 'Dein Stil.<br>Hell oder Dunkel.',
+    th_light: 'Hell', th_dark: 'Dunkel', pn_classic: 'Klassisch',
+    sd_frosted: 'Mattiert den Hintergrund mit einem milchig-weißen Schleier.',
+    sd_liquid: 'Apples nativer Glas-Look mit Tiefe, Glanz und feiner Lichtkante.',
+    sd_classic: 'Eine ruhige System-Hintergrundfarbe, ganz ohne Transparenz.',
     end_tag: 'Dein Akku. <span class="dim">In deiner Menüleiste.</span>',
     req: 'Erfordert macOS 26 oder neuer. Das Ladelimit erfordert macOS 26.4.',
     by: 'Ein Projekt von <a href="../">eayzzn</a>', imprint: 'Impressum', privacy: 'Datenschutz',
   },
   en: {
     _title: 'Bettery – Your battery. In your menu bar.',
-    nav_menubar: 'Menu bar', nav_energy: 'Energy Mode', nav_details: 'Details', nav_styles: 'Appearance', soon: 'Coming soon',
+    nav_features: 'Features', nav_energy: 'Energy Mode', nav_details: 'Details', nav_styles: 'Appearance', soon: 'Coming soon',
     eyebrow: 'Bettery for macOS', h1: 'Your battery.<br><span class="dim">In your menu bar.</span>',
     lead: 'Bettery lives in your menu bar and keeps an eye on your battery. Fast, unobtrusive, and without a Dock icon.',
     soon_mac: 'Coming soon for macOS', more: 'Try it ›',
+    statement: 'One click. <span>Everything there.</span>',
+    statement_p: 'One click on the battery icon opens the panel. Esc or a click outside closes it again.',
     mb_file: 'File', mb_edit: 'Edit', mb_view: 'View', mb_go: 'Go', mb_window: 'Window', tray_aria: 'Open or close the Bettery panel',
     hint: 'Try it: switch the energy mode, or click the battery icon in the menu bar.',
-    statement: 'One click.<br><span>Everything there.</span>',
-    statement_p: 'One click on the icon opens the panel. Esc, a click outside or a second click closes it again.',
-    mb_eyebrow: 'Menu bar', mb_h: 'At a glance.',
-    mb_p: 'Your charge as a number inside a small battery pill. <strong>Green while charging, yellow in Low Power Mode, red at 20% and below.</strong>',
-    l_charging: 'Charging', l_low: 'Low Power Mode', l_critical: '20% and below',
-    s_menubar_icon: 'Menu Bar Icon', s_tray: 'Tray Icon', s_anim: 'Charging Animation',
-    t_level: 'Fill Level', t_filled: 'Solid', a_off: 'Off', a_bounce: 'Bounce', a_refill: 'Refill',
-    s_anim_desc: 'Animated fill bar in the tray icon while charging. Bounce eases smoothly between the current level and 100%; Refill ramps linearly to 100% and then snaps back.',
-    s_sim: 'Battery Simulator', s_level: 'Battery Level', s_charging: 'Charging', s_low: 'Low Power Mode', s_presets: 'Quick Presets',
-    p_critical: 'Critical', p_low: 'Low', p_medium: 'Medium', p_good: 'Good', p_full: 'Full',
-    en_eyebrow: 'Energy Mode', en_h: 'Low Power.<br>No detours.',
-    en_p: 'Switch between <strong>Automatic</strong> and <strong>Low Power</strong> right from the panel, without opening System Settings. In Low Power Mode the icon turns yellow and a soft shimmer runs across the fill.',
-    en_note: 'One setup with admin rights. After that, Bettery never asks for your password again.',
-    de_eyebrow: 'Details', de_h: 'Every detail. Always in view.', de_p: 'Health, cycle count, temperature and charge limit sit right in the panel. No Terminal, no System Report.',
-    t_health: 'Health', t_health_p: 'How much capacity your battery has left compared with new.',
-    t_cycles: 'Cycles', t_cycles_p: 'Full charge cycles, counted since day one.',
-    t_temp: 'Temperature', t_temp_p: 'Read straight from the battery, to one decimal place.',
-    t_rem: 'Remaining', t_rem_p: 'Time left on battery, or minutes until full while charging.',
-    t_limit: 'Charge Limit', t_limit_p: 'Choose how far your Mac charges, in 5% steps. Requires macOS 26.4.',
-    foot: 'Example values. Bettery shows your Mac’s own numbers.',
-    sy_eyebrow: 'Appearance', sy_h: 'Your style.<br>Light or dark.',
-    s_appearance: 'Appearance', s_theme: 'Theme', s_panel: 'Panel Style',
-    th_system: 'System', th_light: 'Light', th_dark: 'Dark', pn_frosted: 'Frosted Glass', pn_liquid: 'Liquid Glass', pn_classic: 'Classic',
-    s_panel_desc: 'Frosted Glass softens the background with a milky overlay. Liquid Glass renders Apple’s native glass look with depth, sheen and a subtle light edge. Classic uses a solid system background color.',
+    f_eyebrow: 'Features', f_h: 'At a glance.',
+    c1_k: 'Menu bar', c1_h: 'Your charge as a number.', c1_p: 'A small battery pill in the top right shows your charge without opening anything. No window, no Dock icon.',
+    c2_k: 'Colours', c2_h: 'Colours that mean something.', c2_p: 'Green while charging, yellow in Low Power Mode, red at 20% and below. When it gets critical, the fill blinks.',
+    c3_k: 'Icon', c3_h: 'Your icon, your style.', c3_p: 'Fill level or solid. While charging, the fill swings with Bounce or ramps up with Refill.',
+    st_charging: 'Charging', st_low: 'Low Power Mode', st_critical: 'Critical', sty_level: 'Fill Level', sty_filled: 'Solid',
     sm_h: 'And the little things.',
     g1_h: 'Starts with your Mac', g1_p: 'Launch at login. Switch it on once and forget about it.',
     g2_h: 'English and German', g2_p: 'Follows your system language, or your choice.',
@@ -511,6 +491,21 @@ const DICT = {
     g4_h: 'Set up in five steps', g4_p: 'A short onboarding on first launch, then it just runs.',
     g5_h: 'Gone in a keystroke', g5_p: 'Esc, a click outside or another click on the icon closes the panel.',
     g6_h: 'Battery simulator', g6_p: 'Critical, low or full: try every state without draining a thing.',
+    en_eyebrow: 'Energy Mode', en_h: 'Low Power.<br>No detours.',
+    en_p: 'Switch between <strong>Automatic</strong> and <strong>Low Power</strong> right from the panel, without opening System Settings. In Low Power Mode the icon turns yellow and a soft shimmer runs across the fill.',
+    en_note: 'One setup with admin rights. After that, Bettery never asks for your password again.',
+    de_eyebrow: 'Details', de_h: 'Every detail. Always in view.', de_p: 'Health, cycle count, temperature and charge limit sit right in the panel. No Terminal, no System Report.',
+    t_health: 'Health', t_health_p: 'How much capacity your battery has left compared with new.',
+    t_cycles: 'Cycles', t_cycles_p: 'Full charge cycles, counted since day one.',
+    t_temp: 'Temperature', t_temp_p: 'Read straight from the battery, to one decimal place.',
+    t_rem: 'Remaining', t_rem_full: 'Minutes until full while your Mac charges. On battery, the time left.', t_rem_empty: 'Time left on battery. While charging, the minutes until full.',
+    t_limit: 'Charge Limit', t_limit_p: 'Choose how far your Mac charges, in 5% steps. Requires macOS 26.4.',
+    foot: 'Example values, new on every visit. Bettery shows your Mac’s own numbers.',
+    sy_eyebrow: 'Appearance', sy_h: 'Your style.<br>Light or dark.',
+    th_light: 'Light', th_dark: 'Dark', pn_classic: 'Classic',
+    sd_frosted: 'Softens the background with a milky overlay.',
+    sd_liquid: 'Apple’s native glass look with depth, sheen and a subtle light edge.',
+    sd_classic: 'A calm system background colour with no transparency.',
     end_tag: 'Your battery. <span class="dim">In your menu bar.</span>',
     req: 'Requires macOS 26 or later. Charge limit requires macOS 26.4.',
     by: 'A project by <a href="../">eayzzn</a>', imprint: 'Legal notice', privacy: 'Privacy',
@@ -518,9 +513,28 @@ const DICT = {
 };
 BK.init(DICT);
 const $ = s => document.querySelector(s);
+const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+
+/* ---------- example values, new on every visit and the same everywhere on the page ---------- */
+const V = (() => {
+  const r = (a, b) => a + Math.random() * (b - a);
+  const limit = [80, 85, 90, 95, 100][Math.floor(Math.random() * 5)];
+  const charging = Math.random() < 0.6;
+  let level = Math.round(r(34, 94));
+  if (charging) level = Math.min(level, limit - 4);           // a Mac charging up to its limit is below it
+  return {
+    level, charging, limit,
+    health: Math.round(r(86, 100)),
+    cycles: Math.round(r(40, 620)),
+    temp: Math.round(r(28.4, 36.2) * 10) / 10,
+    toFull: Math.max(4, Math.round((limit - level) * r(1.0, 1.4))),
+    toEmpty: Math.round(level * r(5.2, 7.6)),
+  };
+})();
+V.minutes = V.charging ? V.toFull : V.toEmpty;
 
 /* header: glyph body centred on the cap height of "Bettery", measured from the real font */
-const navG = BK.glyph($('[data-glyph="nav"]'), { level: 76, charging: true, number: false, crop: true });
+BK.glyph($('[data-glyph="nav"]'), { level: V.level, charging: V.charging, number: false, crop: true });
 function alignBrand() {
   const t = $('#brandText'), cs = getComputedStyle(t), size = parseFloat(cs.fontSize);
   const ctx = document.createElement('canvas').getContext('2d');
@@ -528,24 +542,23 @@ function alignBrand() {
   const cap = ctx.measureText('B').actualBoundingBoxAscent;
   const fm = ctx.measureText('Bettery'), asc = fm.fontBoundingBoxAscent, desc = fm.fontBoundingBoxDescent;
   if (!asc) return;
-  const baseline = size / 2 + (asc - desc) / 2;           // baseline inside a line-height:1 box
-  const nudge = (baseline - cap / 2) - size / 2;           // cap centre minus box centre
-  $('.brand i').style.setProperty('--nudge', nudge.toFixed(2) + 'px');
+  const baseline = size / 2 + (asc - desc) / 2;
+  $('.brand i').style.setProperty('--nudge', ((baseline - cap / 2) - size / 2).toFixed(2) + 'px');
 }
 (document.fonts ? document.fonts.ready : Promise.resolve()).then(alignBrand);
 
-/* hero glyph */
-BK.glyph($('[data-glyph="hero"]'), { level: 64, charging: true });
+/* hero */
+BK.glyph($('[data-glyph="hero"]'), { level: V.level, charging: V.charging });
 
 /* the Mac: tray icon, live panel under it, real date and time */
-const trayG = BK.glyph($('[data-glyph="tray"]'), { level: 76, charging: true });
+const trayG = BK.glyph($('[data-glyph="tray"]'), { level: V.level, charging: V.charging });
 const desk = $('#desk'), drop = $('#drop'), tray = $('#tray');
-const heroP = BK.panel(drop, {
-  level: 76, charging: true, material: 'liquid', theme: 'dark',
+BK.panel(drop, Object.assign({}, V, {
+  material: 'liquid', theme: 'dark',
   onChange: s => trayG.set({ low: s.low }),
-  onSettings: () => $('#styles').scrollIntoView(),
+  onSettings: () => go('#styles'),
   onQuit: () => setOpen(false),
-});
+}));
 function placePanel() {
   const d = desk.getBoundingClientRect(), t = tray.getBoundingClientRect(), w = drop.offsetWidth;
   const x = Math.min(Math.max(t.left + t.width / 2 - d.left - w / 2, 8), d.width - w - 8);
@@ -566,10 +579,9 @@ const MON = { de: ['Jan.', 'Feb.', 'März', 'Apr.', 'Mai', 'Juni', 'Juli', 'Aug.
 const hhmm = d => BK.lang === 'de'
   ? `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`
   : `${d.getHours() % 12 || 12}:${String(d.getMinutes()).padStart(2, '0')} ${d.getHours() < 12 ? 'AM' : 'PM'}`;
-function macClock(d) {
-  const l = BK.lang;
-  return l === 'de' ? `${WD.de[d.getDay()]} ${d.getDate()}. ${MON.de[d.getMonth()]} ${hhmm(d)}` : `${WD.en[d.getDay()]} ${MON.en[d.getMonth()]} ${d.getDate()} ${hhmm(d)}`;
-}
+const macClock = d => BK.lang === 'de'
+  ? `${WD.de[d.getDay()]} ${d.getDate()}. ${MON.de[d.getMonth()]} ${hhmm(d)}`
+  : `${WD.en[d.getDay()]} ${MON.en[d.getMonth()]} ${d.getDate()} ${hhmm(d)}`;
 function tick() {
   const now = new Date();
   $('#clock').textContent = macClock(now);
@@ -580,57 +592,69 @@ function tick() {
 document.addEventListener('visibilitychange', () => { if (!document.hidden) tick(); });
 document.addEventListener('bk-lang', tick);
 
-/* menu bar playground: tray icon tiles, charging animation tiles, battery simulator */
-const big = BK.glyph($('[data-glyph="big"]'), { level: 64, charging: true });
-const stripG = BK.glyph($('[data-glyph="strip"]'), { level: 64, charging: true });
-const playGlyphs = [big, stripG];
-BK.tiles($('#tilesTray'), {
-  value: 'level',
-  options: [{ value: 'level', label: 't_level', preview: BK.preview.tray('level') }, { value: 'filled', label: 't_filled', preview: BK.preview.tray('filled') }],
-  onChange: v => playGlyphs.forEach(g => g.set({ style: v })),
-});
-BK.tiles($('#tilesAnim'), {
-  value: 'bounce',
-  options: ['off', 'bounce', 'refill'].map(v => ({ value: v, label: 'a_' + v, preview: BK.preview.anim(v) })),
-  onChange: v => playGlyphs.forEach(g => g.set({ anim: v })),
-});
-const simLevel = $('#simLevel'), simOut = $('#simOut'), simCharging = $('#simCharging'), simLow = $('#simLow');
-function sim() {
-  const level = +simLevel.value;
-  simOut.textContent = level + '%';
-  simLevel.style.setProperty('--p', level + '%');
-  document.querySelectorAll('#presets button').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.p === level)));
-  playGlyphs.forEach(g => g.set({ level, charging: simCharging.checked, low: simLow.checked }));
-}
-simLevel.addEventListener('input', sim); simCharging.addEventListener('change', sim); simLow.addEventListener('change', sim);
-$('#presets').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { simLevel.value = b.dataset.p; sim(); } });
-sim();
+/* feature pictures */
+BK.glyph($('[data-glyph="f-tray"]'), { level: V.level, charging: V.charging });
+BK.glyph($('[data-glyph="f-loupe"]'), { level: V.level, charging: V.charging });
+BK.glyph($('[data-glyph="f-charging"]'), { level: 58, charging: true, number: false });
+BK.glyph($('[data-glyph="f-low"]'), { level: 46, low: true, number: false });
+BK.glyph($('[data-glyph="f-critical"]'), { level: 12, number: false });
+BK.glyph($('[data-glyph="f-level"]'), { level: 52, charging: true, anim: 'bounce' });
+BK.glyph($('[data-glyph="f-filled"]'), { level: 52, charging: true, style: 'filled' });
 
-/* energy section: Low Power on */
-BK.panel($('#energySlot'), { level: 58, charging: false, low: true, material: 'frosted', theme: 'dark', minutes: 18 });
+/* energy section: Low Power on, running on battery */
+BK.panel($('#energySlot'), Object.assign({}, V, { charging: false, low: true, minutes: V.toEmpty, material: 'frosted', theme: 'dark' }));
 
-/* appearance: one panel, theme and panel style picked with the app's own tiles */
-const mqDark = matchMedia('(prefers-color-scheme: dark)');
-let themeChoice = 'dark';
-const styleP = BK.panel($('#stylePanel'), { level: 76, charging: true, material: 'liquid', theme: 'dark' });
-function applyTheme() {
-  const t = themeChoice === 'system' ? (mqDark.matches ? 'dark' : 'light') : themeChoice;
-  $('#stylebox').classList.toggle('light', t === 'light');
-  styleP.set({ theme: t });
+/* details tiles follow the same numbers */
+function renderDetails() {
+  const de = BK.lang === 'de', m = V.minutes;
+  $('#vHealth').innerHTML = `${V.health}<small>%</small>`;
+  $('#mHealth').style.setProperty('--w', V.health + '%');
+  $('#vCycles').textContent = V.cycles;
+  $('#vTemp').innerHTML = `${V.temp.toFixed(1)}<small>°C</small>`;
+  $('#vRemaining').innerHTML = (m >= 60 ? `${Math.floor(m / 60)}<small>h</small> ` : '') + `${m % 60}<small>min</small>`;
+  $('#pRemaining').textContent = DICT[BK.lang][V.charging ? 't_rem_full' : 't_rem_empty'];
+  $('#vLimit').innerHTML = `${V.limit}<small>%</small>`;
+  $('#lim').style.setProperty('--p', ((V.limit - 80) / 20 * 100) + '%');
+  document.querySelectorAll('#scale span').forEach(s => s.classList.toggle('on', +s.textContent === V.limit));
 }
-BK.tiles($('#tilesTheme'), {
-  value: 'dark',
-  options: ['system', 'light', 'dark'].map(v => ({ value: v, label: 'th_' + v, preview: BK.preview.theme(v) })),
-  onChange: v => { themeChoice = v; applyTheme(); },
-});
-BK.tiles($('#tilesPanel'), {
-  value: 'liquid',
-  options: ['frosted', 'liquid', 'classic'].map(v => ({ value: v, label: 'pn_' + v, preview: BK.preview.panel(v) })),
-  onChange: v => styleP.set({ material: v }),
-});
-mqDark.addEventListener('change', applyTheme);
+renderDetails(); document.addEventListener('bk-lang', renderDetails);
+
+/* appearance: plays through Frosted, Liquid and Classic, first dark, then light, and morphs between them */
+const styleP = BK.panel($('#stylePanel'), Object.assign({}, V, { material: 'frosted', theme: 'dark' }));
+const SEQ = [['frosted', 'dark'], ['liquid', 'dark'], ['classic', 'dark'], ['frosted', 'light'], ['liquid', 'light'], ['classic', 'light']];
+const DWELL = reduced.matches ? 5200 : 3600;
+const cyc = $('#cyc'), box = $('#stylebox');
+cyc.style.setProperty('--dwell', DWELL + 'ms');
+let step = 0, timer = 0, visible = false;
+function show(i) {
+  const [m, t] = SEQ[i];
+  styleP.set({ material: m, theme: t });
+  box.classList.toggle('light', t === 'light');
+  document.querySelectorAll('.modes span[data-t]').forEach(s => s.classList.toggle('on', s.dataset.t === t));
+  cyc.querySelectorAll('li').forEach(li => {
+    const on = li.dataset.m === m;
+    if (on) { li.classList.remove('on'); void li.offsetWidth; }   // restart the progress bar
+    li.classList.toggle('on', on);
+  });
+}
+function loop() { clearTimeout(timer); if (!visible || document.hidden) return; timer = setTimeout(() => { step = (step + 1) % SEQ.length; show(step); loop(); }, DWELL); }
+new IntersectionObserver(es => { visible = es[0].isIntersecting; cyc.classList.toggle('paused', !visible); if (visible) { show(step); loop(); } else clearTimeout(timer); }, { threshold: 0.35 }).observe(box);
+document.addEventListener('visibilitychange', () => { cyc.classList.toggle('paused', document.hidden); if (!document.hidden && visible) { show(step); loop(); } });
+show(0);
 
 BK.glyph($('[data-glyph="end"]'), { level: 100, charging: true });
+
+/* in-page links scroll smoothly by script, so CSS snapping and smooth scrolling never fight */
+function go(hash) {
+  const t = document.querySelector(hash); if (!t) return;
+  const top = hash === '#top' ? 0 : t.getBoundingClientRect().top + scrollY - 52;
+  scrollTo({ top, behavior: reduced.matches ? 'auto' : 'smooth' });
+  history.replaceState(null, '', hash);
+}
+document.addEventListener('click', e => {
+  const a = e.target.closest('a[href^="#"]'); if (!a || a.getAttribute('href').length < 2) return;
+  e.preventDefault(); go(a.getAttribute('href'));
+});
 
 /* nav: highlight the section in view */
 const links = [...document.querySelectorAll('.links a')];

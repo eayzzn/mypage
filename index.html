@@ -26,7 +26,7 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preload" href="src/assets/fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="src/assets/fonts/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="src/styles/styles.css?v=23">
+<link rel="stylesheet" href="src/styles/styles.css?v=24">
 </head>
 <body>
 
@@ -80,10 +80,30 @@
         <button type="button" class="filter-btn" data-filter="all" aria-pressed="true" data-i18n="projects.filterAll">alle</button>
         <button type="button" class="filter-btn" data-filter="web" aria-pressed="false">web</button>
         <button type="button" class="filter-btn" data-filter="ios" aria-pressed="false">ios</button>
+        <button type="button" class="filter-btn" data-filter="macos" aria-pressed="false">macos</button>
       </div>
     </div>
 
     <div class="project-grid">
+      <article class="project-card" data-category="macos">
+        <a class="project-preview project-preview--bettery" href="bettery/" aria-hidden="true" tabindex="-1">
+          <svg class="bettery-mock" viewBox="0 0 29 22"><path d="M27.5 9h.65a1.1 1.1 0 0 1 1.1 1.1v1.8a1.1 1.1 0 0 1-1.1 1.1h-.65z" fill="rgba(255,255,255,.55)"/><rect x=".5" y="4.5" width="26" height="13" rx="4" fill="rgba(255,255,255,.3)"/><clipPath id="bettery-mock-clip"><rect x=".5" y="4.5" width="26" height="13" rx="4"/></clipPath><rect x=".5" y="4.5" width="19.8" height="13" fill="#33c759" clip-path="url(#bettery-mock-clip)"/><text x="13.5" y="11.3" text-anchor="middle" dominant-baseline="central" font-family="ui-rounded,-apple-system,system-ui,sans-serif" font-weight="700" font-size="10.6">76</text></svg>
+        </a>
+        <div class="project-body">
+          <div class="project-title-row">
+            <h3 class="project-title">Bettery</h3>
+            <span class="project-year">2026</span>
+          </div>
+          <p class="project-desc" data-i18n="projects.bettery.desc">macOS-Menüleisten-App für deinen Akku.</p>
+          <div class="project-meta">
+            <span class="project-tags">swift · swiftui · appkit</span>
+            <span class="project-links">
+              <a href="bettery/" data-i18n="projects.bettery.link">ansehen →</a>
+            </span>
+          </div>
+        </div>
+      </article>
+
       <article class="project-card" data-category="web">
         <div class="project-preview" aria-hidden="true">
           <div class="mock mock--web">
@@ -188,7 +208,7 @@
   </span>
 </footer>
 
-<script src="src/scripts/i18n.js?v=23"></script>
+<script src="src/scripts/i18n.js?v=24"></script>
 <script src="src/scripts/mascot.js?v=23"></script>
 <script src="src/scripts/main.js?v=23"></script>
 </body>

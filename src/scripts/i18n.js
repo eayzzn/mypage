@@ -29,6 +29,10 @@ const translations = {
     projects: {
       heading: 'projekte',
       filterAll: 'alle',
+      bettery: {
+        desc: 'macOS-Menüleisten-App für deinen Akku.',
+        link: 'ansehen →',
+      },
       portfolio: {
         title: 'Portfolio-Website',
         desc: 'Diese Seite. Dark/Light, DE/EN.',
@@ -83,6 +87,10 @@ const translations = {
     projects: {
       heading: 'projects',
       filterAll: 'all',
+      bettery: {
+        desc: 'A macOS menu bar app for your battery.',
+        link: 'view →',
+      },
       portfolio: {
         title: 'Portfolio Website',
         desc: 'This site. Dark/light, DE/EN.',

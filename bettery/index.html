@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bettery – Dein Akku. In deiner Menüleiste.</title>
+<meta name="description" content="Bettery lebt in deiner Menüleiste und behält deinen Akku im Blick. Schnell, unaufdringlich und ohne Dock-Icon. Bald verfügbar für macOS.">
+<meta name="theme-color" content="#000000">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Bettery – Dein Akku. In deiner Menüleiste.">
+<meta property="og:description" content="Ladestand, Energiemodus, Zustand, Zyklen, Temperatur und Ladelimit. Direkt in der Menüleiste deines Macs.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<style>
+/* Layout: apple.com product page — black stage, one statement per screen, the real panel as the hero object. */
+:root{
+  --bg:#000; --bg2:#0d0d0f; --tile:#141416; --tileB:rgba(255,255,255,.07);
+  --fg:#f5f5f7; --fg2:#86868b; --fg3:#6e6e73;
+  --blue:#2997ff; --green:#33c759; --yellow:#ffc700; --red:#ff4d45; --rose:#fa6bb8; --violet:#8c7af2; --teal:#33b39e;
+  --display:"SF Pro Display",-apple-system,BlinkMacSystemFont,system-ui,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+  --text:"SF Pro Text",-apple-system,BlinkMacSystemFont,system-ui,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+  --rounded:"SF Pro Rounded",ui-rounded,-apple-system,system-ui,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{background:var(--bg);color:var(--fg);font:400 17px/1.47 var(--text);letter-spacing:-.022em;-webkit-font-smoothing:antialiased;font-optical-sizing:auto;overflow-x:hidden}
+a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:max(22px,env(safe-area-inset-left))}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance}
+p{margin:0}
+.dim{color:var(--fg2)}
+
+/* nav: translucent material, content scrolls under it */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:rgba(22,22,23,.72);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:.5px solid rgba(255,255,255,.08)}
+.nav .wrap{height:52px;display:flex;align-items:center;gap:28px}
+.brand{display:flex;align-items:center;gap:8px;font:600 21px/1 var(--display);letter-spacing:-.02em;color:var(--fg)}
+.brand:hover{text-decoration:none}
+.brand i{display:block;width:26px}
+.links{display:flex;gap:24px;margin-left:auto;font-size:12px;letter-spacing:-.01em}
+.links a{color:rgba(245,245,247,.8)}.links a:hover{color:#fff;text-decoration:none}
+.lang{display:flex;background:rgba(255,255,255,.08);border-radius:999px;padding:2px}
+.lang button{all:unset;cursor:pointer;font:600 11px/1 var(--text);letter-spacing:.02em;padding:5px 9px;border-radius:999px;color:var(--fg2)}
+.lang button[aria-pressed="true"]{background:rgba(255,255,255,.16);color:var(--fg)}
+.lang button:focus-visible{outline:2px solid var(--blue)}
+.soon-s{font:500 12px/1 var(--text);padding:7px 12px;border-radius:999px;background:var(--fg);color:#000;white-space:nowrap}
+@media (max-width:760px){.links{display:none}.lang{margin-left:auto}}
+
+/* hero */
+.hero{padding-block:72px 0;text-align:center}
+.eyebrow{font:600 21px/1.2 var(--display);color:var(--fg2);letter-spacing:.004em}
+.hero h1{font-size:clamp(48px,8.2vw,96px);line-height:1.02;letter-spacing:-.035em;font-weight:700;margin-top:10px}
+.hero .lead{max-width:640px;margin:22px auto 0;font:400 clamp(19px,2.2vw,24px)/1.38 var(--display);letter-spacing:.004em;color:var(--fg2)}
+.ctas{display:flex;justify-content:center;align-items:center;gap:28px;margin-top:30px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;font:500 17px/1 var(--text);padding:13px 22px;border-radius:999px;background:var(--fg);color:#000;letter-spacing:-.02em}
+.btn svg{width:16px;height:16px}
+.btn[aria-disabled="true"]{cursor:default}
+.more{font-size:17px}
+.rise{animation:rise .9s cubic-bezier(.2,.8,.2,1) both}
+.rise.d1{animation-delay:.08s}.rise.d2{animation-delay:.16s}.rise.d3{animation-delay:.26s}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.rise{animation:none}}
+
+/* the Mac: wallpaper + menu bar + panel dropping from the tray icon */
+.mac{position:relative;margin:56px auto 0;max-width:1120px;border-radius:22px;overflow:hidden;min-height:690px;
+  background:
+   radial-gradient(60% 70% at 18% 20%,#2f68ff 0,transparent 60%),
+   radial-gradient(50% 60% at 82% 28%,#ff4fa0 0,transparent 62%),
+   radial-gradient(55% 60% at 70% 88%,#ff9a0a 0,transparent 60%),
+   radial-gradient(45% 55% at 22% 90%,#8a5cff 0,transparent 60%),
+   radial-gradient(40% 40% at 50% 55%,#2fd0c4 0,transparent 70%),#0c0a22;
+  box-shadow:0 0 0 1px rgba(255,255,255,.06),0 40px 120px rgba(47,104,255,.18)}
+.mac:before{content:"";position:absolute;inset:0;background:rgba(0,0,0,.12)}
+.menubar{position:relative;z-index:2;height:30px;display:flex;align-items:center;gap:20px;padding:0 16px;font:500 13px/1 var(--text);letter-spacing:-.01em;color:#fff;
+  background:linear-gradient(180deg,rgba(0,0,0,.28),rgba(0,0,0,.08));text-shadow:0 0 6px rgba(0,0,0,.2)}
+.menubar b{font-weight:700}
+.menubar .apple{width:15px;height:15px}
+.menubar svg{display:block}
+.mb-r{margin-left:auto;display:flex;align-items:center;gap:16px}
+.mb-r .mi{width:16px;height:16px}
+.tray{all:unset;cursor:pointer;width:30px;border-radius:5px;padding:2px 3px;margin:-2px -3px}
+.tray[aria-expanded="true"]{background:rgba(255,255,255,.22)}
+.tray:focus-visible{outline:2px solid #fff}
+.mb-l{display:flex;gap:20px;align-items:center}
+.stage{position:relative;z-index:1;display:flex;justify-content:flex-end;padding:8px 118px 40px 24px}
+.stage .slot{transform-origin:85% 0;transition:transform .36s cubic-bezier(.2,.9,.25,1),opacity .24s}
+.stage .slot.closed{transform:scale(.92) translateY(-8px);opacity:0;pointer-events:none}
+.hint{position:absolute;left:28px;bottom:28px;z-index:1;max-width:280px;font:500 14px/1.4 var(--text);color:rgba(255,255,255,.88);
+  padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.12);backdrop-filter:blur(18px) saturate(1.6);-webkit-backdrop-filter:blur(18px) saturate(1.6);box-shadow:inset 0 0 0 .5px rgba(255,255,255,.28)}
+@media (max-width:760px){
+  .mac{min-height:0;border-radius:18px}
+  .mb-l span:not(.keep){display:none}
+  .stage{justify-content:center;padding:10px 0 92px}
+  .stage .slot{transform-origin:50% 0}
+  .hint{left:14px;right:14px;bottom:14px;max-width:none}
+}
+@media (max-width:420px){.stage .slot{zoom:.92}}
+
+/* sections */
+section{padding-block:120px}
+.sec-h{text-align:center}
+.sec-h .eyebrow{font-size:19px}
+.sec-h h2{font-size:clamp(40px,6.4vw,72px);line-height:1.04;letter-spacing:-.03em;font-weight:700;margin-top:8px}
+.sec-h p{max-width:660px;margin:20px auto 0;font:400 clamp(18px,2vw,21px)/1.42 var(--display);color:var(--fg2);letter-spacing:.006em}
+.sec-h p strong{color:var(--fg);font-weight:600}
+
+.statement{padding-block:140px 40px;text-align:center}
+.statement h2{font-size:clamp(44px,8vw,96px);line-height:1;letter-spacing:-.04em;font-weight:700}
+.statement h2 span{background:linear-gradient(90deg,#33c759,#2fd0c4 40%,#2f68ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* tray playground */
+.play{margin-top:56px;border-radius:28px;background:var(--bg2);box-shadow:inset 0 0 0 1px var(--tileB);padding:56px 24px 32px;display:grid;justify-items:center;gap:40px}
+.bigglyph{width:min(360px,72vw)}
+.ctrls{display:flex;flex-wrap:wrap;gap:18px 28px;justify-content:center}
+.ctrl{display:grid;gap:8px;justify-items:center}
+.ctrl label,.ctrl .lbl{font:600 12px/1 var(--text);letter-spacing:.02em;color:var(--fg3);text-transform:uppercase}
+.seg{display:flex;background:rgba(255,255,255,.08);border-radius:10px;padding:2px;gap:2px}
+.seg button{all:unset;cursor:pointer;font:500 13px/1 var(--text);padding:8px 12px;border-radius:8px;color:var(--fg2);white-space:nowrap;transition:background .18s,color .18s}
+.seg button[aria-pressed="true"]{background:rgba(255,255,255,.18);color:var(--fg);box-shadow:0 1px 2px rgba(0,0,0,.3)}
+.seg button:active{transform:scale(.97)}
+.seg button:focus-visible{outline:2px solid var(--blue)}
+.legend{display:flex;gap:22px;flex-wrap:wrap;justify-content:center;font-size:14px;color:var(--fg2)}
+.legend span{display:inline-flex;align-items:center;gap:8px}
+.legend i{width:10px;height:10px;border-radius:3px;background:var(--c)}
+
+/* energy */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;margin-top:64px}
+.split > *{min-width:0}
+.split h3{font-size:clamp(28px,3.4vw,40px);line-height:1.1;letter-spacing:-.025em;font-weight:700}
+.split p{margin-top:16px;font-size:19px;line-height:1.45;color:var(--fg2)}
+.split p strong{color:var(--fg);font-weight:600}
+.note{margin-top:22px;display:flex;gap:12px;align-items:flex-start;font-size:15px;color:var(--fg2);padding:16px;border-radius:16px;background:var(--tile);box-shadow:inset 0 0 0 1px var(--tileB)}
+.note svg{width:20px;height:20px;flex:none;color:var(--green);margin-top:1px}
+.energy-vis{display:flex;justify-content:center;padding:36px 16px;border-radius:28px;
+  background:radial-gradient(70% 80% at 30% 20%,rgba(255,199,0,.28),transparent 60%),radial-gradient(60% 70% at 80% 90%,rgba(10,132,255,.32),transparent 60%),#121214}
+@media (max-width:820px){.split{grid-template-columns:1fr;gap:32px}}
+
+/* details bento */
+.bento{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;margin-top:64px}
+.tile{grid-column:span 2;border-radius:24px;background:var(--tile);box-shadow:inset 0 0 0 1px var(--tileB);padding:28px;display:flex;flex-direction:column;gap:14px;min-height:240px;min-width:0}
+.tile.w3{grid-column:span 3}
+.tile .ic{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;color:var(--c);background:color-mix(in srgb,var(--c) 18%,transparent)}
+.tile .ic svg{width:22px;height:22px}
+.tile h3{font:600 15px/1.2 var(--text);letter-spacing:-.01em;color:var(--fg2)}
+.tile .val{font:700 clamp(44px,5.4vw,64px)/1 var(--rounded);letter-spacing:-.02em;color:var(--fg);font-variant-numeric:tabular-nums;margin-top:auto}
+.tile .val small{font-size:.45em;color:var(--fg2);font-weight:700;margin-left:2px}
+.tile p{font-size:15px;line-height:1.4;color:var(--fg2)}
+.meter{height:6px;border-radius:3px;background:rgba(255,255,255,.1);overflow:hidden}
+.meter i{display:block;height:100%;width:var(--w);background:var(--c);border-radius:3px}
+.limit-scale{display:flex;justify-content:space-between;font:600 12px/1 var(--text);color:var(--fg3);font-variant-numeric:tabular-nums}
+.foot{margin-top:18px;text-align:center;font-size:13px;color:var(--fg3)}
+@media (max-width:820px){.bento{grid-template-columns:1fr 1fr}.tile,.tile.w3{grid-column:span 1}.tile.wide{grid-column:span 2}}
+@media (max-width:520px){.bento{grid-template-columns:1fr}.tile,.tile.w3,.tile.wide{grid-column:span 1}}
+
+/* styles: one panel, pick material and theme */
+.styles{margin-top:56px;border-radius:28px;overflow:hidden;padding:56px clamp(24px,6vw,80px);transition:background .5s;
+  display:grid;grid-template-columns:auto minmax(0,1fr);gap:clamp(32px,6vw,80px);align-items:center;
+  background:radial-gradient(60% 70% at 15% 25%,#2f68ff,transparent 60%),radial-gradient(55% 65% at 85% 30%,#ff4fa0,transparent 62%),radial-gradient(60% 60% at 60% 95%,#ff9a0a,transparent 60%),#16123a}
+.styles.light{background:radial-gradient(60% 70% at 15% 25%,#7fb2ff,transparent 60%),radial-gradient(55% 65% at 85% 30%,#ffb3d6,transparent 62%),radial-gradient(60% 60% at 60% 95%,#ffd29a,transparent 60%),#e9e4ff}
+.style-stage{display:flex;justify-content:center}
+.style-ctrls{display:grid;gap:26px;justify-items:start;min-width:0}
+.style-ctrls .ctrl{justify-items:start}
+.styles .lbl{color:rgba(255,255,255,.72)}
+.styles.light .lbl{color:rgba(0,0,0,.55)}
+.seg.glass{background:rgba(0,0,0,.26);box-shadow:inset 0 0 0 .5px rgba(255,255,255,.2);backdrop-filter:blur(18px) saturate(1.5);-webkit-backdrop-filter:blur(18px) saturate(1.5);flex-wrap:wrap}
+.seg.glass button{color:rgba(255,255,255,.75)}
+.seg.glass button[aria-pressed="true"]{background:rgba(255,255,255,.24);color:#fff}
+.styles.light .seg.glass{background:rgba(255,255,255,.45);box-shadow:inset 0 0 0 .5px rgba(0,0,0,.08)}
+.styles.light .seg.glass button{color:rgba(0,0,0,.62)}
+.styles.light .seg.glass button[aria-pressed="true"]{background:#fff;color:#1d1d1f;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.style-name{font:700 clamp(28px,3.4vw,40px)/1.1 var(--display);letter-spacing:-.025em;color:#fff}
+.style-desc{font:400 17px/1.45 var(--display);color:rgba(255,255,255,.85);max-width:400px;margin-top:-14px;min-height:4.4em}
+.styles.light .style-name{color:#1d1d1f}
+.styles.light .style-desc{color:rgba(0,0,0,.7)}
+.style-note{font-size:13px;color:rgba(255,255,255,.6);max-width:400px}
+.styles.light .style-note{color:rgba(0,0,0,.5)}
+@media (max-width:820px){
+  .styles{grid-template-columns:1fr;justify-items:center;text-align:center;padding:40px 18px}
+  .style-ctrls,.style-ctrls .ctrl{justify-items:center}
+  .style-desc{margin-inline:auto}.style-note{margin-inline:auto}
+}
+@media (max-width:520px){.style-stage .bk-panel{zoom:.86}}
+
+/* small things */
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:40px 32px;margin-top:64px}
+.grid3 > div{min-width:0}
+.grid3 .ic{width:32px;height:32px;color:var(--c)}
+.grid3 h3{font:600 19px/1.25 var(--display);letter-spacing:-.01em;margin-top:14px}
+.grid3 p{margin-top:6px;font-size:15px;color:var(--fg2)}
+@media (max-width:820px){.grid3{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.grid3{grid-template-columns:1fr}}
+
+/* end card */
+.end{text-align:center;padding-block:140px 120px;background:radial-gradient(50% 60% at 50% 0%,rgba(51,199,89,.16),transparent 70%)}
+.end .mark{width:120px;margin:0 auto}
+.end h2{font-size:clamp(56px,10vw,120px);letter-spacing:-.045em;font-weight:700;line-height:1;margin-top:26px}
+.end .tag{margin-top:14px;font:600 clamp(22px,3vw,32px)/1.2 var(--display);letter-spacing:-.01em}
+.end .req{margin-top:28px;font-size:14px;color:var(--fg3)}
+footer{border-top:.5px solid rgba(255,255,255,.1);padding-block:22px 34px;font-size:12px;color:var(--fg3)}
+footer .wrap{display:flex;gap:18px;flex-wrap:wrap;justify-content:space-between}
+footer nav{display:flex;gap:18px}
+footer a{color:var(--fg2)}
+</style>
+</head>
+<body>
+
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top"><i data-glyph="nav"></i>Bettery</a>
+    <nav class="links">
+      <a href="#menubar" data-i18n="nav_menubar">Menüleiste</a>
+      <a href="#energy" data-i18n="nav_energy">Energiemodus</a>
+      <a href="#details" data-i18n="nav_details">Details</a>
+      <a href="#styles" data-i18n="nav_styles">Stile</a>
+    </nav>
+    <div class="lang" role="group" aria-label="Language"><button type="button" data-lang="de">DE</button><button type="button" data-lang="en">EN</button></div>
+    <span class="soon-s" data-i18n="soon">Bald verfügbar</span>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero wrap">
+    <p class="eyebrow rise" data-i18n="eyebrow">Bettery für macOS</p>
+    <h1 class="rise d1" data-i18n="h1">Dein Akku.<br><span class="dim">In deiner Menüleiste.</span></h1>
+    <p class="lead rise d2" data-i18n="lead">Bettery lebt in deiner Menüleiste und behält deinen Akku im Blick. Schnell, unaufdringlich und ohne Dock-Icon.</p>
+    <div class="ctas rise d3">
+      <span class="btn" role="button" aria-disabled="true"><svg viewBox="0 0 24 24"><use href="#bk-apple"/></svg><span data-i18n="soon_mac">Bald verfügbar für macOS</span></span>
+      <a class="more" href="#menubar" data-i18n="more">Funktionen ansehen ›</a>
+    </div>
+  </div>
+
+  <div class="wrap" style="max-width:1164px">
+    <div class="mac rise d3" id="mac">
+      <div class="menubar">
+        <div class="mb-l"><svg class="apple keep" viewBox="0 0 24 24"><use href="#bk-apple"/></svg><span class="keep"><b>Finder</b></span><span data-i18n="mb_file">Ablage</span><span data-i18n="mb_edit">Bearbeiten</span><span data-i18n="mb_view">Darstellung</span><span data-i18n="mb_window">Fenster</span></div>
+        <div class="mb-r">
+          <button type="button" class="tray" id="tray" aria-expanded="true" data-i18n-aria="tray_aria" aria-label="Bettery-Panel öffnen"><i data-glyph="tray"></i></button>
+          <svg class="mi" viewBox="0 0 24 24"><use href="#bk-wifi"/></svg>
+          <svg class="mi" viewBox="0 0 24 24"><use href="#bk-cc"/></svg>
+          <span id="clock" style="font-variant-numeric:tabular-nums">Mo. 9:41</span>
+        </div>
+      </div>
+      <div class="stage"><div class="slot" id="heroSlot"></div></div>
+      <p class="hint" data-i18n="hint">Probier es aus: Wechsle im Panel den Energiemodus oder klick auf das Akku-Symbol in der Menüleiste.</p>
+    </div>
+  </div>
+
+  <div class="statement wrap"><h2 data-i18n="statement">Ein Klick.<br><span>Alles da.</span></h2></div>
+
+  <section id="menubar">
+    <div class="wrap">
+      <div class="sec-h">
+        <p class="eyebrow" data-i18n="mb_eyebrow">Menüleiste</p>
+        <h2 data-i18n="mb_h">Auf einen Blick.</h2>
+        <p data-i18n="mb_p">Dein Ladestand als Zahl in einer kleinen Akku-Pille. <strong>Grün beim Laden, gelb im Stromsparmodus, rot ab 20 %.</strong> Beim Ein- und Ausstecken läuft die Farbe sanft über die Füllung.</p>
+      </div>
+      <div class="play">
+        <div class="bigglyph" data-glyph="big"></div>
+        <div class="ctrls">
+          <div class="ctrl"><span class="lbl" data-i18n="c_state">Zustand</span>
+            <div class="seg" data-seg="state"><button type="button" data-v="charging" aria-pressed="true" data-i18n="s_charging">Laden</button><button type="button" data-v="battery" data-i18n="s_battery">Akku</button><button type="button" data-v="low" data-i18n="s_low">Stromsparen</button><button type="button" data-v="critical" data-i18n="s_critical">Kritisch</button></div></div>
+          <div class="ctrl"><span class="lbl" data-i18n="c_style">Symbol</span>
+            <div class="seg" data-seg="style"><button type="button" data-v="fill" aria-pressed="true" data-i18n="st_fill">Füllstand</button><button type="button" data-v="solid" data-i18n="st_solid">Einfarbig</button></div></div>
+          <div class="ctrl"><span class="lbl" data-i18n="c_anim">Ladeanimation</span>
+            <div class="seg" data-seg="anim"><button type="button" data-v="off" data-i18n="a_off">Aus</button><button type="button" data-v="bounce" aria-pressed="true">Bounce</button><button type="button" data-v="refill">Refill</button></div></div>
+        </div>
+        <div class="legend">
+          <span style="--c:var(--green)"><i></i><span data-i18n="l_charging">Wird geladen</span></span>
+          <span style="--c:var(--yellow)"><i></i><span data-i18n="l_low">Stromsparmodus</span></span>
+          <span style="--c:var(--red)"><i></i><span data-i18n="l_critical">20 % und weniger</span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="energy" style="padding-top:40px">
+    <div class="wrap">
+      <div class="sec-h">
+        <p class="eyebrow" data-i18n="en_eyebrow">Energiemodus</p>
+        <h2 data-i18n="en_h">Ohne Umwege.</h2>
+      </div>
+      <div class="split">
+        <div>
+          <h3 data-i18n="en_h3">Stromsparen mit einem Klick.</h3>
+          <p data-i18n="en_p">Wechsle zwischen <strong>Automatisch</strong> und <strong>Leistung reduzieren</strong> direkt im Panel, ohne die Systemeinstellungen zu öffnen. Im Stromsparmodus wird das Symbol gelb und ein feiner Schimmer läuft über die Füllung.</p>
+          <div class="note"><svg viewBox="0 0 24 24"><use href="#bk-shield"/></svg><span data-i18n="en_note">Eine einmalige Einrichtung mit Administratorrechten. Danach fragt Bettery nie wieder nach deinem Passwort.</span></div>
+        </div>
+        <div class="energy-vis"><div id="energySlot"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="details">
+    <div class="wrap">
+      <div class="sec-h">
+        <p class="eyebrow" data-i18n="de_eyebrow">Details</p>
+        <h2 data-i18n="de_h">Jedes Detail.<br>Immer im Blick.</h2>
+        <p data-i18n="de_p">Zustand, Zyklen, Temperatur und Ladelimit stehen direkt im Panel. Ohne Terminal, ohne Systembericht.</p>
+      </div>
+      <div class="bento">
+        <div class="tile w3" style="--c:var(--rose)"><div class="ic"><svg viewBox="0 0 24 24"><use href="#bk-heart"/></svg></div><h3 data-i18n="t_health">Zustand</h3><div class="val">94<small>%</small></div><div class="meter"><i style="--w:94%"></i></div><p data-i18n="t_health_p">Wie viel Kapazität dein Akku im Vergleich zu neu noch hat.</p></div>
+        <div class="tile w3" style="--c:var(--violet)"><div class="ic"><svg viewBox="0 0 24 24"><use href="#bk-cycle"/></svg></div><h3 data-i18n="t_cycles">Zyklen</h3><div class="val">212</div><p data-i18n="t_cycles_p">Vollständige Ladezyklen, seit dem ersten Tag gezählt.</p></div>
+        <div class="tile" style="--c:var(--red)"><div class="ic"><svg viewBox="0 0 24 24"><use href="#bk-thermo"/></svg></div><h3 data-i18n="t_temp">Temperatur</h3><div class="val" data-i18n="t_temp_v">31,4<small>°C</small></div><p data-i18n="t_temp_p">Direkt aus dem Akku gelesen, auf eine Nachkommastelle.</p></div>
+        <div class="tile" style="--c:#0a84ff"><div class="ic"><svg viewBox="0 0 24 24"><use href="#bk-clock"/></svg></div><h3 data-i18n="t_rem">Verbleibend</h3><div class="val" data-i18n="t_rem_v">4<small>h</small> 12<small>min</small></div><p data-i18n="t_rem_p">Restlaufzeit im Akkubetrieb, beim Laden die Minuten bis voll.</p></div>
+        <div class="tile wide" style="--c:var(--teal)"><div class="ic"><svg viewBox="0 0 24 24"><use href="#bk-shield"/></svg></div><h3 data-i18n="t_limit">Ladelimit</h3><div class="val">80<small>%</small></div><div class="meter"><i style="--w:80%"></i></div><div class="limit-scale"><span>80</span><span>85</span><span>90</span><span>95</span><span>100</span></div><p data-i18n="t_limit_p">Lege fest, bis wohin dein Mac lädt, in 5-%-Schritten. Ab macOS 26.4.</p></div>
+      </div>
+      <p class="foot" data-i18n="foot">Beispielwerte. Bettery zeigt die Werte deines Macs.</p>
+    </div>
+  </section>
+
+  <section id="styles" style="padding-top:40px">
+    <div class="wrap">
+      <div class="sec-h">
+        <p class="eyebrow" data-i18n="sy_eyebrow">Darstellung</p>
+        <h2 data-i18n="sy_h">Dein Stil.<br>Hell oder Dunkel.</h2>
+        <p data-i18n="sy_p">Drei Panel-Stile, jeweils hell oder dunkel. Such dir aus, wie Bettery auf deinem Mac aussieht.</p>
+      </div>
+      <div class="styles" id="stylesBox">
+        <div class="style-stage"><div id="stylePanel"></div></div>
+        <div class="style-ctrls">
+          <div class="ctrl"><span class="lbl" data-i18n="c_panel">Panel-Stil</span>
+            <div class="seg glass" data-seg="material"><button type="button" data-v="frosted">Frosted Glass</button><button type="button" data-v="liquid" aria-pressed="true">Liquid Glass</button><button type="button" data-v="classic">Classic</button></div></div>
+          <div class="ctrl"><span class="lbl" data-i18n="c_theme">Erscheinungsbild</span>
+            <div class="seg glass" data-seg="theme"><button type="button" data-v="light" data-i18n="th_light">Hell</button><button type="button" data-v="dark" aria-pressed="true" data-i18n="th_dark">Dunkel</button></div></div>
+          <p class="style-name" id="styleName" aria-live="polite">Liquid Glass</p>
+          <p class="style-desc" id="styleDesc"></p>
+          <p class="style-note" data-i18n="sy_note"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:40px">
+    <div class="wrap">
+      <div class="sec-h"><h2 data-i18n="sm_h">Und die kleinen Dinge.</h2></div>
+      <div class="grid3">
+        <div style="--c:var(--yellow)"><svg class="ic" viewBox="0 0 24 24"><use href="#bk-sun"/></svg><h3 data-i18n="g1_h">Startet mit deinem Mac</h3><p data-i18n="g1_p">Beim Anmelden öffnen, einmal einschalten und vergessen.</p></div>
+        <div style="--c:#2997ff"><svg class="ic" viewBox="0 0 24 24"><use href="#bk-globe"/></svg><h3 data-i18n="g2_h">Deutsch und Englisch</h3><p data-i18n="g2_p">Folgt deiner Systemsprache oder deiner Wahl.</p></div>
+        <div style="--c:var(--green)"><svg class="ic" viewBox="0 0 24 24"><use href="#bk-batt"/></svg><h3 data-i18n="g3_h">Kein Dock-Icon</h3><p data-i18n="g3_p">Bettery bleibt in der Menüleiste und nimmt im Dock keinen Platz weg.</p></div>
+        <div style="--c:var(--violet)"><svg class="ic" viewBox="0 0 24 24"><use href="#bk-sparkles"/></svg><h3 data-i18n="g4_h">Einrichtung in fünf Schritten</h3><p data-i18n="g4_p">Ein kurzes Onboarding beim ersten Start, danach läuft alles.</p></div>
+        <div style="--c:var(--rose)"><svg class="ic" viewBox="0 0 24 24"><use href="#bk-power"/></svg><h3 data-i18n="g5_h">Schnell wieder zu</h3><p data-i18n="g5_p">Esc, ein Klick daneben oder noch ein Klick aufs Symbol schließt das Panel.</p></div>
+        <div style="--c:var(--teal)"><svg class="ic" viewBox="0 0 24 24"><use href="#bk-gear"/></svg><h3 data-i18n="g6_h">Akku-Simulator</h3><p data-i18n="g6_p">Kritisch, niedrig oder voll: Jeden Zustand gefahrlos ausprobieren.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="end">
+    <div class="wrap">
+      <div class="mark" data-glyph="end"></div>
+      <h2>Bettery</h2>
+      <p class="tag" data-i18n="end_tag">Dein Akku. <span class="dim">In deiner Menüleiste.</span></p>
+      <div class="ctas"><span class="btn" role="button" aria-disabled="true"><svg viewBox="0 0 24 24"><use href="#bk-apple"/></svg><span data-i18n="soon_mac">Bald verfügbar für macOS</span></span></div>
+      <p class="req" data-i18n="req">Erfordert macOS 26 oder neuer. Das Ladelimit erfordert macOS 26.4.</p>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span data-i18n="by">Ein Projekt von <a href="../">eayzzn</a></span>
+    <nav><a href="../impressum.html" data-i18n="imprint">Impressum</a><a href="../datenschutz.html" data-i18n="privacy">Datenschutz</a></nav>
+  </div>
+</footer>
+
+<script src="kit.js"></script>
+<script>
+const DICT = {
+  de: {
+    _title: 'Bettery – Dein Akku. In deiner Menüleiste.',
+    nav_menubar: 'Menüleiste', nav_energy: 'Energiemodus', nav_details: 'Details', nav_styles: 'Stile', soon: 'Bald verfügbar',
+    eyebrow: 'Bettery für macOS', h1: 'Dein Akku.<br><span class="dim">In deiner Menüleiste.</span>',
+    lead: 'Bettery lebt in deiner Menüleiste und behält deinen Akku im Blick. Schnell, unaufdringlich und ohne Dock-Icon.',
+    soon_mac: 'Bald verfügbar für macOS', more: 'Funktionen ansehen ›',
+    mb_file: 'Ablage', mb_edit: 'Bearbeiten', mb_view: 'Darstellung', mb_window: 'Fenster', tray_aria: 'Bettery-Panel öffnen oder schließen',
+    hint: 'Probier es aus: Wechsle im Panel den Energiemodus oder klick auf das Akku-Symbol in der Menüleiste.',
+    statement: 'Ein Klick.<br><span>Alles da.</span>',
+    mb_eyebrow: 'Menüleiste', mb_h: 'Auf einen Blick.',
+    mb_p: 'Dein Ladestand als Zahl in einer kleinen Akku-Pille. <strong>Grün beim Laden, gelb im Stromsparmodus, rot ab 20 %.</strong> Beim Ein- und Ausstecken läuft die Farbe sanft über die Füllung.',
+    c_state: 'Zustand', c_style: 'Symbol', c_anim: 'Ladeanimation',
+    s_charging: 'Laden', s_battery: 'Akku', s_low: 'Stromsparen', s_critical: 'Kritisch', st_fill: 'Füllstand', st_solid: 'Einfarbig', a_off: 'Aus',
+    l_charging: 'Wird geladen', l_low: 'Stromsparmodus', l_critical: '20 % und weniger',
+    en_eyebrow: 'Energiemodus', en_h: 'Ohne Umwege.', en_h3: 'Stromsparen mit einem Klick.',
+    en_p: 'Wechsle zwischen <strong>Automatisch</strong> und <strong>Leistung reduzieren</strong> direkt im Panel, ohne die Systemeinstellungen zu öffnen. Im Stromsparmodus wird das Symbol gelb und ein feiner Schimmer läuft über die Füllung.',
+    en_note: 'Eine einmalige Einrichtung mit Administratorrechten. Danach fragt Bettery nie wieder nach deinem Passwort.',
+    de_eyebrow: 'Details', de_h: 'Jedes Detail.<br>Immer im Blick.', de_p: 'Zustand, Zyklen, Temperatur und Ladelimit stehen direkt im Panel. Ohne Terminal, ohne Systembericht.',
+    t_health: 'Zustand', t_health_p: 'Wie viel Kapazität dein Akku im Vergleich zu neu noch hat.',
+    t_cycles: 'Zyklen', t_cycles_p: 'Vollständige Ladezyklen, seit dem ersten Tag gezählt.',
+    t_temp: 'Temperatur', t_temp_v: '31,4<small>°C</small>', t_temp_p: 'Direkt aus dem Akku gelesen, auf eine Nachkommastelle.',
+    t_rem: 'Verbleibend', t_rem_v: '4<small>h</small> 12<small>min</small>', t_rem_p: 'Restlaufzeit im Akkubetrieb, beim Laden die Minuten bis voll.',
+    t_limit: 'Ladelimit', t_limit_p: 'Lege fest, bis wohin dein Mac lädt, in 5-%-Schritten. Ab macOS 26.4.',
+    foot: 'Beispielwerte. Bettery zeigt die Werte deines Macs.',
+    sy_eyebrow: 'Darstellung', sy_h: 'Dein Stil.<br>Hell oder Dunkel.',
+    sy_p: 'Drei Panel-Stile, jeweils hell oder dunkel. Such dir aus, wie Bettery auf deinem Mac aussieht.',
+    c_panel: 'Panel-Stil', c_theme: 'Erscheinungsbild',
+    sd_frosted: 'Ein milchiger Schleier macht den Hintergrund weich. Ruhig und gut lesbar.',
+    sd_liquid: 'Apples Glas-Look mit Tiefe, Glanz und feiner Lichtkante. Dein Hintergrund scheint durch.',
+    sd_classic: 'Eine deckende Systemfarbe ohne Transparenz. Schlicht und klar.',
+    sy_note: 'In der App wählst du zusätzlich „System“, dann folgt Bettery der Einstellung deines Macs. Ist „Transparenz reduzieren“ aktiv, nutzt Bettery automatisch Classic.',
+    th_light: 'Hell', th_dark: 'Dunkel',
+    sm_h: 'Und die kleinen Dinge.',
+    g1_h: 'Startet mit deinem Mac', g1_p: 'Beim Anmelden öffnen, einmal einschalten und vergessen.',
+    g2_h: 'Deutsch und Englisch', g2_p: 'Folgt deiner Systemsprache oder deiner Wahl.',
+    g3_h: 'Kein Dock-Icon', g3_p: 'Bettery bleibt in der Menüleiste und nimmt im Dock keinen Platz weg.',
+    g4_h: 'Einrichtung in fünf Schritten', g4_p: 'Ein kurzes Onboarding beim ersten Start, danach läuft alles.',
+    g5_h: 'Schnell wieder zu', g5_p: 'Esc, ein Klick daneben oder noch ein Klick aufs Symbol schließt das Panel.',
+    g6_h: 'Akku-Simulator', g6_p: 'Kritisch, niedrig oder voll: Jeden Zustand gefahrlos ausprobieren.',
+    end_tag: 'Dein Akku. <span class="dim">In deiner Menüleiste.</span>',
+    req: 'Erfordert macOS 26 oder neuer. Das Ladelimit erfordert macOS 26.4.',
+    by: 'Ein Projekt von <a href="../">eayzzn</a>', imprint: 'Impressum', privacy: 'Datenschutz',
+  },
+  en: {
+    _title: 'Bettery – Your battery. In your menu bar.',
+    nav_menubar: 'Menu bar', nav_energy: 'Energy Mode', nav_details: 'Details', nav_styles: 'Styles', soon: 'Coming soon',
+    eyebrow: 'Bettery for macOS', h1: 'Your battery.<br><span class="dim">In your menu bar.</span>',
+    lead: 'Bettery lives in your menu bar and keeps an eye on your battery. Fast, unobtrusive, and without a Dock icon.',
+    soon_mac: 'Coming soon for macOS', more: 'See the features ›',
+    mb_file: 'File', mb_edit: 'Edit', mb_view: 'View', mb_window: 'Window', tray_aria: 'Open or close the Bettery panel',
+    hint: 'Try it: switch the energy mode in the panel, or click the battery icon in the menu bar.',
+    statement: 'One click.<br><span>Everything there.</span>',
+    mb_eyebrow: 'Menu bar', mb_h: 'At a glance.',
+    mb_p: 'Your charge as a number inside a small battery pill. <strong>Green while charging, yellow in Low Power Mode, red at 20% and below.</strong> Plug in or unplug and the colour sweeps gently across the fill.',
+    c_state: 'State', c_style: 'Icon', c_anim: 'Charging animation',
+    s_charging: 'Charging', s_battery: 'Battery', s_low: 'Low Power', s_critical: 'Critical', st_fill: 'Fill Level', st_solid: 'Solid', a_off: 'Off',
+    l_charging: 'Charging', l_low: 'Low Power Mode', l_critical: '20% and below',
+    en_eyebrow: 'Energy Mode', en_h: 'No detours.', en_h3: 'Low Power in one click.',
+    en_p: 'Switch between <strong>Automatic</strong> and <strong>Low Power</strong> right from the panel, without opening System Settings. In Low Power Mode the icon turns yellow and a soft shimmer runs across the fill.',
+    en_note: 'One setup with admin rights. After that, Bettery never asks for your password again.',
+    de_eyebrow: 'Details', de_h: 'Every detail.<br>Always in view.', de_p: 'Health, cycle count, temperature and charge limit sit right in the panel. No Terminal, no System Report.',
+    t_health: 'Health', t_health_p: 'How much capacity your battery has left compared with new.',
+    t_cycles: 'Cycles', t_cycles_p: 'Full charge cycles, counted since day one.',
+    t_temp: 'Temperature', t_temp_v: '31.4<small>°C</small>', t_temp_p: 'Read straight from the battery, to one decimal place.',
+    t_rem: 'Remaining', t_rem_v: '4<small>h</small> 12<small>min</small>', t_rem_p: 'Time left on battery, or minutes until full while charging.',
+    t_limit: 'Charge Limit', t_limit_p: 'Choose how far your Mac charges, in 5% steps. Requires macOS 26.4.',
+    foot: 'Example values. Bettery shows your Mac’s own numbers.',
+    sy_eyebrow: 'Appearance', sy_h: 'Your style.<br>Light or dark.',
+    sy_p: 'Three panel styles, each in light or dark. Choose how Bettery looks on your Mac.',
+    c_panel: 'Panel style', c_theme: 'Appearance',
+    sd_frosted: 'A milky veil softens the background. Calm and easy to read.',
+    sd_liquid: 'Apple’s glass look with depth, sheen and a fine light edge. Your wallpaper shines through.',
+    sd_classic: 'A solid system colour with no transparency. Simple and clear.',
+    sy_note: 'In the app you can also pick “System” to follow your Mac’s setting. With Reduce Transparency on, Bettery switches to Classic automatically.',
+    th_light: 'Light', th_dark: 'Dark',
+    sm_h: 'And the little things.',
+    g1_h: 'Starts with your Mac', g1_p: 'Launch at login. Switch it on once and forget about it.',
+    g2_h: 'English and German', g2_p: 'Follows your system language, or your choice.',
+    g3_h: 'No Dock icon', g3_p: 'Bettery stays in the menu bar and takes no room in your Dock.',
+    g4_h: 'Set up in five steps', g4_p: 'A short onboarding on first launch, then it just runs.',
+    g5_h: 'Gone in a keystroke', g5_p: 'Esc, a click outside or another click on the icon closes the panel.',
+    g6_h: 'Battery simulator', g6_p: 'Critical, low or full: try every state without draining a thing.',
+    end_tag: 'Your battery. <span class="dim">In your menu bar.</span>',
+    req: 'Requires macOS 26 or later. Charge limit requires macOS 26.4.',
+    by: 'A project by <a href="../">eayzzn</a>', imprint: 'Legal notice', privacy: 'Privacy',
+  },
+};
+BK.init(DICT);
+
+/* hero: live panel under the tray icon */
+const navG = BK.glyph(document.querySelector('[data-glyph="nav"]'), { level: 76, charging: true, number: false });
+const trayG = BK.glyph(document.querySelector('[data-glyph="tray"]'), { level: 76, charging: true });
+const heroP = BK.panel(document.getElementById('heroSlot'), {
+  level: 76, charging: true, material: 'liquid', theme: 'dark',
+  onChange: s => trayG.set({ low: s.low }),
+});
+const tray = document.getElementById('tray'), slot = document.getElementById('heroSlot');
+function setOpen(open) { tray.setAttribute('aria-expanded', String(open)); slot.classList.toggle('closed', !open); }
+tray.addEventListener('click', () => setOpen(tray.getAttribute('aria-expanded') !== 'true'));
+document.addEventListener('keydown', e => { if (e.key === 'Escape') setOpen(false); });
+
+function tick() {
+  const d = new Date(), de = BK.lang === 'de';
+  const day = d.toLocaleDateString(de ? 'de-DE' : 'en-US', { weekday: 'short' });
+  const time = d.toLocaleTimeString(de ? 'de-DE' : 'en-US', { hour: 'numeric', minute: '2-digit' });
+  document.getElementById('clock').textContent = `${day} ${time}`;
+}
+tick(); setInterval(tick, 15000); document.addEventListener('bk-lang', tick);
+
+/* tray playground */
+const big = BK.glyph(document.querySelector('[data-glyph="big"]'), { level: 64, charging: true, blink: true, shimmer: true });
+const STATES = { charging: { level: 64, charging: true, low: false }, battery: { level: 64, charging: false, low: false }, low: { level: 38, charging: false, low: true }, critical: { level: 12, charging: false, low: false } };
+document.querySelectorAll('[data-seg]').forEach(seg => seg.addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  seg.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  const k = seg.dataset.seg, v = b.dataset.v;
+  if (k === 'state') big.set(STATES[v]);
+  if (k === 'style') big.set({ style: v });
+  if (k === 'anim') big.set({ anim: v });
+  if (k === 'theme') setTheme(v);
+  if (k === 'material') setMaterial(v);
+}));
+
+/* energy section panel: low power on */
+BK.panel(document.getElementById('energySlot'), { level: 58, charging: false, low: true, material: 'frosted', theme: 'dark' });
+
+/* styles: one panel, material and theme picked by the visitor */
+const MATERIAL_NAME = { frosted: 'Frosted Glass', liquid: 'Liquid Glass', classic: 'Classic' };
+const styleP = BK.panel(document.getElementById('stylePanel'), { level: 76, charging: true, material: 'liquid', theme: 'dark' });
+function describeStyle() {
+  const m = styleP.s.material;
+  document.getElementById('styleName').textContent = MATERIAL_NAME[m];
+  document.getElementById('styleDesc').innerHTML = DICT[BK.lang]['sd_' + m];
+}
+function setMaterial(m) { styleP.set({ material: m }); describeStyle(); }
+function setTheme(t) { document.getElementById('stylesBox').classList.toggle('light', t === 'light'); styleP.set({ theme: t }); }
+describeStyle(); document.addEventListener('bk-lang', describeStyle);
+
+BK.glyph(document.querySelector('[data-glyph="end"]'), { level: 100, charging: true, number: true });
+</script>
+</body>
+</html>

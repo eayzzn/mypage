@@ -11,7 +11,7 @@
 <meta property="og:description" content="Ladestand, Energiemodus, Zustand, Zyklen, Temperatur und Ladelimit. Direkt in der Menüleiste deines Macs.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <style>
-/* Layout: apple.com product page. Black stage, one idea per screen, gentle section snapping.
+/* Layout: apple.com product page. Black stage, one idea per screen.
    Everything Bettery draws (glyph, panel) comes from kit.js, rebuilt from the Swift sources. */
 :root{
   --bg:#000; --tile:#141416; --tileB:rgba(255,255,255,.07);
@@ -37,8 +37,7 @@
   color-scheme:dark;
 }
 *{box-sizing:border-box}
-/* gentle snapping: settles on a section only when you stop close to its start */
-html{scroll-padding-top:var(--nav);scroll-snap-type:y proximity}
+html{scroll-padding-top:var(--nav)}
 body{margin:0;background:var(--bg);color:var(--fg);font:400 17px/1.47 var(--text);letter-spacing:-.022em;-webkit-font-smoothing:antialiased;font-optical-sizing:auto;overflow-x:hidden}
 a{color:var(--link);text-decoration:none}a:hover{text-decoration:underline}
 h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance}
@@ -46,7 +45,7 @@ p{margin:0}
 .dim{color:var(--fg2)}
 .wrap{width:100%;max-width:1080px;margin:0 auto;padding-inline:max(22px,env(safe-area-inset-left))}
 
-.snap{scroll-snap-align:start;min-height:calc(100svh - var(--nav));display:flex;flex-direction:column;justify-content:center;padding-block:72px;position:relative}
+.snap{min-height:calc(100svh - var(--nav));display:flex;flex-direction:column;justify-content:center;padding-block:72px;position:relative}
 
 /* nav: translucent material, content scrolls under it */
 .nav{position:sticky;top:0;z-index:40;height:var(--nav);background:rgba(22,22,23,.74);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border-bottom:.5px solid rgba(255,255,255,.1)}
@@ -194,18 +193,23 @@ p{margin:0}
 @media (max-width:900px){.bento{grid-template-columns:1fr 1fr}.tile,.tile.w3{grid-column:span 1}.tile.wide{grid-column:span 2}}
 @media (max-width:540px){.bento{grid-template-columns:1fr}.tile,.tile.w3,.tile.wide{grid-column:span 1}}
 
-/* appearance: plays through every style on its own */
+/* appearance: cycles the styles on its own; styles and light/dark can be clicked */
 .stylebox{position:relative;display:flex;justify-content:center;align-items:center;padding:36px 20px;border-radius:28px;overflow:hidden;isolation:isolate}
 .stylebox:before,.stylebox:after{content:"";position:absolute;inset:0;z-index:-1;transition:opacity .9s cubic-bezier(.3,.1,.2,1)}
 .stylebox:before{background:var(--wall)}
 .stylebox:after{background:var(--wall-light);opacity:0}
 .stylebox.light:after{opacity:1}
-.modes{display:flex;gap:18px;margin-top:22px;font:600 15px/1 var(--text);color:var(--fg3)}
-.modes span{display:inline-flex;align-items:center;gap:7px;transition:color .5s}
+.modes{display:flex;gap:6px;margin-top:22px}
+.modes button{all:unset;display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border-radius:999px;cursor:pointer;font:600 15px/1 var(--text);color:var(--fg3);transition:color .4s,background .4s}
+.modes button:hover{color:var(--fg2)}
+.modes button[aria-pressed="true"]{color:var(--fg);background:rgba(255,255,255,.1)}
+.modes button:focus-visible{outline:2px solid var(--link);outline-offset:2px}
 .modes .bk-i{width:15px;height:15px}
-.modes span.on{color:var(--fg)}
 .cyc{list-style:none;margin:22px 0 0;padding:0;display:flex;flex-direction:column}
-.cyc li{padding:16px 0;border-top:.5px solid rgba(255,255,255,.12)}
+.cyc li{border-top:.5px solid rgba(255,255,255,.12)}
+.cyc li > button{all:unset;box-sizing:border-box;display:block;width:100%;padding:16px 0;cursor:pointer}
+.cyc li > button:focus-visible{outline:2px solid var(--link);outline-offset:4px;border-radius:6px}
+.cyc li:not(.on) > button:hover .n{color:var(--fg2)}
 .cyc li:last-child{border-bottom:.5px solid rgba(255,255,255,.12)}
 .cyc .n{font:700 22px/1.2 var(--display);letter-spacing:-.02em;color:var(--fg3);transition:color .5s}
 .cyc .d{display:grid;grid-template-rows:0fr;transition:grid-template-rows .6s cubic-bezier(.3,.1,.2,1),opacity .5s;opacity:0}
@@ -393,14 +397,14 @@ footer a{color:var(--fg2)}
             <h2 data-i18n="sy_h">Dein Stil.<br>Hell oder Dunkel.</h2>
           </div>
           <div class="cyc-wrap">
-            <div class="modes" aria-hidden="true">
-              <span data-t="light"><svg class="bk-i" viewBox="0 0 24 24"><use href="#bk-sun"/></svg><span data-i18n="th_light">Hell</span></span>
-              <span data-t="dark"><svg class="bk-i" viewBox="0 0 24 24"><use href="#bk-moon"/></svg><span data-i18n="th_dark">Dunkel</span></span>
+            <div class="modes" role="group" data-i18n-aria="th_group" aria-label="Erscheinungsbild">
+              <button type="button" data-t="dark"><svg class="bk-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#bk-moon"/></svg><span data-i18n="th_dark">Dunkel</span></button>
+              <button type="button" data-t="light"><svg class="bk-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#bk-sun"/></svg><span data-i18n="th_light">Hell</span></button>
             </div>
             <ol class="cyc" id="cyc">
-              <li data-m="frosted"><div class="n">Frosted Glass</div><div class="d"><p><span data-i18n="sd_frosted">Mattiert den Hintergrund mit einem milchig-weißen Schleier.</span></p></div><i class="bar"><b></b></i></li>
-              <li data-m="liquid"><div class="n">Liquid Glass</div><div class="d"><p><span data-i18n="sd_liquid">Apples nativer Glas-Look mit Tiefe, Glanz und feiner Lichtkante.</span></p></div><i class="bar"><b></b></i></li>
-              <li data-m="classic"><div class="n" data-i18n="pn_classic">Klassisch</div><div class="d"><p><span data-i18n="sd_classic">Eine ruhige System-Hintergrundfarbe, ganz ohne Transparenz.</span></p></div><i class="bar"><b></b></i></li>
+              <li data-m="frosted"><button type="button" aria-pressed="false"><div class="n">Frosted Glass</div><div class="d"><p><span data-i18n="sd_frosted">Mattiert den Hintergrund mit einem milchig-weißen Schleier.</span></p></div><i class="bar"><b></b></i></button></li>
+              <li data-m="liquid"><button type="button" aria-pressed="false"><div class="n">Liquid Glass</div><div class="d"><p><span data-i18n="sd_liquid">Apples nativer Glas-Look mit Tiefe, Glanz und feiner Lichtkante.</span></p></div><i class="bar"><b></b></i></button></li>
+              <li data-m="classic"><button type="button" aria-pressed="false"><div class="n" data-i18n="pn_classic">Klassisch</div><div class="d"><p><span data-i18n="sd_classic">Eine ruhige System-Hintergrundfarbe, ganz ohne Transparenz.</span></p></div><i class="bar"><b></b></i></button></li>
             </ol>
           </div>
         </div>
@@ -461,7 +465,7 @@ const DICT = {
     t_limit: 'Ladelimit', t_limit_p: 'Lege fest, bis wohin dein Mac lädt, in 5-%-Schritten. Ab macOS 26.4.',
     foot: 'Beispielwerte, bei jedem Besuch neu. Bettery zeigt die Werte deines Macs.',
     sy_eyebrow: 'Darstellung', sy_h: 'Dein Stil.<br>Hell oder Dunkel.',
-    th_light: 'Hell', th_dark: 'Dunkel', pn_classic: 'Klassisch',
+    th_light: 'Hell', th_dark: 'Dunkel', th_group: 'Erscheinungsbild', pn_classic: 'Klassisch',
     sd_frosted: 'Mattiert den Hintergrund mit einem milchig-weißen Schleier.',
     sd_liquid: 'Apples nativer Glas-Look mit Tiefe, Glanz und feiner Lichtkante.',
     sd_classic: 'Eine ruhige System-Hintergrundfarbe, ganz ohne Transparenz.',
@@ -502,7 +506,7 @@ const DICT = {
     t_limit: 'Charge Limit', t_limit_p: 'Choose how far your Mac charges, in 5% steps. Requires macOS 26.4.',
     foot: 'Example values, new on every visit. Bettery shows your Mac’s own numbers.',
     sy_eyebrow: 'Appearance', sy_h: 'Your style.<br>Light or dark.',
-    th_light: 'Light', th_dark: 'Dark', pn_classic: 'Classic',
+    th_light: 'Light', th_dark: 'Dark', th_group: 'Appearance', pn_classic: 'Classic',
     sd_frosted: 'Softens the background with a milky overlay.',
     sd_liquid: 'Apple’s native glass look with depth, sheen and a subtle light edge.',
     sd_classic: 'A calm system background colour with no transparency.',
@@ -619,32 +623,36 @@ function renderDetails() {
 }
 renderDetails(); document.addEventListener('bk-lang', renderDetails);
 
-/* appearance: plays through Frosted, Liquid and Classic, first dark, then light, and morphs between them */
+/* appearance: plays through Frosted, Liquid and Classic in dark and morphs between them.
+   Clicking a style or Light/Dark jumps there; the cycle carries on from that choice. */
 const styleP = BK.panel($('#stylePanel'), Object.assign({}, V, { material: 'frosted', theme: 'dark' }));
-const SEQ = [['frosted', 'dark'], ['liquid', 'dark'], ['classic', 'dark'], ['frosted', 'light'], ['liquid', 'light'], ['classic', 'light']];
+const MATS = ['frosted', 'liquid', 'classic'];
 const DWELL = reduced.matches ? 5200 : 3600;
 const cyc = $('#cyc'), box = $('#stylebox');
 cyc.style.setProperty('--dwell', DWELL + 'ms');
-let step = 0, timer = 0, visible = false;
-function show(i) {
-  const [m, t] = SEQ[i];
-  styleP.set({ material: m, theme: t });
-  box.classList.toggle('light', t === 'light');
-  document.querySelectorAll('.modes span[data-t]').forEach(s => s.classList.toggle('on', s.dataset.t === t));
+let mi = 0, theme = 'dark', timer = 0, visible = false;
+function show() {
+  const m = MATS[mi];
+  styleP.set({ material: m, theme });
+  box.classList.toggle('light', theme === 'light');
+  document.querySelectorAll('.modes button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.t === theme)));
   cyc.querySelectorAll('li').forEach(li => {
     const on = li.dataset.m === m;
     if (on) { li.classList.remove('on'); void li.offsetWidth; }   // restart the progress bar
     li.classList.toggle('on', on);
+    li.firstElementChild.setAttribute('aria-pressed', String(on));
   });
 }
-function loop() { clearTimeout(timer); if (!visible || document.hidden) return; timer = setTimeout(() => { step = (step + 1) % SEQ.length; show(step); loop(); }, DWELL); }
-new IntersectionObserver(es => { visible = es[0].isIntersecting; cyc.classList.toggle('paused', !visible); if (visible) { show(step); loop(); } else clearTimeout(timer); }, { threshold: 0.35 }).observe(box);
-document.addEventListener('visibilitychange', () => { cyc.classList.toggle('paused', document.hidden); if (!document.hidden && visible) { show(step); loop(); } });
-show(0);
+function loop() { clearTimeout(timer); if (!visible || document.hidden) return; timer = setTimeout(() => { mi = (mi + 1) % MATS.length; show(); loop(); }, DWELL); }
+cyc.addEventListener('click', e => { const li = e.target.closest('li'); if (!li) return; mi = MATS.indexOf(li.dataset.m); show(); loop(); });
+$('.modes').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; theme = b.dataset.t; show(); loop(); });
+new IntersectionObserver(es => { visible = es[0].isIntersecting; cyc.classList.toggle('paused', !visible); if (visible) { show(); loop(); } else clearTimeout(timer); }, { threshold: 0.35 }).observe(box);
+document.addEventListener('visibilitychange', () => { cyc.classList.toggle('paused', document.hidden); if (!document.hidden && visible) { show(); loop(); } });
+show();
 
 BK.glyph($('[data-glyph="end"]'), { level: 100, charging: true });
 
-/* in-page links scroll smoothly by script, so CSS snapping and smooth scrolling never fight */
+/* in-page links scroll smoothly and land below the sticky nav */
 function go(hash) {
   const t = document.querySelector(hash); if (!t) return;
   const top = hash === '#top' ? 0 : t.getBoundingClientRect().top + scrollY - 52;

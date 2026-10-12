@@ -445,15 +445,27 @@ html.is-lang-switching [data-i18n-html] {
 .project-card:hover .mock--web,
 .project-card:hover .mock--phone { transform: translateY(-3px); }
 
-.project-preview--bettery {
-  background:
-    radial-gradient(60% 80% at 18% 20%, #2f68ff, transparent 62%),
-    radial-gradient(55% 70% at 85% 30%, #ff4fa0, transparent 62%),
-    radial-gradient(60% 70% at 60% 100%, #ff9a0a, transparent 62%),
-    #0c0a22;
-}
+/* Bettery: colour bubbles drifting slowly behind the battery, like a live wallpaper */
+.project-preview--bettery { position: relative; background: #0c0a22; isolation: isolate; }
 
-.bettery-mock { width: 34%; overflow: visible; transition: transform 0.35s var(--ease); }
+.project-preview--bettery .bubble {
+  position: absolute;
+  z-index: -1;
+  border-radius: 50%;
+  pointer-events: none;
+  will-change: transform;
+}
+.project-preview--bettery .b1 { width: 75%; height: 120%; left: -18%; top: -38%; background: radial-gradient(closest-side, #2f68ff, rgba(47, 104, 255, 0)); animation: bubble-a 17s ease-in-out infinite alternate; }
+.project-preview--bettery .b2 { width: 68%; height: 110%; right: -16%; top: -30%; background: radial-gradient(closest-side, #ff4fa0, rgba(255, 79, 160, 0)); animation: bubble-b 21s ease-in-out infinite alternate; }
+.project-preview--bettery .b3 { width: 80%; height: 115%; left: 22%; bottom: -62%; background: radial-gradient(closest-side, #ff9a0a, rgba(255, 154, 10, 0)); animation: bubble-c 19s ease-in-out infinite alternate; }
+
+@keyframes bubble-a { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(14%, 10%) scale(1.08); } 100% { transform: translate(6%, 22%) scale(.95); } }
+@keyframes bubble-b { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(-16%, 14%) scale(.92); } 100% { transform: translate(-6%, 26%) scale(1.06); } }
+@keyframes bubble-c { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(-18%, -12%) scale(1.06); } 100% { transform: translate(12%, -20%) scale(.96); } }
+
+@media (prefers-reduced-motion: reduce) { .project-preview--bettery .bubble { animation: none; } }
+
+.bettery-mock { position: relative; width: 36%; overflow: visible; transition: transform 0.35s var(--ease); }
 .project-card:hover .bettery-mock { transform: translateY(-3px) scale(1.03); }
 
 .project-preview--wip {

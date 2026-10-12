@@ -272,21 +272,46 @@ html.is-lang-switching [data-i18n-html] {
    Sections
    ================================================================ */
 
-.section { padding-bottom: 96px; }
+/* every section opens with a full-width hairline, the ## label, a serif title and one line */
+.section {
+  padding: 56px 0 96px;
+  border-top: 1px solid var(--border-strong);
+}
 
 .section-head {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 20px;
+  align-items: flex-end;
+  gap: 16px 24px;
+  margin-bottom: 32px;
 }
+
+.section-intro { min-width: 0; flex: 1 1 420px; }
 
 .section-label {
   font-size: 13px;
   font-weight: 500;
   color: var(--text-3);
+}
+
+.section-title {
+  margin-top: 10px;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(32px, 4.4vw, 46px);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  text-wrap: balance;
+}
+
+.section-lead {
+  margin-top: 10px;
+  max-width: 560px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-2);
 }
 
 .section > .section-label { margin-bottom: 20px; }
@@ -478,13 +503,56 @@ html.is-lang-switching [data-i18n-html] {
    Skills + contact
    ================================================================ */
 
+.skill-groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+  gap: 16px;
+}
+
+.skill-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 22px;
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  transition: border-color 0.25s var(--ease);
+}
+
+.skill-group:hover { border-color: var(--border-strong); }
+.skill-group-title { font-size: 14px; font-weight: 500; color: var(--text); }
+.skill-group-desc { font-size: 13px; line-height: 1.55; color: var(--text-3); }
+.skill-group .skill-list { margin-top: auto; padding-top: 6px; }
+
 .skill-list { display: flex; flex-wrap: wrap; gap: 8px; font-size: 13px; }
 
 .skill-list li {
-  padding: 8px 14px;
+  padding: 7px 13px;
   border-radius: 999px;
+  background: var(--surface-2);
+  border: 1px solid var(--border-strong);
+}
+
+/* contact: one card; Glitch stands on its top edge, right of the heading, hopping with his letter */
+.contact-card {
+  position: relative;
+  padding: 28px;
+  border-radius: var(--radius-lg);
   background: var(--surface);
   border: 1px solid var(--border);
+}
+
+.contact-text { min-width: 0; }
+.contact-lead { max-width: 440px; margin-bottom: 22px; font-size: 15px; line-height: 1.6; color: var(--text-2); }
+
+/* the scene's bottom edge is Glitch's feet, so it rests exactly on the card border */
+.contact-art { position: absolute; right: 56px; bottom: calc(100% - 1px); width: 300px; pointer-events: none; }
+.contact-art .glitch--contact { margin: 0; max-width: none; }
+
+@media (max-width: 720px) {
+  .contact-card { margin-top: 112px; padding: 20px; }   /* collapses with the heading margin: room for Glitch + heart */
+  .contact-art { right: 12px; width: 200px; }
 }
 
 .contact-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
@@ -523,7 +591,8 @@ html.is-lang-switching [data-i18n-html] {
   gap: 12px;
   padding-top: 24px;
   padding-bottom: 32px;
-  border-top: 1px solid var(--border);
+  /* same inset hairline as the sections above, not the full container width */
+  background: linear-gradient(var(--border-strong), var(--border-strong)) var(--gutter) 0 / calc(100% - 2 * var(--gutter)) 1px no-repeat;
   font-size: 12px;
   color: var(--text-3);
 }
@@ -707,26 +776,14 @@ html[data-theme="light"] .gl-split-a { fill: #6FA8D9; }
 }
 
 /* Contact scene: "post" (loop) / "send" (one-shot paper plane) */
-.glitch--contact { width: 264px; height: 180px; margin: -8px 0 20px; }
+.glitch--contact { width: 100%; max-width: 400px; height: auto; aspect-ratio: 56 / 30; }
 
 .glc-post,
-.glc-send,
-.glc-heart,
-.glc-plane { transform-box: fill-box; }
+.glc-heart { transform-box: fill-box; }
 
-.glc-send,
-.glc-plane { display: none; }
-
-[data-state="send"] .glc-post,
-[data-state="send"] .glc-heart { display: none; }
-
-[data-state="send"] .glc-send,
-[data-state="send"] .glc-plane { display: inline; }
 
 .glc-post { transform-origin: 50% 100%; animation: glc-hop 1.4s steps(1, end) infinite; }
 .glc-heart { opacity: 0; animation: glc-heart 2.8s steps(5) infinite; }
-.glc-send { transform-origin: 50% 100%; animation: glc-squash 1.8s steps(1, end) 1 both; }
-.glc-plane { fill: var(--text); animation: glc-plane 1.8s steps(1, end) 1 both; }
 
 @keyframes glc-hop {
   0%   { transform: translateY(0) scale(1.08, 0.92); }
@@ -744,29 +801,8 @@ html[data-theme="light"] .gl-split-a { fill: #6FA8D9; }
   100%    { opacity: 0; transform: translateY(-3px); }
 }
 
-@keyframes glc-squash {
-  0%   { transform: scale(1, 1); }
-  10%  { transform: scale(1.08, 0.92); }
-  18%  { transform: scale(0.95, 1.06); }
-  26%  { transform: scale(1, 1); }
-  100% { transform: scale(1, 1); }
-}
-
-@keyframes glc-plane {
-  0%   { opacity: 0; transform: translate(0, 0); }
-  18%  { opacity: 1; transform: translate(0, 0); }
-  30%  { opacity: 1; transform: translate(4px, -1px); }
-  42%  { opacity: 1; transform: translate(8px, -3px); }
-  54%  { opacity: 1; transform: translate(12px, -5px); }
-  66%  { opacity: 1; transform: translate(16px, -7px); }
-  78%  { opacity: 1; transform: translate(20px, -9px); }
-  90%  { opacity: 0; transform: translate(20px, -9px); }
-  100% { opacity: 0; transform: translate(20px, -9px); }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .glc-heart,
-  .glc-plane { opacity: 1; }
+  .glc-heart { opacity: 1; }
   .glitch *,
   .intro-cursor,
   .live-dot { animation: none !important; }
@@ -787,6 +823,7 @@ html[data-theme="light"] .gl-split-a { fill: #6FA8D9; }
   .site-nav { order: 3; width: 100%; margin-left: -8px; }
   .intro { padding: 32px 0 64px; }
   .glitch--hero { width: 128px; height: 160px; }
-  .glitch--contact { width: 220px; height: 150px; }
-  .section { padding-bottom: 72px; }
+  .glitch--contact { max-width: 300px; }
+  .section { padding: 44px 0 72px; }
+  .section-head { margin-bottom: 24px; }
 }

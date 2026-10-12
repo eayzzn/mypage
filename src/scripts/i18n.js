@@ -28,6 +28,8 @@ const translations = {
     },
     projects: {
       heading: 'projekte',
+      title: 'Woran ich baue.',
+      lead: 'Apps und Websites, die ich entwerfe und selbst umsetze.',
       filterAll: 'alle',
       bettery: {
         desc: 'macOS-Menüleisten-App für deinen Akku.',
@@ -50,9 +52,16 @@ const translations = {
     },
     skills: {
       heading: 'skills',
+      title: 'Womit ich arbeite.',
+      lead: 'Vom ersten Entwurf bis zur fertigen App: meine Werkzeuge für Web, Apple-Plattformen und Design.',
+      web: 'Oberflächen und Backends für den Browser.',
+      apple: 'Native Apps für macOS und iOS.',
+      design: 'Vom Layout bis zur Animation.',
     },
     contact: {
       heading: 'kontakt',
+      title: 'Lass uns reden.',
+      lead: 'Ein Projekt, eine Idee oder einfach Hallo: Schreib mir.',
     },
     footer: {
       copyright: '© 2026 eayzzn · website im aufbau',
@@ -86,6 +95,8 @@ const translations = {
     },
     projects: {
       heading: 'projects',
+      title: 'What I’m building.',
+      lead: 'Apps and websites I design and build myself.',
       filterAll: 'all',
       bettery: {
         desc: 'A macOS menu bar app for your battery.',
@@ -108,9 +119,16 @@ const translations = {
     },
     skills: {
       heading: 'skills',
+      title: 'What I work with.',
+      lead: 'From the first sketch to the finished app: my tools for the web, Apple platforms and design.',
+      web: 'Interfaces and backends for the browser.',
+      apple: 'Native apps for macOS and iOS.',
+      design: 'From layout to motion.',
     },
     contact: {
       heading: 'contact',
+      title: 'Let’s talk.',
+      lead: 'A project, an idea or just hello: drop me a line.',
     },
     footer: {
       copyright: '© 2026 eayzzn · website under construction',

@@ -1,0 +1,7 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    { "source": "/pizzateam", "destination": "https://pizzateam-eayzzns-projects.vercel.app/pizzateam" },
+    { "source": "/pizzateam/:path*", "destination": "https://pizzateam-eayzzns-projects.vercel.app/pizzateam/:path*" }
+  ]
+}

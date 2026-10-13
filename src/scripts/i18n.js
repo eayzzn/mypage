@@ -35,6 +35,10 @@ const translations = {
         desc: 'macOS-Menüleisten-App für deinen Akku.',
         link: 'ansehen →',
       },
+      pizzateam: {
+        desc: 'Bestellsystem für eine Pizzeria in Schüttorf.',
+        link: 'ansehen →',
+      },
       portfolio: {
         title: 'Portfolio-Website',
         desc: 'Diese Seite. Dark/Light, DE/EN.',
@@ -100,6 +104,10 @@ const translations = {
       filterAll: 'all',
       bettery: {
         desc: 'A macOS menu bar app for your battery.',
+        link: 'view →',
+      },
+      pizzateam: {
+        desc: 'Ordering system for a pizzeria in Schüttorf.',
         link: 'view →',
       },
       portfolio: {

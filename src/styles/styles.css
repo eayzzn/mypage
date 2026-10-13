@@ -493,6 +493,20 @@ html.is-lang-switching [data-i18n-html] {
 .bettery-mock { position: relative; width: 36%; overflow: visible; transition: transform 0.35s var(--ease); }
 .project-card:hover .bettery-mock { transform: translateY(-3px) scale(1.03); }
 
+/* Pizza-Team: the mascot on the brand's dark tone, warm light behind it */
+.project-preview--pizzateam { position: relative; background: #1b1b1a; isolation: isolate; }
+.project-preview--pizzateam::before {
+  content: '';
+  position: absolute;
+  inset: -10% 10% -30%;
+  z-index: -1;
+  background: radial-gradient(closest-side, rgba(235, 82, 15, 0.42), rgba(235, 82, 15, 0));
+  pointer-events: none;
+}
+
+.pizzateam-mock { position: relative; width: 26%; overflow: visible; transition: transform 0.35s var(--ease); }
+.project-card:hover .pizzateam-mock { transform: translateY(-3px) rotate(-5deg) scale(1.04); }
+
 .project-preview--wip {
   background-color: var(--surface-2);
   background-image: radial-gradient(var(--border-strong) 1px, transparent 1px);

@@ -39,6 +39,10 @@ const translations = {
         desc: 'Bestellsystem für eine Pizzeria in Schüttorf.',
         link: 'ansehen →',
       },
+      giannabeauty: {
+        desc: 'Website für ein Kosmetikstudio mit Preisliste und Anfrageformular.',
+        link: 'ansehen →',
+      },
       portfolio: {
         title: 'Portfolio-Website',
         desc: 'Diese Seite. Dark/Light, DE/EN.',
@@ -108,6 +112,10 @@ const translations = {
       },
       pizzateam: {
         desc: 'Ordering system for a pizzeria in Schüttorf.',
+        link: 'view →',
+      },
+      giannabeauty: {
+        desc: 'Website for a beauty studio with price list and inquiry form.',
         link: 'view →',
       },
       portfolio: {

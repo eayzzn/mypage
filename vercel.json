@@ -1,10 +1,13 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "redirects": [
-    { "source": "/pizzateam/", "destination": "/pizzateam", "permanent": true }
+    { "source": "/pizzateam/", "destination": "/pizzateam", "permanent": true },
+    { "source": "/giannabeauty/", "destination": "/giannabeauty", "permanent": true }
   ],
   "rewrites": [
     { "source": "/pizzateam", "destination": "https://pizzateam-eayzzns-projects.vercel.app/pizzateam" },
-    { "source": "/pizzateam/:path*", "destination": "https://pizzateam-eayzzns-projects.vercel.app/pizzateam/:path*" }
+    { "source": "/pizzateam/:path*", "destination": "https://pizzateam-eayzzns-projects.vercel.app/pizzateam/:path*" },
+    { "source": "/giannabeauty", "destination": "https://giannabeauty-eayzzns-projects.vercel.app/giannabeauty" },
+    { "source": "/giannabeauty/:path*", "destination": "https://giannabeauty-eayzzns-projects.vercel.app/giannabeauty/:path*" }
   ]
 }
